@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boolean Function Space Theory | Inha Structure Recognition Research</title>
+  <meta name="description" content="Exploring gate-generated function spaces, structural classification of 65,536 four-variable Boolean functions, and Karnaugh map geometry. Part of the Structure Recognition Research Program at Inha University.">
+  <meta name="keywords" content="Boolean function space, Post's lattice, clone theory, gate-generated function space, Karnaugh map geometry, structural classification, universal gate, NAND, NOR, XOR, affine functions, structure recognition">
+  <style>
+    :root {
+      --bg: #fafaf8;
+      --surface: #ffffff;
+      --border: #e0ddd8;
+      --text: #1a1a1a;
+      --text-sub: #555;
+      --accent: #2a4d8f;
+      --accent-light: #eef2fa;
+      --code-bg: #f4f2ee;
+      --tag-new-bg: #fff3e0;
+      --tag-new-text: #e65100;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    /* ── Layout ── */
+    .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+    /* ── Top nav ── */
+    .top-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      padding: .6rem 1.5rem;
+      display: flex; gap: 1.4rem; flex-wrap: wrap;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .82rem;
+    }
+    .top-nav a { color: var(--accent); text-decoration: none; }
+    .top-nav a:hover { text-decoration: underline; }
+
+    /* ── Cover ── */
+    .cover {
+      padding: 4rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .cover .label {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: .8rem;
+    }
+    .cover h1 {
+      font-size: 1.85rem;
+      font-weight: bold;
+      line-height: 1.4;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+    .cover .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      font-style: italic;
+      margin-bottom: 1.6rem;
+    }
+    .cover-meta {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .85rem;
+      color: var(--text-sub);
+    }
+    .tag-new {
+      display: inline-block;
+      background: var(--tag-new-bg);
+      color: var(--tag-new-text);
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: .2rem .6rem;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 1.3rem;
+      margin: 2.8rem 0 .9rem;
+      padding-bottom: .35rem;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    h3 {
+      font-size: 1.07rem;
+      margin: 1.9rem 0 .55rem;
+      color: var(--text);
+    }
+    h4 { font-size: 1rem; margin: 1.4rem 0 .4rem; }
+
+    /* ── Body text ── */
+    p { margin-bottom: 1rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow-x: auto; margin: 1.4rem 0; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .88rem;
+    }
+    th {
+      background: var(--accent);
+      color: #fff;
+      padding: .5rem .9rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    td { padding: .45rem .9rem; border: 1px solid var(--border); }
+    tr:nth-child(even) td { background: var(--accent-light); }
+
+    /* ── Abstract box ── */
+    .abstract {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      border-radius: 2px;
+    }
+    .abstract-title {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: .6rem;
+    }
+
+    /* ── Research question box ── */
+    .rq-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .rq-title {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--accent);
+      margin-bottom: .6rem;
+    }
+    .rq-note {
+      font-size: .85rem;
+      color: var(--text-sub);
+      font-style: italic;
+      margin-top: .5rem;
+    }
+
+    /* ── Code / pre ── */
+    pre, code {
+      font-family: 'Courier New', monospace;
+      font-size: .9em;
+      background: var(--code-bg);
+    }
+    pre {
+      padding: 1rem;
+      border-left: 3px solid var(--accent);
+      border-radius: 2px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    code { padding: .1em .3em; border-radius: 2px; }
+    pre code { background: none; padding: 0; }
+
+    /* ── Flow diagram ── */
+    .flow {
+      background: var(--code-bg);
+      border-radius: 4px;
+      padding: .9rem 1.2rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: .9rem;
+      text-align: center;
+      letter-spacing: .04em;
+      line-height: 1.9;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .88rem;
+    }
+    .toc-title { font-weight: 700; margin-bottom: .7rem; color: var(--accent); }
+    .toc ol { padding-left: 1.4rem; }
+    .toc li { margin: .25rem 0; }
+    .toc a { color: var(--text); text-decoration: none; }
+    .toc a:hover { color: var(--accent); text-decoration: underline; }
+
+    /* ── Links table ── */
+    .links-table td a { color: var(--accent); text-decoration: none; }
+    .links-table td a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3.5rem;
+      padding-top: 1.2rem;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .8rem;
+      color: var(--text-sub);
+      text-align: center;
+    }
+    footer a { color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .cover h1 { font-size: 1.35rem; }
+      .top-nav { font-size: .76rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="#abstract">Abstract</a>
+  <a href="#questions">Research Questions</a>
+  <a href="#space-structure">Function Space Structure</a>
+  <a href="#kmap-geometry">Karnaugh Map Geometry</a>
+  <a href="#relationship">Relationship to Papers 1–5</a>
+  <a href="#followup">Follow-Up Questions</a>
+  <a href="#links">Program Links</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ── Cover ── -->
+  <header class="cover">
+    <span class="tag-new">New · Paper 6</span>
+    <p class="label">Research Repository · Boolean Function Space Theory</p>
+    <h1>Boolean Function Space Theory</h1>
+    <p class="subtitle">Gate-Generated Function Spaces, Structural Classification of the 65,536 Four-Variable Boolean Functions, and Karnaugh Map Geometry of Function Classes</p>
+    <p class="cover-meta">
+      Repository: <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" style="color:var(--accent)">6BooleanFunctionSpaceTheory</a>
+      &nbsp;·&nbsp;
+      Author: Choi Jonghun (최종훈), Inha University · Computer Science
+      &nbsp;·&nbsp;
+      Status: New — Initial Exploration (2026)
+    </p>
+  </header>
+
+  <!-- ── TOC ── -->
+  <nav class="toc">
+    <p class="toc-title">Contents</p>
+    <ol>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#questions">Core Research Questions (Q1–Q4)</a></li>
+      <li><a href="#space-structure">The Structure of Boolean Function Spaces</a></li>
+      <li><a href="#kmap-geometry">Karnaugh Map Geometry of Function Classes</a></li>
+      <li><a href="#symmetry-insight">Insight: 65,536 Functions and Symmetry Classification</a></li>
+      <li><a href="#relationship">Relationship to Papers 1–5</a></li>
+      <li><a href="#followup">Follow-Up Questions (FQ-1 to FQ-20)</a></li>
+      <li><a href="#links">Research Program Links</a></li>
+    </ol>
+  </nav>
+
+  <!-- ── Abstract ── -->
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <div class="abstract">
+      <p class="abstract-title">Overview</p>
+      <p>
+        This repository investigates the <strong>mathematical structure of function spaces generated by single primitive Boolean gates</strong>, and explores how these spaces can be recognized, classified, and visualized through Karnaugh maps.
+      </p>
+      <p>
+        Unlike conventional digital logic courses that focus on gate design and circuit minimization, this repository treats Boolean function spaces as mathematical objects with structural properties — analogous to how the Structure Recognition Research Program studies structure spaces in Karnaugh maps.
+      </p>
+      <p>
+        The four-variable Boolean function space contains exactly <strong>2<sup>16</sup> = 65,536 distinct functions</strong>. The central question is: what is the geometry of this space when viewed through the lens of gate-generated function classes?
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Research Questions ── -->
+  <section id="questions">
+    <h2>Core Research Questions (Q1–Q4)</h2>
+
+    <div class="rq-box">
+      <p class="rq-title">Q1 — Universal Gate Demonstration</p>
+      <p>
+        Demonstrate that NAND alone can generate all 65,536 four-variable Boolean functions.
+        Demonstrate the same for NOR.
+      </p>
+      <p class="rq-note">This is an application of Post's Functional Completeness Theorem. The research value is in the Karnaugh map visualization of the generation process.</p>
+    </div>
+
+    <div class="rq-box">
+      <p class="rq-title">Q2 — Gate-Generated Function Space Characterization ★ Primary Research Target</p>
+      <p>For each primitive gate, determine:</p>
+      <ul style="padding-left:1.5rem; margin-bottom:.8rem;">
+        <li>The size of the generated function space</li>
+        <li>The characterization of the generated class</li>
+        <li>The visual patterns these functions form on Karnaugh maps</li>
+      </ul>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Generated Space</th><th>Known Class</th></tr></thead>
+          <tbody>
+            <tr><td>XOR</td><td>Affine (linear) functions</td><td>Well-characterized</td></tr>
+            <tr><td>AND</td><td>Subset of monotone functions</td><td>Partially known</td></tr>
+            <tr><td>NAND</td><td>Entire Boolean space (65,536)</td><td>Post's theorem</td></tr>
+            <tr><td>NOR</td><td>Entire Boolean space (65,536)</td><td>Post's theorem</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="rq-note">The unexplored question: what do these function classes look like on Karnaugh maps? This is where this research makes its contribution.</p>
+    </div>
+
+    <div class="rq-box">
+      <p class="rq-title">Q3 — Constructibility Framework</p>
+      <p>
+        Given a target function (e.g., 3-input AND), determine which single gate types can generate it and which cannot.
+        Generalize this into a <strong>constructibility framework</strong> — equivalent to asking: is f contained in the clone generated by G?
+      </p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Target: 3-input AND</th><th>Constructible?</th></tr></thead>
+          <tbody>
+            <tr><td>NAND-generated space</td><td>Yes</td></tr>
+            <tr><td>NOR-generated space</td><td>Yes</td></tr>
+            <tr><td>AND-generated space</td><td>Yes</td></tr>
+            <tr><td>XOR-generated space</td><td>No (AND is not affine)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="rq-box">
+      <p class="rq-title">Q4 — Function Space Structure ★ Foundational Question</p>
+      <p>For any primitive gate G, define and characterize Space(G):</p>
+      <ul style="padding-left:1.5rem; margin-bottom:.8rem;">
+        <li>Closure properties (composition, negation, duality)</li>
+        <li>Visual characteristics on Karnaugh maps</li>
+        <li>Structural invariants shared by all functions in Space(G)</li>
+        <li>Position in Post's lattice of clones</li>
+      </ul>
+      <p class="rq-note">Q1–Q3 are all special cases of Q4. This is the foundational question of the repository.</p>
+    </div>
+
+    <div class="flow">
+      Q4 (Function Space Structure)
+      ↓
+      Q1 (Universality: Space(NAND) = Space(NOR) = All functions)
+      Q2 (Characterization: Space(XOR) = Affine, Space(AND) = Monotone subset, ...)
+      Q3 (Constructibility: f ∈ Space(G)?)
+    </div>
+  </section>
+
+  <!-- ── Function Space Structure ── -->
+  <section id="space-structure">
+    <h2>The Structure of Boolean Function Spaces</h2>
+
+    <h3>Post's Functional Completeness Theorem</h3>
+    <p>
+      Emil Post's theorem (1941) characterizes exactly which sets of Boolean functions are functionally complete — capable of generating all Boolean functions through composition.
+      A gate G generates all Boolean functions if and only if its one-element set {G} is not contained in any of Post's five maximal clones:
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Maximal Clone</th><th>Description</th><th>NAND ∈?</th><th>XOR ∈?</th></tr></thead>
+        <tbody>
+          <tr><td>T₀ (truth-preserving)</td><td>f(0,...,0) = 0</td><td>No</td><td>Yes</td></tr>
+          <tr><td>T₁ (falsity-preserving)</td><td>f(1,...,1) = 1</td><td>No</td><td>Yes</td></tr>
+          <tr><td>M (monotone)</td><td>x ≤ y ⟹ f(x) ≤ f(y)</td><td>No</td><td>No</td></tr>
+          <tr><td>S (self-dual)</td><td>f(¬x) = ¬f(x)</td><td>No</td><td>Yes</td></tr>
+          <tr><td>L (affine/linear)</td><td>f = a₀ ⊕ a₁x₁ ⊕ ... ⊕ aₙxₙ</td><td>No</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      NAND is not in <em>any</em> of these five maximal clones → NAND generates all functions.
+      XOR is in T₀, T₁, S, and L → XOR generates only the affine (linear) functions.
+    </p>
+
+    <h3>Lattice of Clones</h3>
+    <p>
+      The set of all clones (sets of functions closed under composition and containing all projections) forms a <strong>lattice</strong> under set inclusion.
+      The five maximal clones described above are the top elements below the full clone.
+      Understanding where Space(G) sits in this lattice is a core research direction.
+    </p>
+    <div class="flow">
+      All Boolean functions (full clone)
+               ↓
+      Maximal clones: T₀, T₁, M, S, L
+               ↓
+      ... (infinite lattice below)
+               ↓
+      Projections (minimal clone)
+    </div>
+  </section>
+
+  <!-- ── Karnaugh Map Geometry ── -->
+  <section id="kmap-geometry">
+    <h2>Karnaugh Map Geometry of Function Classes</h2>
+
+    <p>
+      A core hypothesis of this research: <strong>functions belonging to the same gate-generated space share recognizable geometric patterns on Karnaugh maps</strong>.
+      This connects the algebraic structure of clones to the visual, spatial intuition developed in Papers 1–3.
+    </p>
+
+    <h3>Known Visual Invariants</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Function Class</th><th>Karnaugh Map Characteristic</th><th>Connection to Previous Papers</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Affine (XOR-generated)</td>
+            <td>Checkerboard pattern in Gray Code arrangement; double-diagonal in standard binary arrangement</td>
+            <td>Paper 1 (Repo 1): checkerboard invariance; Paper 2 (Repo 2): layer-based analysis</td>
+          </tr>
+          <tr>
+            <td>Monotone functions</td>
+            <td>No "isolated 0 islands" surrounded by 1s; patterns monotone in coordinate ordering</td>
+            <td>Open question: visual characterization unexplored</td>
+          </tr>
+          <tr>
+            <td>Self-dual functions</td>
+            <td>Complement of pattern equals pattern under bitwise negation of inputs</td>
+            <td>Open question: Karnaugh map geometry not systematically studied</td>
+          </tr>
+          <tr>
+            <td>NAND-generated (all functions)</td>
+            <td>All 65,536 patterns — no restriction</td>
+            <td>Paper 2 (Repo 2): classification of all 65,536 functions by symmetry</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Research Direction</h3>
+    <p>
+      The unexplored territory: for each non-trivial gate G, what is the <strong>visual invariant</strong> shared by all functions in Space(G)?
+      If such invariants exist, they would create a new classification system for the 65,536 four-variable Boolean functions — based not on syntactic form but on <em>generative origin</em>.
+    </p>
+  </section>
+
+  <!-- ── Symmetry Insight ── -->
+  <section id="symmetry-insight">
+    <h2>Insight: 65,536 Functions and Symmetry Classification</h2>
+
+    <div class="abstract">
+      <p class="abstract-title">Key Insight from Research Notes</p>
+      <p>
+        The four-variable Boolean function space contains exactly <strong>2<sup>16</sup> = 65,536 distinct functions</strong>.
+        In general, an n-variable Boolean function space contains 2<sup>(2<sup>n</sup>)</sup> functions.
+      </p>
+      <p>
+        However, these 65,536 functions are not all "structurally independent."
+        Under <strong>axis-swap symmetry</strong> (F(A,B,C,D) = F(C,D,A,B)), functions form equivalence classes (orbits under the symmetry group).
+      </p>
+      <ul style="padding-left:1.5rem; margin: .8rem 0;">
+        <li>Some functions are symmetric under AB ↔ CD axis swap</li>
+        <li>Some functions form pairs with their axis-swapped counterpart</li>
+        <li>Some functions form larger orbits under a full symmetry group</li>
+      </ul>
+      <p>
+        <strong>Research question:</strong> When the 65,536 four-variable Boolean functions are classified by axis-swap symmetry, how many distinct equivalence classes result?
+        This is a problem in combinatorics and group theory, and represents a natural extension of Papers 1–3.
+      </p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>n (variables)</th><th>Total functions</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>2<sup>2</sup> = 4</td></tr>
+          <tr><td>2</td><td>2<sup>4</sup> = 16</td></tr>
+          <tr><td>3</td><td>2<sup>8</sup> = 256</td></tr>
+          <tr><td>4</td><td>2<sup>16</sup> = 65,536</td></tr>
+          <tr><td>5</td><td>2<sup>32</sup> = 4,294,967,296</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      The classification problem — "how many distinct classes under symmetry G?" — is where the study of function spaces (this repository) intersects with the study of structural invariance (Papers 1–3).
+    </p>
+  </section>
+
+  <!-- ── Relationship to Papers 1–5 ── -->
+  <section id="relationship">
+    <h2>Relationship to Papers 1–5</h2>
+
+    <div class="tbl-wrap">
+      <table class="links-table">
+        <thead><tr><th>Repository</th><th>Relationship to This Work</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/inha20/1KMapStructureInvariance">Paper 1 · KMap Structure Invariance</a></td>
+            <td>Shared visual domain: Karnaugh maps as the primary representation. The checkerboard pattern studied in Paper 1 is the Karnaugh map signature of the XOR-generated function space (affine functions).</td>
+          </tr>
+          <tr>
+            <td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/">Paper 2 · Symmetric Boolean Functions</a></td>
+            <td>Representation transformation: same function viewed through truth table, Hamming weight layer structure, and Karnaugh map geometry. The layer-based analysis in Paper 2 is a classification of a function's <em>inputs</em>; this repository classifies the function's <em>generative origin</em>.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/inha20/3VariableRearrangementInvarianceMinorThesis">Paper 3 · Variable Rearrangement Invariance</a></td>
+            <td>Structural invariance: Paper 3 asks "does the pattern survive variable rearrangement?" This repository asks "does the pattern survive gate substitution?" The symmetry classification of 65,536 functions initiated in Paper 3 directly extends into this repository.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/inha20/4StructureRecognitionTheory">Paper 4 · Structure Recognition Theory</a></td>
+            <td>Direct application of SRT: the hypothesis that "functions in the same generated space share recognizable structural properties" is an application of SRT H2 (structural invariance) and H4 (research-worthiness recognition) to the Boolean function space domain.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/inha20/5HumanAIResearchCollaboration">Paper 5 · Human-AI Research Collaboration</a></td>
+            <td>Collaboration testbed: the finite, well-defined structure of Boolean function spaces (65,536 functions, exact lattice structure) makes this domain ideal for studying Human-AI collaborative mathematical exploration. AI can systematically enumerate; humans recognize patterns and ask new questions.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flow">
+      Paper 1 (KMap patterns)
+      Paper 2 (Symmetric function classification)    →  Paper 6 (Function Space Theory)
+      Paper 3 (Variable rearrangement invariance)
+               ↓
+      Paper 4 (Structure Recognition Theory — theoretical framework)
+               ↓
+      Paper 5 (Human-AI collaboration — methodological layer)
+    </div>
+  </section>
+
+  <!-- ── Follow-Up Questions ── -->
+  <section id="followup">
+    <h2>Follow-Up Questions (FQ-1 to FQ-20)</h2>
+
+    <p>
+      The following 20 questions were generated as natural extensions of the core research questions Q1–Q4.
+      Detailed answers are being developed in <code>FOLLOW_UP_ANSWERS.md</code>.
+    </p>
+
+    <h3>A. Function Space Structure</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-1.</strong> What is the size of Space(G) for n=2,3,4,5? What growth pattern emerges?</li>
+      <li><strong>FQ-2.</strong> Where does Space(G) sit in Post's lattice of clones? What is its visual representation?</li>
+      <li><strong>FQ-3.</strong> What is Space(G₁) ∩ Space(G₂)? Does it form a meaningful mathematical structure?</li>
+      <li><strong>FQ-4.</strong> What are the closure properties of Space(G)? (Composition, negation, duality)</li>
+      <li><strong>FQ-5.</strong> What is the relationship between the size of the minimal generating set and the properties of Space(G)?</li>
+    </ul>
+
+    <h3>B. Karnaugh Map Geometry</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-6.</strong> What geometric patterns do linear/monotone/self-dual functions form on Karnaugh maps?</li>
+      <li><strong>FQ-7.</strong> Do functions in Space(G) share a common visual invariant on Karnaugh maps?</li>
+      <li><strong>FQ-8.</strong> Is the Repo 1 checkerboard pattern the geometric expression of Space(XOR)? What evidence does SRT H2 provide?</li>
+      <li><strong>FQ-9.</strong> How does the variable rearrangement symmetry classification (Repo 3) relate to the gate-generated space classification?</li>
+    </ul>
+
+    <h3>C. Constructibility and Complexity</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-10.</strong> How does the gate complexity of a target function f relate to the properties of Space(G)?</li>
+      <li><strong>FQ-11.</strong> Can constructibility be interpreted as "representation transformation cost"? How does this connect to Repo 2?</li>
+      <li><strong>FQ-12.</strong> What is the mathematical structure of "functions not constructible from gate G"? What is its meaning in clone theory?</li>
+    </ul>
+
+    <h3>D. Connection to Structure Recognition Theory</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-13.</strong> What constitutes a "research-worthy structure" in the Boolean function space? How does SRT H4 apply?</li>
+      <li><strong>FQ-14.</strong> Among the 65,536 functions, which ones attract human attention first? Can SRT H3 be applied here?</li>
+      <li><strong>FQ-15.</strong> "Recognizing a space's structure" vs. "recognizing individual function patterns" — what is the cognitive difference? Does SRT H6 apply at the space level?</li>
+    </ul>
+
+    <h3>E. Human-AI Collaboration</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-16.</strong> What is the optimal division of labor for Human-AI exploration of Boolean function spaces?</li>
+      <li><strong>FQ-17.</strong> Analyze the "AI systematically classifies + human proposes classification criteria" collaboration model through HARCT.</li>
+    </ul>
+
+    <h3>F. Generalization</h3>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
+      <li><strong>FQ-18.</strong> What is the upper limit of finitely classifiable variable counts? Computational vs. theoretical limits?</li>
+      <li><strong>FQ-19.</strong> Can the framework generalize to ternary or many-valued logic? Does the same function space theory hold?</li>
+      <li><strong>FQ-20.</strong> When viewed as a topological space, what are the topological properties of Space(G)? How does this correspond to Karnaugh map geometry?</li>
+    </ul>
+
+    <div class="rq-box">
+      <p class="rq-title">Potential Future Repositories</p>
+      <p>Analysis of FQ-1 to FQ-20 identifies three clusters that may warrant independent repositories:</p>
+      <ul style="padding-left:1.5rem; margin-top:.5rem; line-height:2;">
+        <li><strong>Candidate 7:</strong> Post Lattice × Karnaugh Map Geometry Visualization (FQ-2, 6, 7) — high educational value</li>
+        <li><strong>Candidate 8:</strong> Boolean Function Space Topology (FQ-4, 19, 20) — pure mathematics direction</li>
+        <li><strong>Candidate 9:</strong> Structure Recognition Experiments / Computational Model (FQ-13, 14, 15, 16) — SRT + Human-AI intersection</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Program Links ── -->
+  <section id="links">
+    <h2>Research Program Links</h2>
+
+    <div class="tbl-wrap">
+      <table class="links-table">
+        <thead><tr><th>Repository</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://inha20.github.io/Research-Portfolio/">Research-Portfolio</a></td><td>Program Hub — navigation, concept genealogy, timeline</td></tr>
+          <tr><td><a href="https://github.com/inha20/1KMapStructureInvariance">1KMapStructureInvariance</a></td><td>Empirical Case Study 1 — Karnaugh Map Structure Invariance</td></tr>
+          <tr><td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/">2SymmetricBooleanFunctionMinorThesis</a></td><td>Empirical Case Study 2 — Symmetric Boolean Functions</td></tr>
+          <tr><td><a href="https://github.com/inha20/3VariableRearrangementInvarianceMinorThesis">3VariableRearrangementInvarianceMinorThesis</a></td><td>Empirical Case Study 3 — Variable Rearrangement Invariance</td></tr>
+          <tr><td><a href="https://github.com/inha20/4StructureRecognitionTheory">4StructureRecognitionTheory</a></td><td>Theoretical Hub — Structure Recognition Theory (SRT)</td></tr>
+          <tr><td><a href="https://github.com/inha20/5HumanAIResearchCollaboration">5HumanAIResearchCollaboration</a></td><td>Methodological Meta-layer — Human-AI Research Collaboration</td></tr>
+          <tr><td><a href="https://github.com/inha20/6BooleanFunctionSpaceTheory">6BooleanFunctionSpaceTheory</a></td><td><strong>← You are here</strong> — Applied Mathematics, Boolean Function Spaces</td></tr>
+          <tr><td><a href="https://github.com/inha20/ANTIGRAVITY">ANTIGRAVITY</a></td><td>AI Workspace — handover documents, session logs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Choi Jonghun (최종훈) · Inha University, Department of Computer Science ·
+      <a href="https://inha20.github.io/inha20">Profile Site</a> ·
+      <a href="https://github.com/inha20">GitHub</a>
+    </p>
+    <p style="margin-top:.4rem;">Part of the Structure Recognition Research Program · Repository: 6BooleanFunctionSpaceTheory</p>
+  </footer>
+
+</div>
+</body>
+</html>
