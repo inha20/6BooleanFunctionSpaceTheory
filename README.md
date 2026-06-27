@@ -72,19 +72,84 @@ For any primitive gate G, define:
 ```
 6BooleanFunctionSpaceTheory/
 ├── README.md                    ← This file
-├── INTEGRATION_DIRECTIVE.md     ← Research integration guide (from researcher)
-├── RESEARCH_NOTES.md            ← Research notes and Q1–Q4 analysis
-├── HANDOVER.md                  ← AI collaborator handover guide
+├── TODO.md                      ← Master roadmap (Phase 1–5)
+├── SubTODO.md                   ← Current sprint micro-tasks
+├── FutureWorks.md               ← Long-term research ideas
+├── IntegrationMap.md            ← Integration points with Repos 1–5
 ├── index.html                   ← GitHub Pages portal
-└── (future)
-    ├── theory/
-    │   ├── FunctionSpaceTheory.md
-    │   ├── PostLattice.md
-    │   └── KarnaughGeometry.md
-    └── exploration/
-        ├── NAND_universality.md
-        └── XOR_affine_space.md
+├── theory/
+│   ├── FunctionSpaceTheory.md
+│   ├── PostLattice.md
+│   ├── KarnaughGeometry.md
+│   └── S4GroupAnalysis.md       ← ★ S₄ orbit classification (OC-1~OC-5)
+├── exploration/                 ← Q1–Q4 analysis documents
+├── questions/                   ← Open Questions (OQ1–OQ5)
+├── fq/                          ← Follow-up Questions (FQ-1~FQ-20)
+└── scripts/
+    └── s4_orbit_calculator.py   ← ★ S₄ orbit enumeration & Burnside verification
 ```
+
+---
+
+## Scripts — S₄ Orbit Calculator
+
+`scripts/s4_orbit_calculator.py` computes S₄ group orbits over four-variable Boolean function spaces using full enumeration cross-validated against Burnside's Lemma.
+
+### Requirements
+
+Python 3.8 or later. No external packages required — standard library only.
+
+```bash
+python --version   # must be 3.8+
+```
+
+### Usage
+
+```bash
+# Full analysis: all four spaces + n=5 scaffold
+python scripts/s4_orbit_calculator.py
+
+# Quick verification only (no detailed output)
+python scripts/s4_orbit_calculator.py --verify
+
+# Single space analysis
+python scripts/s4_orbit_calculator.py --space XOR
+python scripts/s4_orbit_calculator.py --space AND
+python scripts/s4_orbit_calculator.py --space NOT
+python scripts/s4_orbit_calculator.py --space LM
+
+# n=5 theoretical scaffold
+python scripts/s4_orbit_calculator.py --n5
+```
+
+### Expected Output (`--verify`)
+
+```
+  Space(XOR)     :  10궤도 (기대 10) ✅
+  Space(AND)     :  30궤도 (기대 30) ✅
+  Space(NOT)     :  32궤도 (기대 32) ✅
+  L∩M            :   3궤도 (기대 3) ✅
+
+전체: ✅ 모두 통과
+```
+
+### Result Summary
+
+| Space | Description | Functions | S₄ Orbits | Fixed Points |
+|-------|-------------|----------:|----------:|-------------:|
+| Space(XOR) | Affine (linear) functions | 32 | 10 | 4 |
+| Space(AND) | Monotone functions (Dedekind D(4)) | 168 | 30 | 6 |
+| Space(NOT) | Self-dual functions | 256 | 32 | **0** |
+| L ∩ M | Affine ∧ Monotone | 6 | 3 | 2 |
+
+Theoretical basis: `theory/S4GroupAnalysis.md` v1.2 (OC-1–OC-5).
+
+### Interpreting the Output
+
+- **궤도 (열거)** — orbit count from direct BFS enumeration over the function space
+- **궤도 (Burnside)** — orbit count from Burnside's Lemma applied to conjugacy class representatives
+- **S₄-불동점 (◆)** — functions fixed by *every* permutation in S₄; these are maximally symmetric and correspond to the functions first noticed in Repos 1–3 (checkerboard, threshold functions)
+- **궤도 크기** — orbit size equals |S₄| / |stabilizer|; size-1 orbits are exactly the fixed points
 
 ---
 
@@ -130,5 +195,5 @@ The 65,536 four-variable Boolean functions are not all independent. Under axis-s
 ## Author
 
 Choi Jonghun (최종훈)  
-Inha University · Department of Computer Science  
+Independent researcher · Graduate of Inha Technical College  
 Structure Recognition Research Program

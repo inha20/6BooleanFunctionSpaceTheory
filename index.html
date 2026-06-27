@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boolean Function Space Theory | Inha Structure Recognition Research</title>
-  <meta name="description" content="Exploring gate-generated function spaces, structural classification of 65,536 four-variable Boolean functions, and Karnaugh map geometry. Part of the Structure Recognition Research Program at Inha University.">
-  <meta name="keywords" content="Boolean function space, Post's lattice, clone theory, gate-generated function space, Karnaugh map geometry, structural classification, universal gate, NAND, NOR, XOR, affine functions, structure recognition">
+  <title>Boolean 함수 공간과 S₄ 군론적 분류 | Structure Recognition Research Program</title>
+  <meta name="description" content="4변수 Boolean 함수 공간의 게이트 생성 관점과 S₄ 군론 관점에서의 완전 궤도 분류. Space(XOR) 10궤도, Space(AND) 30궤도, Space(NOT) 32궤도. 구조 인식 이론(SRT)과의 연결. 최종훈 (인하공업전문대학 출신 · 독립 연구자).">
+  <meta name="keywords" content="Boolean 함수 공간, S4 군론, Burnside 보조정리, 카르노 맵, Post 격자, 궤도 분류, 구조 인식 이론, XOR 아핀 공간, 단조 함수, 자기쌍대 함수">
+  <meta name="author" content="Choi Jonghun (최종훈)">
+
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+
   <style>
     :root {
       --bg: #fafaf8;
@@ -16,8 +30,10 @@
       --accent: #2a4d8f;
       --accent-light: #eef2fa;
       --code-bg: #f4f2ee;
-      --tag-new-bg: #fff3e0;
-      --tag-new-text: #e65100;
+      --placeholder-bg: #fffbeb;
+      --placeholder-border: #d97706;
+      --success-bg: #f0fdf4;
+      --success-border: #16a34a;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -32,10 +48,27 @@
     /* ── Layout ── */
     .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 1.5rem 4rem; }
 
+    /* ── Hub back link bar ── */
+    .hub-bar {
+      background: #1a1a2e;
+      padding: .55rem 1.5rem;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .82rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hub-bar a {
+      color: #90caf9;
+      text-decoration: none;
+    }
+    .hub-bar a:hover { text-decoration: underline; }
+    .hub-bar .sep { color: #4a5568; }
+
     /* ── Top nav ── */
     .top-nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.93);
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(6px);
       border-bottom: 1px solid var(--border);
       padding: .6rem 1.5rem;
@@ -77,11 +110,12 @@
       font-family: 'Helvetica Neue', sans-serif;
       font-size: .85rem;
       color: var(--text-sub);
+      line-height: 1.9;
     }
-    .tag-new {
+    .tag-stable {
       display: inline-block;
-      background: var(--tag-new-bg);
-      color: var(--tag-new-text);
+      background: #f0fdf4;
+      color: #15803d;
       font-size: .78rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -90,6 +124,7 @@
       border-radius: 3px;
       margin-bottom: 1rem;
       font-family: 'Helvetica Neue', sans-serif;
+      border: 1px solid #86efac;
     }
 
     /* ── Section headings ── */
@@ -100,17 +135,15 @@
       border-bottom: 2px solid var(--accent);
       color: var(--accent);
     }
-    h3 {
-      font-size: 1.07rem;
-      margin: 1.9rem 0 .55rem;
-      color: var(--text);
-    }
-    h4 { font-size: 1rem; margin: 1.4rem 0 .4rem; }
+    h3 { font-size: 1.07rem; margin: 1.9rem 0 .55rem; color: var(--text); }
+    h4 { font-size: 1rem; margin: 1.4rem 0 .4rem; color: var(--text); }
 
     /* ── Body text ── */
     p { margin-bottom: 1rem; }
     em { font-style: italic; }
     strong { font-weight: 700; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: .3rem; }
 
     /* ── Tables ── */
     .tbl-wrap { overflow-x: auto; margin: 1.4rem 0; }
@@ -147,25 +180,51 @@
       color: var(--accent);
       margin-bottom: .6rem;
     }
-
-    /* ── Research question box ── */
-    .rq-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.2rem 1.5rem;
-      margin: 1.5rem 0;
-    }
-    .rq-title {
+    .keyword-line {
       font-family: 'Helvetica Neue', sans-serif;
-      font-weight: 700;
-      font-size: .95rem;
-      color: var(--accent);
-      margin-bottom: .6rem;
-    }
-    .rq-note {
       font-size: .85rem;
       color: var(--text-sub);
+      margin-top: .8rem;
+    }
+
+    /* ── Result box ── */
+    .result-box {
+      background: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      padding: 1rem 1.4rem;
+      margin: 1.4rem 0;
+      border-radius: 2px;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .9rem;
+    }
+    .result-title {
+      font-weight: 700;
+      color: #15803d;
+      margin-bottom: .4rem;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ── Placeholder box ── */
+    .placeholder-box {
+      background: var(--placeholder-bg);
+      border: 2px dashed var(--placeholder-border);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.6rem 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: .9rem;
+    }
+    .placeholder-title {
+      font-weight: 700;
+      color: var(--placeholder-border);
+      margin-bottom: .6rem;
+      font-size: .9rem;
+    }
+    .placeholder-guide {
+      color: #78350f;
+      font-size: .85rem;
       font-style: italic;
       margin-top: .5rem;
     }
@@ -193,9 +252,7 @@
       padding: .9rem 1.2rem;
       margin: 1rem 0;
       font-family: 'Courier New', monospace;
-      font-size: .9rem;
-      text-align: center;
-      letter-spacing: .04em;
+      font-size: .88rem;
       line-height: 1.9;
     }
 
@@ -219,6 +276,39 @@
     .links-table td a { color: var(--accent); text-decoration: none; }
     .links-table td a:hover { text-decoration: underline; }
 
+    /* ── Orbit summary cards ── */
+    .orbit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.4rem 0;
+    }
+    .orbit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      text-align: center;
+    }
+    .orbit-card .orbit-name {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+    .orbit-card .orbit-num {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .orbit-card .orbit-sub {
+      font-size: .8rem;
+      color: var(--text-sub);
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
@@ -234,413 +324,705 @@
     @media (max-width: 640px) {
       .cover h1 { font-size: 1.35rem; }
       .top-nav { font-size: .76rem; gap: 1rem; }
+      .orbit-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-<nav class="top-nav">
-  <a href="#abstract">Abstract</a>
-  <a href="#questions">Research Questions</a>
-  <a href="#space-structure">Function Space Structure</a>
-  <a href="#kmap-geometry">Karnaugh Map Geometry</a>
-  <a href="#relationship">Relationship to Papers 1–5</a>
-  <a href="#followup">Follow-Up Questions</a>
-  <a href="#links">Program Links</a>
+<!-- ── Hub back bar ── -->
+<div class="hub-bar">
+  <a href="https://inha20.github.io/inha20/" id="hub-link">← Research Hub (inha20)</a>
+  <span class="sep">|</span>
+  <a href="https://inha20.github.io/4StructureRecognitionTheory/" id="srt-link">Structure Recognition Theory (SRT)</a>
+  <span class="sep">|</span>
+  <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" id="github-link">GitHub</a>
+</div>
+
+<!-- ── Top Nav ── -->
+<nav class="top-nav" aria-label="본문 내비게이션">
+  <a href="#abstract" id="nav-abstract">초록</a>
+  <a href="#intro" id="nav-intro">1. 서론</a>
+  <a href="#background" id="nav-background">2. 이론적 배경</a>
+  <a href="#results" id="nav-results">3. 핵심 결과</a>
+  <a href="#integration" id="nav-integration">4. 선행 연구 통합</a>
+  <a href="#srt" id="nav-srt">5. SRT 연결</a>
+  <a href="#origin" id="nav-origin">6. 연구 기원</a>
+  <a href="#conclusion" id="nav-conclusion">7. 결론</a>
+  <a href="#references" id="nav-references">참고 저장소</a>
 </nav>
 
 <div class="page-wrap">
 
   <!-- ── Cover ── -->
   <header class="cover">
-    <span class="tag-new">New · Paper 6</span>
-    <p class="label">Research Repository · Boolean Function Space Theory</p>
-    <h1>Boolean Function Space Theory</h1>
-    <p class="subtitle">Gate-Generated Function Spaces, Structural Classification of the 65,536 Four-Variable Boolean Functions, and Karnaugh Map Geometry of Function Classes</p>
-    <p class="cover-meta">
-      Repository: <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" style="color:var(--accent)">6BooleanFunctionSpaceTheory</a>
-      &nbsp;·&nbsp;
-      Author: Choi Jonghun (최종훈), Inha University · Computer Science
-      &nbsp;·&nbsp;
-      Status: New — Initial Exploration (2026)
-    </p>
+    <span class="tag-stable">Applied Math · Paper 6 · Phase 1·2·5 Complete</span>
+    <p class="label">Research Repository · Structure Recognition Research Program · Branch 8</p>
+    <h1>Boolean 함수 공간과 S<sub>4</sub> 군론적 분류 그리고 구조 인식 이론과의 연결</h1>
+    <p class="subtitle">Gate-Generated Function Spaces, Complete S₄ Orbit Classification of the 65,536 Four-Variable Boolean Functions, and Connection to Structure Recognition Theory</p>
+    <div class="cover-meta">
+      <strong>저자:</strong> 최종훈 (Choi Jonghun) · 인하공업전문대학 출신 · 독립 연구자<br>
+      <strong>작성일:</strong> 2026-06-27<br>
+      <strong>버전:</strong> 1.0 (Phase 1·2 완료 기준)<br>
+      <strong>저장소:</strong> <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" style="color:var(--accent)">6BooleanFunctionSpaceTheory</a> &nbsp;·&nbsp;
+      <strong>프로그램:</strong> <a href="https://inha20.github.io/inha20/" style="color:var(--accent)">Structure Recognition Research Program</a>
+    </div>
   </header>
 
   <!-- ── TOC ── -->
-  <nav class="toc">
-    <p class="toc-title">Contents</p>
+  <nav class="toc" aria-label="목차">
+    <p class="toc-title">목차 (Contents)</p>
     <ol>
-      <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#questions">Core Research Questions (Q1–Q4)</a></li>
-      <li><a href="#space-structure">The Structure of Boolean Function Spaces</a></li>
-      <li><a href="#kmap-geometry">Karnaugh Map Geometry of Function Classes</a></li>
-      <li><a href="#symmetry-insight">Insight: 65,536 Functions and Symmetry Classification</a></li>
-      <li><a href="#relationship">Relationship to Papers 1–5</a></li>
-      <li><a href="#followup">Follow-Up Questions (FQ-1 to FQ-20)</a></li>
-      <li><a href="#links">Research Program Links</a></li>
+      <li><a href="#abstract">초록 (Abstract)</a></li>
+      <li><a href="#intro">서론 — 연구 배경, 목표, 구성</a></li>
+      <li><a href="#background">이론적 배경 — Space(G), Post 격자, 카르노 맵 기하학, S₄ 작용</a></li>
+      <li><a href="#results">핵심 결과: S₄ 궤도 완전 분류
+        <ol>
+          <li><a href="#xor">Space(XOR) = L (아핀 이론): 10개 궤도</a></li>
+          <li><a href="#and">Space(AND) = M (단조 이론): 30개 궤도</a></li>
+          <li><a href="#not">Space(NOT) = D (자기쌍대 이론): 32개 궤도</a></li>
+          <li><a href="#lm">L ∩ M 공간: 3개 궤도</a></li>
+        </ol>
+      </li>
+      <li><a href="#integration">선행 연구 통합 (Repo 1–3)</a></li>
+      <li><a href="#srt">구조 인식 이론(SRT)과의 연결</a></li>
+      <li><a href="#origin">연구 기원 타임라인</a></li>
+      <li><a href="#conclusion">결론 및 향후 연구</a></li>
+      <li><a href="#references">참고 저장소 및 관련 문서</a></li>
     </ol>
   </nav>
 
   <!-- ── Abstract ── -->
   <section id="abstract">
-    <h2>Abstract</h2>
+    <h2>초록 (Abstract)</h2>
     <div class="abstract">
       <p class="abstract-title">Overview</p>
       <p>
-        This repository investigates the <strong>mathematical structure of function spaces generated by single primitive Boolean gates</strong>, and explores how these spaces can be recognized, classified, and visualized through Karnaugh maps.
+        본 논문은 4변수 Boolean 함수 공간의 <strong>게이트 생성(Space(G)) 관점</strong>과 <strong>S₄ 군론 관점</strong>에서의 분류를 수학적으로 기술한다.
+        핵심 결과는 세 가지 주요 함수 공간에서의 완전한 궤도 분류다:
+        Space(XOR)(아핀 함수 32개, S₄ 궤도 <strong>10개</strong>),
+        Space(AND)(단조 함수 168개, S₄ 궤도 <strong>30개</strong>),
+        Space(NOT)(자기쌍대 함수 256개, S₄ 궤도 <strong>32개</strong>).
+        또한 Space(NOT)에는 S₄ 불동점이 존재하지 않음을 증명한다(정리 3.5.2).
       </p>
       <p>
-        Unlike conventional digital logic courses that focus on gate design and circuit minimization, this repository treats Boolean function spaces as mathematical objects with structural properties — analogous to how the Structure Recognition Research Program studies structure spaces in Karnaugh maps.
+        이 수학적 결과는 선행 연구 3편(Repo 1–3)의 경험적 발견을 군론 언어로 통일하며,
+        구조 인식 이론(SRT, Repo 4)의 핵심 가설(H3·H4·H8·H9)에 구체적인 수학적 대응을 제공한다.
+        분류의 정확성은 Burnside 보조정리에 의한 이론적 계산과 Python 컴퓨터 검증으로 양쪽에서 확인되었다.
       </p>
-      <p>
-        The four-variable Boolean function space contains exactly <strong>2<sup>16</sup> = 65,536 distinct functions</strong>. The central question is: what is the geometry of this space when viewed through the lens of gate-generated function classes?
+      <p class="keyword-line">
+        <strong>핵심어:</strong> Boolean 함수 공간, S₄ 군론, Burnside 보조정리, 카르노 맵, Post 격자, 궤도 분류, 구조 인식 이론
       </p>
     </div>
-  </section>
 
-  <!-- ── Research Questions ── -->
-  <section id="questions">
-    <h2>Core Research Questions (Q1–Q4)</h2>
-
-    <div class="rq-box">
-      <p class="rq-title">Q1 — Universal Gate Demonstration</p>
-      <p>
-        Demonstrate that NAND alone can generate all 65,536 four-variable Boolean functions.
-        Demonstrate the same for NOR.
-      </p>
-      <p class="rq-note">This is an application of Post's Functional Completeness Theorem. The research value is in the Karnaugh map visualization of the generation process.</p>
-    </div>
-
-    <div class="rq-box">
-      <p class="rq-title">Q2 — Gate-Generated Function Space Characterization ★ Primary Research Target</p>
-      <p>For each primitive gate, determine:</p>
-      <ul style="padding-left:1.5rem; margin-bottom:.8rem;">
-        <li>The size of the generated function space</li>
-        <li>The characterization of the generated class</li>
-        <li>The visual patterns these functions form on Karnaugh maps</li>
-      </ul>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Gate</th><th>Generated Space</th><th>Known Class</th></tr></thead>
-          <tbody>
-            <tr><td>XOR</td><td>Affine (linear) functions</td><td>Well-characterized</td></tr>
-            <tr><td>AND</td><td>Subset of monotone functions</td><td>Partially known</td></tr>
-            <tr><td>NAND</td><td>Entire Boolean space (65,536)</td><td>Post's theorem</td></tr>
-            <tr><td>NOR</td><td>Entire Boolean space (65,536)</td><td>Post's theorem</td></tr>
-          </tbody>
-        </table>
+    <!-- 핵심 결과 요약 카드 -->
+    <div class="orbit-grid">
+      <div class="orbit-card">
+        <div class="orbit-name">Space(XOR) = L</div>
+        <div class="orbit-num">10</div>
+        <div class="orbit-sub">S₄ 궤도 · 32개 아핀 함수</div>
       </div>
-      <p class="rq-note">The unexplored question: what do these function classes look like on Karnaugh maps? This is where this research makes its contribution.</p>
-    </div>
-
-    <div class="rq-box">
-      <p class="rq-title">Q3 — Constructibility Framework</p>
-      <p>
-        Given a target function (e.g., 3-input AND), determine which single gate types can generate it and which cannot.
-        Generalize this into a <strong>constructibility framework</strong> — equivalent to asking: is f contained in the clone generated by G?
-      </p>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Target: 3-input AND</th><th>Constructible?</th></tr></thead>
-          <tbody>
-            <tr><td>NAND-generated space</td><td>Yes</td></tr>
-            <tr><td>NOR-generated space</td><td>Yes</td></tr>
-            <tr><td>AND-generated space</td><td>Yes</td></tr>
-            <tr><td>XOR-generated space</td><td>No (AND is not affine)</td></tr>
-          </tbody>
-        </table>
+      <div class="orbit-card">
+        <div class="orbit-name">Space(AND) = M</div>
+        <div class="orbit-num">30</div>
+        <div class="orbit-sub">S₄ 궤도 · 168개 단조 함수</div>
+      </div>
+      <div class="orbit-card">
+        <div class="orbit-name">Space(NOT) = D</div>
+        <div class="orbit-num">32</div>
+        <div class="orbit-sub">S₄ 궤도 · 256개 자기쌍대 함수</div>
+      </div>
+      <div class="orbit-card">
+        <div class="orbit-name">L ∩ M</div>
+        <div class="orbit-num">3</div>
+        <div class="orbit-sub">S₄ 궤도 · 6개 함수</div>
       </div>
     </div>
+  </section>
 
-    <div class="rq-box">
-      <p class="rq-title">Q4 — Function Space Structure ★ Foundational Question</p>
-      <p>For any primitive gate G, define and characterize Space(G):</p>
-      <ul style="padding-left:1.5rem; margin-bottom:.8rem;">
-        <li>Closure properties (composition, negation, duality)</li>
-        <li>Visual characteristics on Karnaugh maps</li>
-        <li>Structural invariants shared by all functions in Space(G)</li>
-        <li>Position in Post's lattice of clones</li>
-      </ul>
-      <p class="rq-note">Q1–Q3 are all special cases of Q4. This is the foundational question of the repository.</p>
+  <!-- ── 1. 서론 ── -->
+  <section id="intro">
+    <h2>1. 서론</h2>
+
+    <h3>1.1 연구의 배경</h3>
+
+    <div class="placeholder-box" id="intro-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요 — 개인 연구 계기</p>
+      <p>이 섹션에는 이 연구에 이르기까지의 개인적인 계기를 서술해 주세요.</p>
+      <p class="placeholder-guide">
+        서술 가이드: Karnaugh map을 처음 접한 시점, 체커보드 패턴에서 처음 "왜?"라는 질문이 생긴 상황,
+        선행 연구(Repo 1–3)를 진행하면서 군론과의 통합이 필요함을 느끼게 된 계기 등.
+      </p>
     </div>
 
+    <p>
+      4변수 Boolean 함수 전체 공간 $\mathcal{F}_4$는 $2^{16} = 65{,}536$개의 함수를 포함한다.
+      이 방대한 공간 안에서 연구할 "주목할 만한 구조"를 발견하는 과정은 어떻게 이루어지는가?
+      선행 연구(Repo 1–3)는 이 질문에 대한 경험적 관찰을 축적해 왔다.
+    </p>
+    <ul>
+      <li><strong>Repo 1</strong> — Karnaugh map에서 특정 함수들이 변수 배열에 무관하게 동일한 패턴을 보임을 발견</li>
+      <li><strong>Repo 2</strong> — 대칭 Boolean 함수들이 Hamming weight 레이어 구조를 형성함을 관찰</li>
+      <li><strong>Repo 3</strong> — 변수 재배열(S₄ 치환) 하의 동치류를 체계적으로 분류</li>
+    </ul>
+    <p>
+      이 세 연구는 각각 독립적으로 진행되었으나, 하나의 공통 수학적 프레임워크로 통합될 수 있다는 감각이 본 연구의 출발점이다.
+    </p>
+
+    <h3>1.2 연구 목표</h3>
+    <p>본 연구는 두 가지 목표를 가진다.</p>
+    <p>
+      <strong>목표 1 (수학적).</strong> 4변수 Boolean 함수 공간의 게이트 생성 관점과 S₄ 군론 관점에서의 완전한 분류를 수행한다.
+      구체적으로, 주요 게이트(XOR, AND, NOT)로 생성되는 함수 공간 Space(G) 각각에서 S₄ 작용에 의한 궤도 수 및 각 궤도의 구조를 결정한다.
+    </p>
+    <p>
+      <strong>목표 2 (이론적).</strong> 분류 결과를 구조 인식 이론(SRT, Repo 4)의 핵심 가설들과 연결한다.
+      특히, 수학적 분류가 "인간이 어떤 함수에 먼저 주의를 기울이는가"(H3)와 "어떤 함수를 연구 가치가 있다고 판단하는가"(H4)를 설명하는 데 어떻게 기여하는지를 논의한다.
+    </p>
+
+    <h3>1.3 논문의 구성</h3>
+    <p>
+      §2에서 이론적 배경(Space(G) 정의, Post 격자, 카르노 맵 기하학)을 정리한다.
+      §3에서 핵심 수학적 결과인 S₄ 궤도 분류를 공간별로 전개한다.
+      §4에서 선행 연구(Repo 1–3)와의 통합 관계를 명식한다.
+      §5에서 SRT 가설과의 연결을 논의한다.
+      §6에서 이 연구에 이르기까지의 연구 기원 타임라인을 정리한다.
+    </p>
+  </section>
+
+  <!-- ── 2. 이론적 배경 ── -->
+  <section id="background">
+    <h2>2. 이론적 배경</h2>
+
+    <h3>2.1 4변수 Boolean 함수 공간</h3>
+    <p><strong>정의 2.1 (전체 함수 공간).</strong></p>
+    <p>$$\mathcal{F}_4 = \{ f : \{0,1\}^4 \to \{0,1\} \}$$</p>
+    <p>
+      이 공간의 크기: $|\mathcal{F}_4| = 2^{2^4} = 2^{16} = 65{,}536$.
+      각 함수는 16비트 진리표 벡터, 4×4 카르노 맵, 또는 게이트 회로로 표현된다.
+    </p>
+
+    <h3>2.2 게이트 생성 함수 공간 Space(G)</h3>
+    <p>단일 게이트 G에 의해 G만을 사용하여 구성 가능한 모든 Boolean 함수의 집합을 <strong>Space(G)</strong>로 정의한다.</p>
+    <p><strong>정의 2.2 (Space(G)).</strong></p>
+    <p>$$\text{Space}(G) = \{ f \in \mathcal{F}_4 \mid f\text{는 게이트 }G\text{와 입력 변수, 상수 }\{0,1\}\text{만으로 구성 가능} \}$$</p>
+    <p>이는 수학적 <strong>클론(clone)</strong> 개념과 일치한다: $\text{Space}(G) = [G]$ (G가 생성하는 Post 클론).</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>게이트 G</th><th>Space(G)</th><th>크기 (4변수)</th><th>Post 격자 위치</th></tr></thead>
+        <tbody>
+          <tr><td>NAND</td><td>전체 Boolean 공간 (Ω)</td><td>65,536</td><td>최상위</td></tr>
+          <tr><td>NOR</td><td>전체 Boolean 공간 (Ω)</td><td>65,536</td><td>최상위</td></tr>
+          <tr><td>XOR</td><td>아핀(Affine) 함수 공간 (L)</td><td>32</td><td>선형 클론</td></tr>
+          <tr><td>AND</td><td>단조(Monotone) 함수 공간 (M)</td><td>168</td><td>단조 클론</td></tr>
+          <tr><td>NOT</td><td>자기쌍대(Self-dual) 함수 공간 (D)</td><td>256</td><td>쌍대 클론</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>명제 2.1 (Space(G)의 S₄ 불변성).</strong>
+      정의된 게이트 G에 대해, Space(G)는 S₄ 작용 하에 닫혀 있다.
+      즉, $f \in \text{Space}(G)$이고 $\sigma \in S_4$이면 $f \circ \sigma \in \text{Space}(G)$.
+    </p>
+    <p><em>증명 요지:</em> f가 G-게이트만으로 구현되는 회로를 가진다면, $f \circ \sigma$는 같은 회로에서 입력 레이블만 재배치한 것이다. 회로의 게이트 종류(G)는 변하지 않으므로 $f \circ \sigma \in \text{Space}(G)$. □</p>
+    <p>이 명제의 결론으로, <strong>각 Space(G)는 S₄ 궤도들의 합집합으로 분해</strong>된다.</p>
+
+    <h3>2.3 Post의 격자와 만능성</h3>
+    <p>
+      <strong>정리 2.1 (Post, 1941).</strong> Boolean 함수 집합 $F$가 함수적으로 완전하기 위한 필요충분조건은
+      F가 다음 5가지 Post 클래스 중 어느 것에도 포함되지 않는 것이다.
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>클래스</th><th>조건</th><th>Space(G) 대응</th></tr></thead>
+        <tbody>
+          <tr><td>T₀</td><td>0을 보존</td><td>Space(AND) ⊂ T₀</td></tr>
+          <tr><td>T₁</td><td>1을 보존</td><td>Space(AND) ⊂ T₁</td></tr>
+          <tr><td>S</td><td>자기쌍대</td><td>Space(NOT) = D</td></tr>
+          <tr><td>M</td><td>단조</td><td>Space(AND) = M ∩ T₀ ∩ T₁</td></tr>
+          <tr><td>L</td><td>선형(아핀)</td><td>Space(XOR) = L</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>NAND는 5가지 클래스 중 어느 것도 보존하지 않으므로 만능 게이트다.</p>
+
+    <h3>2.4 카르노 맵의 기하학적 해석</h3>
+    <p>
+      4변수 카르노 맵은 단순한 회로 최소화 도구가 아니라 $\mathcal{F}_4$를 기하학적으로 시각화하는 공간이다.
+    </p>
+    <pre>
+        CD
+        00  01  11  10
+AB  00 | 0 | 1 | 3 | 2 |
+    01 | 4 | 5 | 7 | 6 |
+    11 |12 |13 |15 |14 |
+    10 | 8 | 9 |11 |10 |
+    </pre>
+    <ul>
+      <li>인접 칸끼리 <strong>정확히 한 변수만 다름</strong> (Gray 코드 순서)</li>
+      <li>맵은 <strong>평면 위의 토러스(Torus)</strong>에 인쇄된 것으로 볼 수 있음 (상하·좌우 경계 연결)</li>
+      <li>65,536개 Boolean 함수 = 4×4 격자의 서로 다른 0/1 채색</li>
+    </ul>
+    <p>Space(G)에 속하는 함수들은 카르노 맵 위에서 공통 시각적 시그니처처럼 보인다:
+      아핀 함수의 체커보드·줄무늬 패턴, 단조 함수의 "왼쪽 위로 닫힌(upward-closed)" 패턴,
+      자기쌍대 함수의 180° 회전 후 0↔1 교환하는 패턴.</p>
+
+    <h3>2.5 S₄의 Boolean 함수에 대한 작용</h3>
+    <p><strong>표기:</strong> $S_4$ = 4개 원소 $\{A, B, C, D\}$의 모든 순열들의 군 (크기 24).</p>
+    <p><strong>작용:</strong></p>
+    <p>$$(\sigma \cdot f)(A, B, C, D) = f(\sigma^{-1}(A), \sigma^{-1}(B), \sigma^{-1}(C), \sigma^{-1}(D))$$</p>
+    <p>S₄의 5가지 켤레류(conjugacy class):</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>켤레류</th><th>원소 수</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>항등원</td><td>1</td><td>(A)(B)(C)(D)</td></tr>
+          <tr><td>호환 (transposition)</td><td>6</td><td>(AB), (AC), …</td></tr>
+          <tr><td>3-순환 (3-cycle)</td><td>8</td><td>(ABC), (ABD), …</td></tr>
+          <tr><td>4-순환 (4-cycle)</td><td>6</td><td>(ABCD), (ABDC), …</td></tr>
+          <tr><td>이중 호환</td><td>3</td><td>(AB)(CD), (AC)(BD), (AD)(BC)</td></tr>
+          <tr><td><strong>합계</strong></td><td><strong>24</strong></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Burnside의 보조정리.</strong> S₄ 궤도 수를 계산하는 핵심 공식:</p>
+    <p>$$|\text{Orbits}| = \frac{1}{|S_4|} \sum_{\sigma \in S_4} |\text{Fix}(\sigma, \text{Space}(G))|$$</p>
+    <p>여기서 $\text{Fix}(\sigma, \text{Space}(G)) = \{ f \in \text{Space}(G) : f \circ \sigma = f \}$이다.</p>
+  </section>
+
+  <!-- ── 3. 핵심 결과 ── -->
+  <section id="results">
+    <h2>3. 핵심 결과: S₄ 궤도 완전 분류</h2>
+
+    <!-- 3.1 XOR -->
+    <h3 id="xor">3.1 Space(XOR) = L (아핀 이론): 10개 궤도</h3>
+
+    <h4>3.1.1 구조</h4>
+    <p>4변수 아핀 함수:</p>
+    <p>$$f(A, B, C, D) = a_0 \oplus a_1 A \oplus a_2 B \oplus a_3 C \oplus a_4 D, \quad a_i \in \{0, 1\}$$</p>
+    <p>전체 원소 수: $2^5 = 32$개.</p>
+    <p><strong>S₄ 작용의 효과:</strong> 순열 σ가 변수 $x_i$와 $x_j$를 교환하면, 불동점 조건은 $a_i = a_j$.</p>
+
+    <h4>3.1.2 Burnside 계산</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, L)</th></tr></thead>
+        <tbody>
+          <tr><td>항등원</td><td>1</td><td>$2^5 = 32$</td></tr>
+          <tr><td>호환 (AB)(C)(D)</td><td>6</td><td>$2^4 = 16$</td></tr>
+          <tr><td>3-순환 (ABC)(D)</td><td>8</td><td>$2^3 = 8$</td></tr>
+          <tr><td>4-순환 (ABCD)</td><td>6</td><td>$2^2 = 4$</td></tr>
+          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>$2^3 = 8$</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>$$|\text{Orbits}(S_4, L)| = \frac{1}{24}(32 + 6 \times 16 + 8 \times 8 + 6 \times 4 + 3 \times 8) = \frac{240}{24} = \mathbf{10}$$</p>
+
+    <h4>3.1.3 10개 궤도 완전 열거</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>궤도</th><th>대표 함수</th><th>크기</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>O₁</td><td>$0$</td><td>1</td><td>상수 0</td></tr>
+          <tr><td>O₂</td><td>$1$</td><td>1</td><td>상수 1</td></tr>
+          <tr><td>O₃</td><td>$A$</td><td>4</td><td>단일 변수 투영</td></tr>
+          <tr><td>O₄</td><td>$A \oplus 1$</td><td>4</td><td>단일 변수 투영의 보수</td></tr>
+          <tr><td>O₅</td><td>$A \oplus B$</td><td>6</td><td>2변수 XOR</td></tr>
+          <tr><td>O₆</td><td>$A \oplus B \oplus 1$</td><td>6</td><td>2변수 XOR의 보수</td></tr>
+          <tr><td>O₇</td><td>$A \oplus B \oplus C$</td><td>4</td><td>3변수 XOR</td></tr>
+          <tr><td>O₈</td><td>$A \oplus B \oplus C \oplus 1$</td><td>4</td><td>3변수 XOR의 보수</td></tr>
+          <tr><td>O₉</td><td>$A \oplus B \oplus C \oplus D$</td><td>1</td><td><strong>전체 XOR (체커보드)</strong></td></tr>
+          <tr><td>O₁₀</td><td>$A \oplus B \oplus C \oplus D \oplus 1$</td><td>1</td><td>체커보드의 보수</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>검증:</strong> $1+1+4+4+6+6+4+4+1+1 = 32$ ✓</p>
+
+    <h4>3.1.4 S₄ 불동점</h4>
+    <p>S₄의 모든 원소에 의해 고정되는 함수(4-순환 조건: $a_1 = a_2 = a_3 = a_4$):</p>
+    <div class="result-box">
+      <p class="result-title">✓ Space(XOR)의 S₄ 불동점: 4개</p>
+      <p>$\{0,\ 1,\ A \oplus B \oplus C \oplus D,\ A \oplus B \oplus C \oplus D \oplus 1\}$<br>
+      특히 $A \oplus B \oplus C \oplus D$ (체커보드)는 Repo 1의 연구 출발점이 된 함수다 — S₄ 불동점으로 수학적으로도 확인됨.</p>
+    </div>
+
+    <!-- 3.2 AND -->
+    <h3 id="and">3.2 Space(AND) = M (단조 이론): 30개 궤도</h3>
+
+    <h4>3.2.1 구조</h4>
+    <p>4변수 단조 함수의 수: <strong>Dedekind 수 D(4) = 168</strong>.</p>
+    <p>단조 함수는 반사슬(antichain) $\mathcal{A} \subseteq 2^{\{A,B,C,D\}}$와 일대일로 대응한다:
+      $f_\mathcal{A}(x) = 1$ iff $\exists S \in \mathcal{A}$ s.t. $S \subseteq \{i : x_i = 1\}$.</p>
+
+    <h4>3.2.2 Burnside 계산</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, M)</th></tr></thead>
+        <tbody>
+          <tr><td>항등원</td><td>1</td><td>168</td></tr>
+          <tr><td>호환 (AB)</td><td>6</td><td>50</td></tr>
+          <tr><td>3-순환 (ABC)</td><td>8</td><td>15</td></tr>
+          <tr><td>4-순환 (ABCD)</td><td>6</td><td>8</td></tr>
+          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>28</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>$$|\text{Orbits}(S_4, M)| = \frac{1}{24}(168 + 6 \times 50 + 8 \times 15 + 6 \times 8 + 3 \times 28) = \frac{720}{24} = \mathbf{30}$$</p>
+    <p><em>검증:</em> Python 직접 열거(컴퓨터 계산)로 30개 독립 확인, 크기 합 = 168 ✓</p>
+
+    <h4>3.2.3 S₄ 불동점: 대칭적 단조 함수 6개</h4>
+    <p>S₄ 전체에 의해 고정되는 단조 함수는 입력의 <strong>Hamming 가중치(HW)</strong>에만 의존하는 함수, 즉 <strong>대칭적 단조 함수(threshold function)</strong>다.</p>
+    <div class="result-box">
+      <p class="result-title">✓ Space(AND)의 S₄ 불동점: 6개</p>
+      <p>$\{f_0,\ f_1,\ f_2,\ f_3,\ f_4,\ f_{1+}\}$ — HW ≥ k (k = 0,1,2,3,4)와 maj₃ 함수.
+      이 함수들은 Repo 2의 대칭 함수 연구에서 "링/코너/점 패턴"으로 나타난 것과 동일하다.</p>
+    </div>
+
+    <!-- 3.3 NOT -->
+    <h3 id="not">3.3 Space(NOT) = D (자기쌍대 이론): 32개 궤도</h3>
+
+    <h4>3.3.1 구조</h4>
+    <p>자기쌍대 함수: $f(\bar{x}) = \overline{f(x)}$를 만족하는 함수. 4변수 자기쌍대 함수의 수: <strong>256개</strong>.</p>
+
+    <h4>3.3.2 Burnside 계산</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, D)</th></tr></thead>
+        <tbody>
+          <tr><td>항등원</td><td>1</td><td>256</td></tr>
+          <tr><td>호환 (AB)</td><td>6</td><td>64</td></tr>
+          <tr><td>3-순환 (ABC)</td><td>8</td><td>16</td></tr>
+          <tr><td>4-순환 (ABCD)</td><td>6</td><td>0</td></tr>
+          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>$$|\text{Orbits}(S_4, D)| = \frac{1}{24}(256 + 6 \times 64 + 8 \times 16 + 6 \times 0 + 3 \times 0) = \frac{768}{24} = \mathbf{32}$$</p>
+
+    <h4>3.3.3 핵심 정리: S₄ 불동점 부재</h4>
+    <div class="result-box">
+      <p class="result-title">✓ 정리 3.5.2 — Space(NOT)의 S₄ 불동점 부재</p>
+      <p>
+        <strong>정리.</strong> Space(NOT) = D에는 S₄ 불동점이 존재하지 않는다.<br>
+        <strong>증명.</strong> S₄ 불동점이 되려면 4-순환 $(ABCD)$에 의해 고정되어야 한다.
+        이는 $f(A,B,C,D) = f(B,C,D,A)$를 요구한다.
+        4-순환의 불변 자기쌍대 함수 개수는 Burnside 계산에서 Fix(4-cycle, D) = 0임을 직접 계산으로 확인한다.
+        (자세한 계산: <a href="theory/S4GroupAnalysis.md" style="color:var(--accent)">theory/S4GroupAnalysis.md §3.5</a>) □
+      </p>
+      <p style="margin-top:.6rem; font-size:.88rem;">
+        <strong>수학적 의미:</strong> "완전히 변수-대칭적인 자기쌍대 함수"는 존재하지 않는다.
+        자기쌍대성과 완전 S₄ 대칭성은 4변수에서 동시에 만족될 수 없다.
+      </p>
+    </div>
+
+    <!-- 3.4 L∩M -->
+    <h3 id="lm">3.4 L ∩ M 공간: 3개 궤도</h3>
+    <p>선형이면서 단조인 함수들의 교집합. 4변수에서 총 6개 함수:</p>
+    <p>$\{0,\ 1,\ A,\ B,\ C,\ D\}$ — 상수 함수 2개 + 단일 변수 투영 4개.</p>
+    <div class="result-box">
+      <p class="result-title">✓ L ∩ M의 S₄ 궤도: 3개</p>
+      <p>궤도 1: $\{0\}$ (크기 1) &nbsp;|&nbsp; 궤도 2: $\{1\}$ (크기 1) &nbsp;|&nbsp; 궤도 3: $\{A, B, C, D\}$ (크기 4)</p>
+    </div>
+  </section>
+
+  <!-- ── 4. 선행 연구 통합 ── -->
+  <section id="integration">
+    <h2>4. 선행 연구 통합 (Repo 1–3)</h2>
+
+    <h3>4.1 통합의 원리: 정제 관계</h3>
+    <p>
+      선행 연구 3편의 핵심 발견들은 본 논문의 S₄ 궤도 분류로 <strong>수학적으로 재해석</strong>된다.
+      각 Repo의 관찰은 특정 Space(G)와 특정 궤도에 대응한다.
+    </p>
+
+    <h3>4.2 Repo 1 연결: 체커보드 = Space(XOR)의 S₄ 불동점</h3>
+    <p>
+      Repo 1의 핵심 발견: "XOR 함수 $A \oplus B \oplus C \oplus D$는 변수 배열에 무관하게 동일한 체커보드 패턴을 보인다."
+    </p>
+    <div class="result-box">
+      <p class="result-title">✓ 군론적 설명</p>
+      <p>$A \oplus B \oplus C \oplus D \in \text{Space(XOR)}$이고, S₄의 모든 원소에 의해 불변 (S₄ 불동점).
+      §3.1.4에서 확인됨. 체커보드의 변수-배열 불변성은 이 함수가 S₄ 불동점임의 직접적 귀결이다.</p>
+    </div>
+
+    <h3>4.3 Repo 2 연결: 대칭 함수 = Space(AND)의 S₄ 불동점</h3>
+    <p>
+      Repo 2의 핵심 발견: "대칭 Boolean 함수들이 Hamming weight 레이어 구조를 형성한다."
+    </p>
+    <div class="result-box">
+      <p class="result-title">✓ 군론적 설명</p>
+      <p>대칭적 단조 함수(threshold function) 6개 = Space(AND)의 S₄ 불동점 (§3.2.3).
+      Hamming weight 레이어 구조는 이 함수들이 변수 치환에 불변이라는 사실의 시각적 표현이다.</p>
+    </div>
+
+    <h3>4.4 Repo 3 연결: 변수 재배열 = S₄ 군 작용</h3>
+    <p>
+      Repo 3의 핵심 작업: "변수 재배열(S₄ 치환) 하의 동치류를 체계적으로 분류."
+    </p>
+    <div class="result-box">
+      <p class="result-title">✓ 군론적 설명</p>
+      <p>Repo 3의 동치류 ≡ 본 논문의 S₄ 궤도. 다만 본 논문은 분류 대상을 Space(G)로 제한하고
+      Burnside 보조정리에 의한 정확한 궤도 수를 도출한다는 점에서 Repo 3을 수학적으로 정교화한다.</p>
+    </div>
+
+    <h3>4.5 통합 정리</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Repo</th><th>경험적 발견</th><th>군론적 해석</th></tr></thead>
+        <tbody>
+          <tr><td>Repo 1</td><td>체커보드 패턴의 변수 불변성</td><td>$A \oplus B \oplus C \oplus D$ = Space(XOR)의 S₄ 불동점 (§3.1.4)</td></tr>
+          <tr><td>Repo 2</td><td>Hamming weight 레이어 구조</td><td>대칭적 단조 함수 = Space(AND)의 S₄ 불동점 (§3.2.3)</td></tr>
+          <tr><td>Repo 3</td><td>변수 재배열 동치류 분류</td><td>S₄ 궤도 = Burnside 계산 (§3 전체)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 5. SRT 연결 ── -->
+  <section id="srt">
+    <h2>5. 구조 인식 이론(SRT)과의 연결</h2>
+
+    <h3>5.1 SRT 핵심 가설 요약</h3>
+    <p>
+      SRT(Repo 4)는 "인간이 어떻게 새로운 구조를 인식하고 연구 질문을 생성하는가"를 설명하는 메타 이론이다.
+      본 논문과 관련된 핵심 가설:
+    </p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>가설</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>H3 (주의 필터)</td><td>인간은 모든 패턴 중 특정 구조에 먼저 주의를 기울인다</td></tr>
+          <tr><td>H4 (유의 필터)</td><td>인간은 "연구 가치가 있는" 구조를 압축성·예측력·일반화력으로 판단한다</td></tr>
+          <tr><td>H5 (설명 예감)</td><td>구조를 인식하면 "설명이 있을 것이라는 예감"이 발생한다</td></tr>
+          <tr><td>H8 (개념-렌즈)</td><td>획득한 개념은 이후 관찰의 렌즈가 된다</td></tr>
+          <tr><td>H9 (개념 진화)</td><td>개념은 연구를 통해 더 일반적인 형태로 진화한다</td></tr>
+          <tr><td>H10 (생성적 개념)</td><td>충분히 일반화된 개념은 새로운 연구 질문을 자율적으로 생성한다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.2 S₄ 불동점과 H3: 주의 필터의 수학적 설명</h3>
+    <p><strong>H3의 예측:</strong> 인간은 65,536개의 K-map 패턴 중 특정 패턴에 먼저 주의를 기울인다.</p>
+    <p>
+      <strong>수학적 설명:</strong> S₄ 불동점 함수는 24가지 변수 배열 <strong>모두</strong>에서 동일한 패턴을 보인다.
+      반면 궤도 크기가 큰 함수는 대부분의 배열에서 다른 패턴을 보인다.
+      따라서, 임의의 변수 배열에서 카르노 맵을 관찰했을 때:
+    </p>
+    <ul>
+      <li><strong>S₄ 불동점 (궤도 크기 1)</strong>: 어떤 배열에서도 동일한 패턴 → 계획적으로 "눈에 띄는" 함수</li>
+      <li><strong>궤도 크기 큰 함수 (크기 12, 24)</strong>: 배열에 따라 다른 패턴 → 우연히 발견하기 어려움</li>
+    </ul>
+    <p>$$\text{H3 예측 주의 순서: 아핀(체커보드) > 대칭(Maj) > 2-AND/2-OR > 일반 함수}$$</p>
+
+    <h3>5.3 궤도 크기 스펙트럼과 H4: 유의 필터의 수치화</h3>
+    <p>H4는 "연구 가치가 있는 구조를 판단하는 기준"으로 압축성(compressibility)을 제안한다. 궤도 크기는 압축성과 역비례한다:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>궤도 크기</th><th>의미</th><th>Space 내 분포</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>S₄ 불동점, 가장 높은 유의성, 가장 높은 압축성</td><td>XOR: 4개, AND: 6개, NOT: <strong>0개</strong></td></tr>
+          <tr><td>3~4</td><td>높은 유의성</td><td>AND: 11개 궤도</td></tr>
+          <tr><td>6</td><td>중간 유의성</td><td>AND: 6개 궤도</td></tr>
+          <tr><td>12~24</td><td>낮은 유의성, 낮은 압축성</td><td>AND: 7개 궤도</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      <strong>Space(NOT)의 의의:</strong> Space(NOT)에 S₄ 불동점이 없다는 사실은 "자기쌍대이면서 완전히 변수-대칭적인 함수"가 존재하지 않음을 뜻한다.
+      이는 H4 유의 필터 관점에서, 자기쌍대 공간은 다른 공간(아핀, 단조)보다 "완벽히 규칙적인" 구조를 포함하지 않는다는 새로운 의미를 가진다.
+    </p>
+
+    <h3>5.4 H8–H9–H10: 개념 진화의 실사례</h3>
+    <p>본 연구 프로그램 전체가 H8→H9→H10의 연쇄적 동작의 실사례를 보여준다:</p>
     <div class="flow">
-      Q4 (Function Space Structure)
-      ↓
-      Q1 (Universality: Space(NAND) = Space(NOR) = All functions)
-      Q2 (Characterization: Space(XOR) = Affine, Space(AND) = Monotone subset, ...)
-      Q3 (Constructibility: f ∈ Space(G)?)
-    </div>
-  </section>
-
-  <!-- ── Function Space Structure ── -->
-  <section id="space-structure">
-    <h2>The Structure of Boolean Function Spaces</h2>
-
-    <h3>Post's Functional Completeness Theorem</h3>
-    <p>
-      Emil Post's theorem (1941) characterizes exactly which sets of Boolean functions are functionally complete — capable of generating all Boolean functions through composition.
-      A gate G generates all Boolean functions if and only if its one-element set {G} is not contained in any of Post's five maximal clones:
-    </p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Maximal Clone</th><th>Description</th><th>NAND ∈?</th><th>XOR ∈?</th></tr></thead>
-        <tbody>
-          <tr><td>T₀ (truth-preserving)</td><td>f(0,...,0) = 0</td><td>No</td><td>Yes</td></tr>
-          <tr><td>T₁ (falsity-preserving)</td><td>f(1,...,1) = 1</td><td>No</td><td>Yes</td></tr>
-          <tr><td>M (monotone)</td><td>x ≤ y ⟹ f(x) ≤ f(y)</td><td>No</td><td>No</td></tr>
-          <tr><td>S (self-dual)</td><td>f(¬x) = ¬f(x)</td><td>No</td><td>Yes</td></tr>
-          <tr><td>L (affine/linear)</td><td>f = a₀ ⊕ a₁x₁ ⊕ ... ⊕ aₙxₙ</td><td>No</td><td>Yes</td></tr>
-        </tbody>
-      </table>
+체커보드 발견 [Repo 1]
+  → H3 동작 → "이 패턴은 특별하다"
+"불변성" 개념 형성
+  → H8 동작 → "불변성" 개념이 이후 관찰의 렌즈로 기능
+층 구조·동치류 연구 [Repo 2, 3]
+  → H9 동작 → "불변성" → "S₄ 작용" → "Space(G) 궤도"로 개념 진화
+구조 인식 이론 [Repo 4]
+  → H10 동작 → SRT 자체가 후속 연구(Repo 5, 6)를 생성
+Boolean 함수 공간 이론 [Repo 6, 현재]
+  → 원점 복귀: Repo 1의 체커보드가 이제 군론으로 완전히 설명됨
+    → 동시에 H10 재차 동작 → Repo 6이 또 다른 새 연구를 생성
     </div>
     <p>
-      NAND is not in <em>any</em> of these five maximal clones → NAND generates all functions.
-      XOR is in T₀, T₁, S, and L → XOR generates only the affine (linear) functions.
-    </p>
-
-    <h3>Lattice of Clones</h3>
-    <p>
-      The set of all clones (sets of functions closed under composition and containing all projections) forms a <strong>lattice</strong> under set inclusion.
-      The five maximal clones described above are the top elements below the full clone.
-      Understanding where Space(G) sits in this lattice is a core research direction.
-    </p>
-    <div class="flow">
-      All Boolean functions (full clone)
-               ↓
-      Maximal clones: T₀, T₁, M, S, L
-               ↓
-      ... (infinite lattice below)
-               ↓
-      Projections (minimal clone)
-    </div>
-  </section>
-
-  <!-- ── Karnaugh Map Geometry ── -->
-  <section id="kmap-geometry">
-    <h2>Karnaugh Map Geometry of Function Classes</h2>
-
-    <p>
-      A core hypothesis of this research: <strong>functions belonging to the same gate-generated space share recognizable geometric patterns on Karnaugh maps</strong>.
-      This connects the algebraic structure of clones to the visual, spatial intuition developed in Papers 1–3.
-    </p>
-
-    <h3>Known Visual Invariants</h3>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Function Class</th><th>Karnaugh Map Characteristic</th><th>Connection to Previous Papers</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>Affine (XOR-generated)</td>
-            <td>Checkerboard pattern in Gray Code arrangement; double-diagonal in standard binary arrangement</td>
-            <td>Paper 1 (Repo 1): checkerboard invariance; Paper 2 (Repo 2): layer-based analysis</td>
-          </tr>
-          <tr>
-            <td>Monotone functions</td>
-            <td>No "isolated 0 islands" surrounded by 1s; patterns monotone in coordinate ordering</td>
-            <td>Open question: visual characterization unexplored</td>
-          </tr>
-          <tr>
-            <td>Self-dual functions</td>
-            <td>Complement of pattern equals pattern under bitwise negation of inputs</td>
-            <td>Open question: Karnaugh map geometry not systematically studied</td>
-          </tr>
-          <tr>
-            <td>NAND-generated (all functions)</td>
-            <td>All 65,536 patterns — no restriction</td>
-            <td>Paper 2 (Repo 2): classification of all 65,536 functions by symmetry</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Research Direction</h3>
-    <p>
-      The unexplored territory: for each non-trivial gate G, what is the <strong>visual invariant</strong> shared by all functions in Space(G)?
-      If such invariants exist, they would create a new classification system for the 65,536 four-variable Boolean functions — based not on syntactic form but on <em>generative origin</em>.
+      특히 Repo 1의 체커보드 발견과 Repo 6의 S₄ 불동점 분류가 <strong>정확히 같은 함수를 지목</strong>한다는 사실은
+      H5(설명 예감)에 대한 증거다: 연구자가 처음 "왜?"라고 물었던 바로 그 함수가, 수학적으로도 "가장 설명 가치가 있는" 함수(S₄ 불동점)임이 드러났다.
     </p>
   </section>
 
-  <!-- ── Symmetry Insight ── -->
-  <section id="symmetry-insight">
-    <h2>Insight: 65,536 Functions and Symmetry Classification</h2>
+  <!-- ── 6. 연구 기원 타임라인 ── -->
+  <section id="origin">
+    <h2>6. 연구 기원 타임라인</h2>
+    <p><em>이 연구에 이르기까지의 인지 발달 과정을 SRT 프레임으로 정리한다. 개인 경험 섹션은 연구자가 직접 보완해야 한다.</em></p>
 
-    <div class="abstract">
-      <p class="abstract-title">Key Insight from Research Notes</p>
-      <p>
-        The four-variable Boolean function space contains exactly <strong>2<sup>16</sup> = 65,536 distinct functions</strong>.
-        In general, an n-variable Boolean function space contains 2<sup>(2<sup>n</sup>)</sup> functions.
-      </p>
-      <p>
-        However, these 65,536 functions are not all "structurally independent."
-        Under <strong>axis-swap symmetry</strong> (F(A,B,C,D) = F(C,D,A,B)), functions form equivalence classes (orbits under the symmetry group).
-      </p>
-      <ul style="padding-left:1.5rem; margin: .8rem 0;">
-        <li>Some functions are symmetric under AB ↔ CD axis swap</li>
-        <li>Some functions form pairs with their axis-swapped counterpart</li>
-        <li>Some functions form larger orbits under a full symmetry group</li>
+    <h3>Phase 0 — 패턴 인식의 시작</h3>
+    <div class="placeholder-box" id="phase0-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>어린 시절(초등학생 시절 등) 수학적 패턴에서 처음 "왜 이렇게 생겼을까"라는 질문이 발생한 구체적 경험을 서술해 주세요.</p>
+      <p class="placeholder-guide">예: 구구단의 패턴, 바둑판 무늬, 숫자 배열, 곱셈 자릿수 패턴 등</p>
+    </div>
+    <p><strong>SRT 프레임:</strong> 이 경험은 H3(주의 필터)의 최초 동작 시점이며, H1(구조 발견자 가설)의 원형이다.</p>
+
+    <h3>Phase 1 — Karnaugh Map 체커보드 발견 (→ Repo 1)</h3>
+    <div class="placeholder-box" id="phase1-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>카르노 맵을 처음 접한 상황(수업/과제/교재 등), 체커보드 패턴에서 처음 "이 패턴은 특별하다"는 인상을 받게 된 계기, 변수 배열을 바꿔도 패턴이 동일함을 발견한 순간을 서술해 주세요.</p>
+    </div>
+    <p><strong>핵심 발견 (문서화됨):</strong> 4변수 카르노 맵에서 XOR 함수($A \oplus B \oplus C \oplus D$)가 만드는 체커보드 패턴은 변수 배열 방식에 무관하게 동일하다.
+    현재(Repo 6)의 군론적 설명: 체커보드는 Space(XOR)의 S₄ 불동점.</p>
+    <p><strong>SRT 프레임:</strong> H3 최초 동작 (주의 착지) → H5 발동 (설명 예감).</p>
+
+    <h3>Phase 2 — 대칭 Boolean 함수의 시각 패턴 (→ Repo 2)</h3>
+    <div class="placeholder-box" id="phase2-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>Hamming weight 레이어 구조를 처음 발견한 상황과 그것이 "연구할 가치가 있다"고 판단한 계기를 서술해 주세요.</p>
+    </div>
+    <p><strong>SRT 프레임:</strong> H4 동작 (유의 필터 — 이 구조는 연구 가치가 있는가?) → H6 동작 (설명적 의미성).</p>
+
+    <h3>Phase 3 — 변수 재배열 동치류 분류 (→ Repo 3)</h3>
+    <div class="placeholder-box" id="phase3-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>변수 재배열을 군론적으로 분류하려는 발상이 생긴 계기를 서술해 주세요.</p>
+    </div>
+    <p><strong>SRT 프레임:</strong> H9 동작 — "불변성" → "S₄ 작용"으로 개념 진화.</p>
+
+    <h3>Phase 4 — 구조 인식 이론 (→ Repo 4, 5)</h3>
+    <div class="placeholder-box" id="phase4-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>Repo 1–3의 경험적 연구를 메타 이론으로 통합하려는 생각이 생긴 계기를 서술해 주세요.</p>
+    </div>
+    <p><strong>SRT 프레임:</strong> H10 동작 — SRT 자체가 Repo 5, 6을 생성하는 생성적 개념이 됨.</p>
+
+    <h3>Phase 5 — Boolean 함수 공간 이론 (→ Repo 6, 현재)</h3>
+    <div class="placeholder-box" id="phase5-placeholder">
+      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
+      <p>Repo 1–3의 개별 연구들이 하나의 군론적 프레임워크로 통합될 수 있다는 직감이 생긴 계기, 그리고 Burnside 보조정리를 적용하게 된 구체적 경위를 서술해 주세요.</p>
+    </div>
+    <p><strong>SRT 프레임:</strong> H8 동작 — Space(G) 개념이 렌즈로 기능 → Repo 1의 체커보드가 이제 군론으로 완전히 설명됨.</p>
+  </section>
+
+  <!-- ── 7. 결론 ── -->
+  <section id="conclusion">
+    <h2>7. 결론 및 향후 연구</h2>
+
+    <h3>7.1 주요 성과 요약</h3>
+    <div class="result-box">
+      <p class="result-title">✓ Phase 1·2·5 완료 — 핵심 수학적 성과</p>
+      <ul>
+        <li>Space(XOR) = L: S₄ 궤도 <strong>10개</strong>, 불동점 4개 (체커보드 포함) — Burnside + Python 검증</li>
+        <li>Space(AND) = M: S₄ 궤도 <strong>30개</strong>, 불동점 6개 (대칭적 단조 함수) — Burnside + Python 검증</li>
+        <li>Space(NOT) = D: S₄ 궤도 <strong>32개</strong>, 불동점 <strong>0개</strong> (정리 3.5.2 증명) — Burnside + Python 검증</li>
+        <li>L ∩ M: S₄ 궤도 <strong>3개</strong></li>
+        <li>선행 연구(Repo 1–3) 경험적 발견의 군론적 통합 (정제 관계 정리 4.1)</li>
+        <li>SRT 가설(H3·H4·H8·H9·H10)과의 수학적 대응 확립 (§5)</li>
       </ul>
-      <p>
-        <strong>Research question:</strong> When the 65,536 four-variable Boolean functions are classified by axis-swap symmetry, how many distinct equivalence classes result?
-        This is a problem in combinatorics and group theory, and represents a natural extension of Papers 1–3.
-      </p>
     </div>
 
+    <h3>7.2 이론적 의의</h3>
+    <ul>
+      <li><strong>수학적 의의:</strong> 4변수 Boolean 함수 공간을 게이트 생성 관점과 군론적 관점에서 완전히 분류. Post 격자의 주요 클래스들에 대한 S₄ 궤도 구조를 명시화.</li>
+      <li><strong>SRT와의 연결:</strong> 인간의 구조 인식(H3·H4)에 수학적 대응물을 제시 — 궤도 크기가 주의 순서와 연구 유의성 판단의 정량적 척도가 될 수 있음.</li>
+      <li><strong>H8·H9 실사례:</strong> 본 연구 프로그램 전체의 개념 발전 경로(체커보드 → 불변성 → S₄ 작용 → 구조 인식)가 H8·H9·H10의 연쇄 동작을 보여준다.</li>
+    </ul>
+
+    <h3>7.3 향후 연구</h3>
     <div class="tbl-wrap">
       <table>
-        <thead><tr><th>n (variables)</th><th>Total functions</th></tr></thead>
+        <thead><tr><th>우선순위</th><th>연구 방향</th><th>상태</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>2<sup>2</sup> = 4</td></tr>
-          <tr><td>2</td><td>2<sup>4</sup> = 16</td></tr>
-          <tr><td>3</td><td>2<sup>8</sup> = 256</td></tr>
-          <tr><td>4</td><td>2<sup>16</sup> = 65,536</td></tr>
-          <tr><td>5</td><td>2<sup>32</sup> = 4,294,967,296</td></tr>
+          <tr><td>1</td><td><strong>SRT 인지 실험 (Phase 3)</strong> — H3·H4·H6 수학적 예측의 실증 검증</td><td>⏸️ 후속 연구 이관</td></tr>
+          <tr><td>2</td><td><strong>인간-AI 협업 모델·교육 프레임워크 (Phase 4)</strong> — 연구 루프 & Level 1~3 시나리오</td><td>⏸️ 후속 연구 이관</td></tr>
+          <tr><td>3</td><td><strong>차원 확장 (n=5)</strong> — S₅ 궤도 12개 예측, 기초 스캐폴드 완료</td><td>기초 준비 완료</td></tr>
+          <tr><td>4</td><td><strong>다치 논리 확장</strong> — k값 논리 Space(G) 일반화</td><td>초기 단계</td></tr>
+          <tr><td>5</td><td><strong>연구 기원 타임라인 완성</strong> — §6 개인 서술 보완</td><td>연구자 직접 작성 필요</td></tr>
         </tbody>
       </table>
     </div>
-
-    <p>
-      The classification problem — "how many distinct classes under symmetry G?" — is where the study of function spaces (this repository) intersects with the study of structural invariance (Papers 1–3).
-    </p>
+    <p>향후 연구의 전체 로드맵과 세부 계획: <a href="FUTURE_RESEARCH.md" style="color:var(--accent)">FUTURE_RESEARCH.md</a></p>
   </section>
 
-  <!-- ── Relationship to Papers 1–5 ── -->
-  <section id="relationship">
-    <h2>Relationship to Papers 1–5</h2>
-
+  <!-- ── References ── -->
+  <section id="references">
+    <h2>참고 저장소 및 관련 문서</h2>
     <div class="tbl-wrap">
       <table class="links-table">
-        <thead><tr><th>Repository</th><th>Relationship to This Work</th></tr></thead>
+        <thead><tr><th>저장소 / 파일</th><th>내용</th><th>본 논문과의 연결</th></tr></thead>
         <tbody>
           <tr>
-            <td><a href="https://github.com/inha20/1KMapStructureInvariance">Paper 1 · KMap Structure Invariance</a></td>
-            <td>Shared visual domain: Karnaugh maps as the primary representation. The checkerboard pattern studied in Paper 1 is the Karnaugh map signature of the XOR-generated function space (affine functions).</td>
+            <td><a href="https://inha20.github.io/1KMapStructureInvariance/" target="_blank" id="ref-repo1">1KMapStructureInvariance</a></td>
+            <td>K-map 패턴 불변성 발견</td>
+            <td>체커보드 = Space(XOR) O₉ (§3.1.4, §4.2)</td>
           </tr>
           <tr>
-            <td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/">Paper 2 · Symmetric Boolean Functions</a></td>
-            <td>Representation transformation: same function viewed through truth table, Hamming weight layer structure, and Karnaugh map geometry. The layer-based analysis in Paper 2 is a classification of a function's <em>inputs</em>; this repository classifies the function's <em>generative origin</em>.</td>
+            <td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/" target="_blank" id="ref-repo2">2SymmetricBooleanFunctionMinorThesis</a></td>
+            <td>대칭 함수 K-map 패턴</td>
+            <td>대칭적 단조 함수 = Space(AND) S₄ 불동점 (§3.2.3, §4.3)</td>
           </tr>
           <tr>
-            <td><a href="https://github.com/inha20/3VariableRearrangementInvarianceMinorThesis">Paper 3 · Variable Rearrangement Invariance</a></td>
-            <td>Structural invariance: Paper 3 asks "does the pattern survive variable rearrangement?" This repository asks "does the pattern survive gate substitution?" The symmetry classification of 65,536 functions initiated in Paper 3 directly extends into this repository.</td>
+            <td><a href="https://inha20.github.io/3VariableRearrangementInvarianceMinorThesis/" target="_blank" id="ref-repo3">3VariableRearrangementInvarianceMinorThesis</a></td>
+            <td>변수 재배열 동치류 분류</td>
+            <td>S₄ 궤도 = 동치류 (§4.1, §4.4)</td>
           </tr>
           <tr>
-            <td><a href="https://github.com/inha20/4StructureRecognitionTheory">Paper 4 · Structure Recognition Theory</a></td>
-            <td>Direct application of SRT: the hypothesis that "functions in the same generated space share recognizable structural properties" is an application of SRT H2 (structural invariance) and H4 (research-worthiness recognition) to the Boolean function space domain.</td>
+            <td><a href="https://inha20.github.io/4StructureRecognitionTheory/" target="_blank" id="ref-repo4">4StructureRecognitionTheory (SRT)</a></td>
+            <td>SRT: H1–H10, Def. 3.1–3.3</td>
+            <td>SRT와의 연결 (§5)</td>
           </tr>
           <tr>
-            <td><a href="https://github.com/inha20/5HumanAIResearchCollaboration">Paper 5 · Human-AI Research Collaboration</a></td>
-            <td>Collaboration testbed: the finite, well-defined structure of Boolean function spaces (65,536 functions, exact lattice structure) makes this domain ideal for studying Human-AI collaborative mathematical exploration. AI can systematically enumerate; humans recognize patterns and ask new questions.</td>
+            <td><a href="https://inha20.github.io/5HumanAIResearchCollaboration/" target="_blank" id="ref-repo5">5HumanAIResearchCollaboration</a></td>
+            <td>인간-AI 협업 방법론</td>
+            <td>연구 기원 타임라인 §Phase 5</td>
+          </tr>
+          <tr>
+            <td><a href="theory/S4GroupAnalysis.md" id="ref-s4">theory/S4GroupAnalysis.md</a></td>
+            <td><strong>핵심 수학 원본</strong> (OC-1~OC-5 완전 분류)</td>
+            <td>§3 전체 세부 계산</td>
+          </tr>
+          <tr>
+            <td><a href="scripts/s4_orbit_calculator.py" id="ref-script">scripts/s4_orbit_calculator.py</a></td>
+            <td>궤도 계산 Python 스크립트</td>
+            <td>컴퓨터 검증</td>
+          </tr>
+          <tr>
+            <td><a href="FUTURE_RESEARCH.md" id="ref-future">FUTURE_RESEARCH.md</a></td>
+            <td>후속 연구 전체 로드맵</td>
+            <td>§7.3 연결</td>
+          </tr>
+          <tr>
+            <td><a href="https://inha20.github.io/inha20/" target="_blank" id="ref-hub">inha20 (Research Hub)</a></td>
+            <td>연구 프로그램 중앙 허브</td>
+            <td>전체 프로그램 내비게이션</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <div class="flow">
-      Paper 1 (KMap patterns)
-      Paper 2 (Symmetric function classification)    →  Paper 6 (Function Space Theory)
-      Paper 3 (Variable rearrangement invariance)
-               ↓
-      Paper 4 (Structure Recognition Theory — theoretical framework)
-               ↓
-      Paper 5 (Human-AI collaboration — methodological layer)
-    </div>
-  </section>
-
-  <!-- ── Follow-Up Questions ── -->
-  <section id="followup">
-    <h2>Follow-Up Questions (FQ-1 to FQ-20)</h2>
-
-    <p>
-      The following 20 questions were generated as natural extensions of the core research questions Q1–Q4.
-      Detailed answers are being developed in <code>FOLLOW_UP_ANSWERS.md</code>.
+    <p style="font-size:.85rem; color:var(--text-sub); margin-top:1.5rem;">
+      본 논문은 <code>6BooleanFunctionSpaceTheory</code> 저장소의 Phase 1·2 완료 시점을 기준으로 작성된 통합 본문 문서입니다.<br>
+      Phase 3(인지 실험)은 후속 연구로 이관되었습니다. §6의 <code>[연구자 보완 필요]</code> 섹션은 연구자가 직접 채워야 합니다.<br>
+      관련 이론: <a href="https://inha20.github.io/inha20/StructureRecognitionTheory_Unified.md" style="color:var(--accent)">StructureRecognitionTheory_Unified.md</a> H8·H9·H10, Def. 3.1–3.3
     </p>
-
-    <h3>A. Function Space Structure</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-1.</strong> What is the size of Space(G) for n=2,3,4,5? What growth pattern emerges?</li>
-      <li><strong>FQ-2.</strong> Where does Space(G) sit in Post's lattice of clones? What is its visual representation?</li>
-      <li><strong>FQ-3.</strong> What is Space(G₁) ∩ Space(G₂)? Does it form a meaningful mathematical structure?</li>
-      <li><strong>FQ-4.</strong> What are the closure properties of Space(G)? (Composition, negation, duality)</li>
-      <li><strong>FQ-5.</strong> What is the relationship between the size of the minimal generating set and the properties of Space(G)?</li>
-    </ul>
-
-    <h3>B. Karnaugh Map Geometry</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-6.</strong> What geometric patterns do linear/monotone/self-dual functions form on Karnaugh maps?</li>
-      <li><strong>FQ-7.</strong> Do functions in Space(G) share a common visual invariant on Karnaugh maps?</li>
-      <li><strong>FQ-8.</strong> Is the Repo 1 checkerboard pattern the geometric expression of Space(XOR)? What evidence does SRT H2 provide?</li>
-      <li><strong>FQ-9.</strong> How does the variable rearrangement symmetry classification (Repo 3) relate to the gate-generated space classification?</li>
-    </ul>
-
-    <h3>C. Constructibility and Complexity</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-10.</strong> How does the gate complexity of a target function f relate to the properties of Space(G)?</li>
-      <li><strong>FQ-11.</strong> Can constructibility be interpreted as "representation transformation cost"? How does this connect to Repo 2?</li>
-      <li><strong>FQ-12.</strong> What is the mathematical structure of "functions not constructible from gate G"? What is its meaning in clone theory?</li>
-    </ul>
-
-    <h3>D. Connection to Structure Recognition Theory</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-13.</strong> What constitutes a "research-worthy structure" in the Boolean function space? How does SRT H4 apply?</li>
-      <li><strong>FQ-14.</strong> Among the 65,536 functions, which ones attract human attention first? Can SRT H3 be applied here?</li>
-      <li><strong>FQ-15.</strong> "Recognizing a space's structure" vs. "recognizing individual function patterns" — what is the cognitive difference? Does SRT H6 apply at the space level?</li>
-    </ul>
-
-    <h3>E. Human-AI Collaboration</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-16.</strong> What is the optimal division of labor for Human-AI exploration of Boolean function spaces?</li>
-      <li><strong>FQ-17.</strong> Analyze the "AI systematically classifies + human proposes classification criteria" collaboration model through HARCT.</li>
-    </ul>
-
-    <h3>F. Generalization</h3>
-    <ul style="padding-left:1.5rem; margin-bottom:1rem; line-height:2;">
-      <li><strong>FQ-18.</strong> What is the upper limit of finitely classifiable variable counts? Computational vs. theoretical limits?</li>
-      <li><strong>FQ-19.</strong> Can the framework generalize to ternary or many-valued logic? Does the same function space theory hold?</li>
-      <li><strong>FQ-20.</strong> When viewed as a topological space, what are the topological properties of Space(G)? How does this correspond to Karnaugh map geometry?</li>
-    </ul>
-
-    <div class="rq-box">
-      <p class="rq-title">Potential Future Repositories</p>
-      <p>Analysis of FQ-1 to FQ-20 identifies three clusters that may warrant independent repositories:</p>
-      <ul style="padding-left:1.5rem; margin-top:.5rem; line-height:2;">
-        <li><strong>Candidate 7:</strong> Post Lattice × Karnaugh Map Geometry Visualization (FQ-2, 6, 7) — high educational value</li>
-        <li><strong>Candidate 8:</strong> Boolean Function Space Topology (FQ-4, 19, 20) — pure mathematics direction</li>
-        <li><strong>Candidate 9:</strong> Structure Recognition Experiments / Computational Model (FQ-13, 14, 15, 16) — SRT + Human-AI intersection</li>
-      </ul>
-    </div>
   </section>
 
-  <!-- ── Program Links ── -->
-  <section id="links">
-    <h2>Research Program Links</h2>
+</div><!-- /.page-wrap -->
 
-    <div class="tbl-wrap">
-      <table class="links-table">
-        <thead><tr><th>Repository</th><th>Role</th></tr></thead>
-        <tbody>
-          <tr><td><a href="https://inha20.github.io/Research-Portfolio/">Research-Portfolio</a></td><td>Program Hub — navigation, concept genealogy, timeline</td></tr>
-          <tr><td><a href="https://github.com/inha20/1KMapStructureInvariance">1KMapStructureInvariance</a></td><td>Empirical Case Study 1 — Karnaugh Map Structure Invariance</td></tr>
-          <tr><td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/">2SymmetricBooleanFunctionMinorThesis</a></td><td>Empirical Case Study 2 — Symmetric Boolean Functions</td></tr>
-          <tr><td><a href="https://github.com/inha20/3VariableRearrangementInvarianceMinorThesis">3VariableRearrangementInvarianceMinorThesis</a></td><td>Empirical Case Study 3 — Variable Rearrangement Invariance</td></tr>
-          <tr><td><a href="https://github.com/inha20/4StructureRecognitionTheory">4StructureRecognitionTheory</a></td><td>Theoretical Hub — Structure Recognition Theory (SRT)</td></tr>
-          <tr><td><a href="https://github.com/inha20/5HumanAIResearchCollaboration">5HumanAIResearchCollaboration</a></td><td>Methodological Meta-layer — Human-AI Research Collaboration</td></tr>
-          <tr><td><a href="https://github.com/inha20/6BooleanFunctionSpaceTheory">6BooleanFunctionSpaceTheory</a></td><td><strong>← You are here</strong> — Applied Mathematics, Boolean Function Spaces</td></tr>
-          <tr><td><a href="https://github.com/inha20/ANTIGRAVITY">ANTIGRAVITY</a></td><td>AI Workspace — handover documents, session logs</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<footer>
+  <p>
+    <strong>최종훈 (Choi Jonghun)</strong> · 인하공업전문대학 출신 · 독립 연구자<br>
+    <a href="mailto:cjh3cjh@naver.com" id="footer-email">cjh3cjh@naver.com</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/inha20" target="_blank" id="footer-github">github.com/inha20</a>
+    &nbsp;·&nbsp;
+    <a href="https://inha20.github.io/inha20/" id="footer-hub">Structure Recognition Research Program</a>
+  </p>
+  <p style="margin-top:.5rem;">
+    6BooleanFunctionSpaceTheory · Phase 1·2·5 Complete · Version 1.0 (2026-06-27)
+  </p>
+</footer>
 
-  <footer>
-    <p>
-      Choi Jonghun (최종훈) · Inha University, Department of Computer Science ·
-      <a href="https://inha20.github.io/inha20">Profile Site</a> ·
-      <a href="https://github.com/inha20">GitHub</a>
-    </p>
-    <p style="margin-top:.4rem;">Part of the Structure Recognition Research Program · Repository: 6BooleanFunctionSpaceTheory</p>
-  </footer>
-
-</div>
 </body>
 </html>
