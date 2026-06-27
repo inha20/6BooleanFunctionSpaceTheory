@@ -560,21 +560,19 @@ def run_all_analyses(verbose: bool = True) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 7. n=5 확장 기초 스캐폴드 (Space(XOR)에 대해서만)
+# 7. n=5 확장 — 이론적 스캐폴드 (2026-06-27 FR-3 실제 계산으로 검증 완료)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def scaffold_n5_affine():
     """
-    n=5 변수 아핀 함수에 대한 S₅-궤도 분석 기초 스캐폴드.
-    실제 계산을 수행하지 않고, 이론적 계산 경로만 제시한다.
+    n=5 변수 아핀 함수에 대한 S₅-궤도 분석 이론적 스캐폴드.
+    Burnside 이론 계산 경로 제시 + 실제 열거 계산으로 검증 완료.
     
     아핀 함수 수: 2^(5+1) = 64개
-    Burnside 적용:
-        S₅ 켤레류 (순환 타입): (1⁵), (2,1³), (3,1²), (4,1), (5), (2²,1), (3,2)
-        각 Fix(σ, L₅)를 계산하면 궤도 수를 구할 수 있다.
+    검증 결과 (2026-06-27 FR-3): Space(XOR)_n5 = 12궤도 ✅
     """
     print("\n" + "="*70)
-    print("  n=5 확장 기초 스캐폴드 (Space(XOR), S₅ 작용)")
+    print("  n=5 이론적 스캐폴드 (Space(XOR), S₅ 작용) — 검증 완료")
     print("="*70)
     print("""
   5변수 아핀 함수: f(A,B,C,D,E) = a₀ ⊕ a₁A ⊕ a₂B ⊕ a₃C ⊕ a₄D ⊕ a₅E
@@ -593,30 +591,195 @@ def scaffold_n5_affine():
   │ (3,2) 3+2순환│  20   │ 3-궤도+2-궤도: 3개 자유 → Fix = 2^3 = 8  │
   └──────────────┴───────┴─────────────────────────────────────┘
 
-  Burnside 계산 (예측):
+  Burnside 계산:
     합계 = (1×64) + (10×32) + (20×16) + (30×8) + (24×4) + (15×16) + (20×8)
          = 64 + 320 + 320 + 240 + 96 + 240 + 160
          = 1440
     궤도 수 = 1440 / |S₅| = 1440 / 120 = 12
 
-  → 5변수 아핀 함수 공간의 S₅-궤도 수 = 12 (예측값, 검증 필요)
-  → 4변수 10궤도에서 5변수 12궤도로 확장됨을 관찰
+  ✅ 검증 완료 (2026-06-27 FR-3 실제 열거):
+    Space(XOR)_n5: 64개 함수 → 12궤도 (Burnside 이론값과 일치)
+    Space(AND)_n5: 7581개 함수 → 210궤도 (열거↔Burnside 일치)
+    Space(XOR)_n5 S₅-불동점: 4개 (f=0, A⊕B⊕C⊕D⊕E, 보수, f=1)
+    Space(XOR)_n5 궤도 크기 분포: 크기1×4개, 크기5×4개, 크기10×4개
 
-  구현 방향 (향후 작업):
-    1. ALL_INPUTS를 range(32)로 확장 (5변수)
-    2. itertools.permutations(range(5))로 S₅ 생성
-    3. 동일 알고리즘으로 궤도 열거 및 Burnside 검증
+  n=4 vs n=5 비교:
+    Space(XOR): n=4 → 10궤도, n=5 → 12궤도
+    Space(AND): n=4 → 30궤도, n=5 → 210궤도 (Dedekind 수 급증 반영)
+
+  실제 계산을 실행하려면: python s4_orbit_calculator.py --n5-compute
+  (Space(AND)_n5 열거에 약 60초 소요)
 """)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 8. 진입점
+# 8. n=5 완전 계산 함수 (FR-3, 2026-06-27 추가)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_N5 = 5
+_ALL_INPUTS_5 = list(itertools.product([0, 1], repeat=_N5))
+
+
+def _table_to_func_n5(table):
+    result = 0
+    for i, bit in enumerate(table):
+        result |= (bit << i)
+    return result
+
+
+def _apply_perm_n5(func_int, perm):
+    result_table = []
+    for inp in _ALL_INPUTS_5:
+        permuted = tuple(inp[perm[i]] for i in range(_N5))
+        idx = _ALL_INPUTS_5.index(permuted)
+        result_table.append((func_int >> idx) & 1)
+    return _table_to_func_n5(result_table)
+
+
+def _compute_orbits_n5(space, s5):
+    remaining = set(space)
+    orbits = []
+    while remaining:
+        start = min(remaining)
+        orbit = set()
+        queue = [start]
+        while queue:
+            f = queue.pop()
+            if f in orbit:
+                continue
+            orbit.add(f)
+            for perm in s5:
+                pf = _apply_perm_n5(f, perm)
+                if pf in space and pf not in orbit:
+                    queue.append(pf)
+        orbits.append(frozenset(orbit))
+        remaining -= orbit
+    return sorted(orbits, key=lambda o: (len(o), min(o)))
+
+
+def _burnside_n5(space, s5):
+    total = sum(1 for perm in s5 for f in space if _apply_perm_n5(f, perm) == f)
+    return total // len(s5)
+
+
+def _generate_n5_affine():
+    """5변수 아핀 함수 64개 생성"""
+    funcs = set()
+    for coeffs in itertools.product([0, 1], repeat=_N5 + 1):
+        table = []
+        for inp in _ALL_INPUTS_5:
+            val = coeffs[0]
+            for k in range(_N5):
+                val ^= (coeffs[k + 1] & inp[k])
+            table.append(val)
+        funcs.add(_table_to_func_n5(table))
+    return funcs
+
+
+def _generate_n5_monotone():
+    """
+    5변수 단조 함수 7581개 생성 (Dedekind D(5)).
+    백트래킹: 해밍 무게 순서로 입력을 처리하며 단조성 제약 적용.
+    """
+    sorted_inputs = sorted(range(32), key=lambda i: bin(i).count('1'))
+    predecessors = {}
+    for i, idx in enumerate(sorted_inputs):
+        preds = []
+        a = _ALL_INPUTS_5[idx]
+        for j in range(i):
+            pred_idx = sorted_inputs[j]
+            b = _ALL_INPUTS_5[pred_idx]
+            if all(b[k] <= a[k] for k in range(_N5)) and pred_idx != idx:
+                preds.append(pred_idx)
+        predecessors[idx] = preds
+
+    monotone_funcs = set()
+    assignment = [None] * 32
+
+    def backtrack(pos):
+        if pos == 32:
+            monotone_funcs.add(_table_to_func_n5([assignment[i] for i in range(32)]))
+            return
+        idx = sorted_inputs[pos]
+        min_val = 1 if any(assignment[p] == 1 for p in predecessors[idx]) else 0
+        for val in range(min_val, 2):
+            assignment[idx] = val
+            backtrack(pos + 1)
+            assignment[idx] = None
+
+    backtrack(0)
+    return monotone_funcs
+
+
+def run_n5_full_analysis():
+    """
+    n=5 Space(XOR)와 Space(AND)의 S₅-궤도를 실제로 열거하고 검증한다.
+    FR-3 후속 연구 — 2026-06-27 추가.
+    주의: Space(AND)_n5 열거에 약 60초 소요.
+    """
+    import time
+    s5 = list(itertools.permutations(range(_N5)))
+    print("\n" + "="*70)
+    print("  n=5 완전 계산 — FR-3 (2026-06-27)")
+    print("="*70)
+    print(f"  |S₅| = {len(s5)}")
+
+    # Space(XOR)_n5
+    print("\n[1/2] Space(XOR)_n5 — 5변수 아핀 함수")
+    aff5 = _generate_n5_affine()
+    print(f"  함수 수: {len(aff5)} (기대: 64)")
+    orbs_xor = _compute_orbits_n5(aff5, s5)
+    burn_xor  = _burnside_n5(aff5, s5)
+    ok_xor = len(orbs_xor) == burn_xor == 12
+    print(f"  궤도 수 (열거): {len(orbs_xor)}  (Burnside): {burn_xor}  {'✅' if ok_xor else '❌'}")
+    size_dist = defaultdict(int)
+    for o in orbs_xor: size_dist[len(o)] += 1
+    for sz in sorted(size_dist):
+        print(f"    크기 {sz:>3}: {size_dist[sz]:>2}개 궤도")
+    fixed5 = [f for f in aff5 if all(_apply_perm_n5(f, p) == f for p in s5)]
+    print(f"  S₅-불동점: {len(fixed5)}개")
+
+    # Space(AND)_n5
+    print("\n[2/2] Space(AND)_n5 — 5변수 단조 함수 (D(5)=7581)")
+    print("  단조 함수 생성 중... ", end='', flush=True)
+    t0 = time.time()
+    mono5 = _generate_n5_monotone()
+    print(f"완료 ({time.time()-t0:.1f}초)")
+    print(f"  함수 수: {len(mono5)} {'✅' if len(mono5)==7581 else '❌'}")
+    print("  궤도 열거 중... ", end='', flush=True)
+    t1 = time.time()
+    orbs_and = _compute_orbits_n5(mono5, s5)
+    burn_and  = _burnside_n5(mono5, s5)
+    print(f"완료 ({time.time()-t1:.1f}초)")
+    ok_and = len(orbs_and) == burn_and
+    print(f"  궤도 수 (열거): {len(orbs_and)}  (Burnside): {burn_and}  {'✅' if ok_and else '❌'}")
+    size_dist2 = defaultdict(int)
+    for o in orbs_and: size_dist2[len(o)] += 1
+    for sz in sorted(size_dist2):
+        print(f"    크기 {sz:>4}: {size_dist2[sz]:>3}개 궤도")
+
+    print("\n" + "="*70)
+    print("  최종 요약")
+    print("="*70)
+    print(f"  {'공간':<25} {'함수 수':>8} {'S₅-궤도 수':>12}")
+    print(f"  {'-'*50}")
+    print(f"  {'Space(XOR)_n5':<25} {len(aff5):>8} {len(orbs_xor):>12}")
+    print(f"  {'Space(AND)_n5':<25} {len(mono5):>8} {len(orbs_and):>12}")
+    print(f"\n  n=4: Space(XOR)=10궤도, Space(AND)=30궤도")
+    print(f"  n=5: Space(XOR)={len(orbs_xor)}궤도, Space(AND)={len(orbs_and)}궤도")
+    print("="*70)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 9. 진입점
 # ─────────────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
     args = sys.argv[1:]
     
-    if '--n5' in args:
+    if '--n5-compute' in args:
+        run_n5_full_analysis()
+    elif '--n5' in args:
         scaffold_n5_affine()
     elif '--verify' in args:
         # 간소화된 검증만 수행 (출력 억제)
