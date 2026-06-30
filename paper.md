@@ -1,6 +1,6 @@
 # Boolean 함수 공간의 S₄ 군론적 분류와 구조 인식 이론의 연결
 
-> **관련 문서:** 향후 연구 전체 로드맵은 [`FUTURE_RESEARCH.md`](FUTURE_RESEARCH.md) 참조.  
+> **관련 문서:** 향후 연구 전체 로드맵은 [`TODO.md`](TODO.md)의 "미래 연구(FutureWorks)" 절 참조.  
 > **수학 원본:** 상세 계산 과정 전체는 [`theory/S4GroupAnalysis.md`](theory/S4GroupAnalysis.md) 참조.
 
 **저자:** 최종훈 (인하공업전문대학 출신 · 독립 연구자)  
@@ -430,8 +430,6 @@ def burnside_count(function_set, s4_elements):
 
 ---
 
-
-
 ### 3.7 차원 확장 (n=5) 계산 결과
 
 본 연구는 4변수(n=4) Boolean 함수 공간에 대한 완전한 분류를 수행했으나, 후속 연구의 일환으로 5변수(n=5) 공간에 대한 초기 확장을 진행하여 다음과 같은 결과를 도출했다.
@@ -466,26 +464,29 @@ Repo 1의 핵심 발견 — "체커보드 패턴(A⊕B⊕C⊕D)은 변수 배열
 
 이것은 Repo 1에서 경험적으로 관찰된 불변성의 수학적 증명이다.
 
-## 참고 저장소 및 관련 문서
+### 4.3 Repo 2와의 통합: 대칭 함수의 군론적 설명
 
-| 저장소 / 파일 | 내용 | 이 논문과의 연결 |
-|-------|-----|--------------|
-| [1KMapStructureInvariance](https://inha20.github.io/1KMapStructureInvariance/) | K-map 패턴 불변성 발견 | 체커보드 = Space(XOR) O₉ (§3.1.4, §4.2) |
-| [2SymmetricBooleanFunctionMinorThesis](https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/) | 대칭 함수 K-map 패턴 | 임계값 함수 = Space(AND) S₄-불동점 (§3.2.3, §4.3) |
-| [3VariableRearrangementInvarianceMinorThesis](https://inha20.github.io/3VariableRearrangementInvarianceMinorThesis/) | 변수 재배열 동치류 분류 | 정제 관계 (§4.1, §4.4) |
-| [4StructureRecognitionTheory](https://inha20.github.io/4StructureRecognitionTheory/) | SRT: H1–H10, Def. 3.1–3.3 | SRT와의 연결 (§5) |
-| [5HumanAIResearchCollaboration](https://inha20.github.io/5HumanAIResearchCollaboration/) | 인간-AI 협업 방법론 | 연구 기원 타임라인 §Phase 5 |
-| `theory/S4GroupAnalysis.md` | **핵심 수학 원본** (OC-1~OC-5 완전 분류) | §3 전체 상세 계산 |
-| `FUTURE_RESEARCH.md` | **후속 연구 로드맵** (인지 실험·협업 모델·일반화) | §7.3 연결 |
-| `scripts/s4_orbit_calculator.py` | 궤도 계산 Python 스크립트 | 컴퓨터 검증 |
+Repo 2의 핵심 발견 — "대칭 Boolean 함수들이 Hamming weight 레이어 구조를 형성한다" — 은 다음과 같이 군론으로 설명된다.
 
----
+> **대칭적 단조 함수(threshold function) 6개는 Space(AND)의 S₄-불동점이다.** Hamming weight 레이어 구조는 이 함수들이 변수 치환에 불변이라는 사실의 시각적 표현이다(§3.2.3 참조).
 
-*본 논문은 `6BooleanFunctionSpaceTheory` 저장소의 Phase 1·2 완료 시점을 기준으로 작성된 통합 본문 문서입니다.*  
-*Phase 3(인지 실험)은 후속 연구로 이관되었습니다. §6의 `[연구자 보완 필요]` 섹션은 연구자가 직접 쇼워야 합니다.*  
-*관련 이론: `StructureRecognitionTheory_Unified.md` H8·H9·H10, Def. 3.1–3.3* 맵 패턴을 보이는 함수. 이는 이제 군론으로 완전히 이해된다.
+이것은 Repo 2에서 경험적으로 관찰된 레이어 구조의 수학적 근거다.
 
----
+### 4.4 Repo 3와의 통합: 변수 재배열 동치류와 S₄ 궤도
+
+Repo 3의 핵심 작업 — "변수 재배열(S₄ 치환) 하의 동치류를 체계적으로 분류" — 은 본 논문의 S₄ 궤도 분류와 직접 대응한다.
+
+> **Repo 3의 동치류 ≡ 본 논문의 S₄ 궤도.** 다만 본 논문은 분류 대상을 Space(G)로 제한하고, Burnside 보조정리에 의한 정확한 궤도 수를 도출한다는 점에서 Repo 3의 분류를 수학적으로 정교화한다.
+
+이 관계는 §4.1의 정제 관계(정리 4.1)에서 이미 형식화되었다.
+
+### 4.5 통합 정리
+
+| Repo | 경험적 발견 | 군론적 해석 |
+|------|-----------|-----------|
+| Repo 1 | 체커보드 패턴의 변수 불변성 | $A \oplus B \oplus C \oplus D$ = Space(XOR)의 S₄-불동점 (§3.1.4) |
+| Repo 2 | Hamming weight 레이어 구조 | 대칭적 단조 함수 = Space(AND)의 S₄-불동점 (§3.2.3) |
+| Repo 3 | 변수 재배열 동치류 분류 | S₄ 궤도 = Burnside 계산 (§3 전체) |
 
 ## 5. 구조 인식 이론(SRT)과의 연결
 
@@ -671,7 +672,7 @@ $\mathcal{F}$ 안의 모든 S₄-부분공간을 완전히 분류하라.
 
 #### 7.3.2 실험적 검증 계획 및 향후 연구 로드맵
 
-> 향후 연구의 전체 로드맵과 상세 설계는 [`FUTURE_RESEARCH.md`](FUTURE_RESEARCH.md) 에 통합되어 있다.
+> 향후 연구의 전체 로드맵과 상세 설계는 [`TODO.md`](TODO.md)의 "미래 연구(FutureWorks)" 절에 통합되어 있다.
 
 현재 Repo 6의 Phase 3 (실험 단계):
 - 자극 설계: 10개 S₄-궤도 대표 원소 (크기 1, 4, 6, 12 각 2-3개)
@@ -698,12 +699,8 @@ $\mathcal{F}$ 안의 모든 S₄-부분공간을 완전히 분류하라.
 | [4StructureRecognitionTheory](https://inha20.github.io/4StructureRecognitionTheory/) | SRT: H1–H10, Def. 3.1–3.3 | SRT와의 연결 (§5) |
 | [5HumanAIResearchCollaboration](https://inha20.github.io/5HumanAIResearchCollaboration/) | 인간-AI 협업 방법론 | 연구 기원 타임라인 §Phase 5 |
 | `theory/S4GroupAnalysis.md` | 핵심 수학 문서 (OC-1~OC-5 완전 분류) | §3 전체 |
-| `scripts/s4_orbit_calculator.py` | 궤도 계산 Python 스크립트 | 컴퓨터 검증 |
-| `theory/ResearchOriginTimeline.md` | 연구 기원 타임라인 초안 | §6 |
-| `theory/FunctionSpaceTheory.md` | Space(G) 기본 정의 | §2.2 |
-| `theory/PostLattice.md` | Post 격자 구조 | §2.3 |
-| `theory/KarnaughGeometry.md` | K-map 기하학 | §2.4 |
-| `IntegrationMap.md` | Repo 1–5 통합 지점 명세 | §4 |
+| `scripts/s4_orbit_calculator.py` | 궤도 계산 Python 스크립트 (n=4 전체 + n=5 확장) | 컴퓨터 검증 |
+| `TODO.md` | 마스터 로드맵 + 미래 연구(FutureWorks, FR-1~FR-3) | §7.3 연결 |
 
 ---
 
