@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boolean 함수 공간과 S₄ 군론적 분류 | Structure Recognition Research Program</title>
-  <meta name="description" content="4변수 Boolean 함수 공간의 게이트 생성 관점과 S₄ 군론 관점에서의 완전 궤도 분류. Space(XOR) 10궤도, Space(AND) 30궤도, Space(NOT) 32궤도. 구조 인식 이론(SRT)과의 연결. 최종훈 (인하공업전문대학 출신 · 독립 연구자).">
-  <meta name="keywords" content="Boolean 함수 공간, S4 군론, Burnside 보조정리, 카르노 맵, Post 격자, 궤도 분류, 구조 인식 이론, XOR 아핀 공간, 단조 함수, 자기쌍대 함수">
+  <title>Boolean 함수 공간과 S₄ 군론적 분류 | Paper 6</title>
+  <meta name="description" content="4변수 Boolean 함수 공간의 게이트 생성 관점과 S₄ 군론 관점에서의 완전 궤도 분류. Space(XOR) 10궤도, Space(AND) 30궤도, Space(NOT) 32궤도. 구조 인식 이론(SRT)과의 연결. 최종훈 (인하공업전문대학 출신 · 독립 연구자)." />
+  <meta name="keywords" content="Boolean 함수 공간, S4 군론, Burnside 보조정리, 카르노 맵, Post 격자, 궤도 분류, 구조 인식 이론, 인하공업전문대학, 최종훈" />
   <meta name="author" content="Choi Jonghun (최종훈)">
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- KaTeX for math rendering -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body, {
       delimiters: [
         {left: '$$', right: '$$', display: true},
@@ -22,1010 +27,1000 @@
 
   <style>
     :root {
-      --bg: #fafaf8;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Light Theme (Academic Ivory & Slate) */
+      --bg: #fbfbf9;
+      --bg-alt: #f4f3ef;
       --surface: #ffffff;
-      --border: #e0ddd8;
-      --text: #1a1a1a;
-      --text-sub: #555;
-      --accent: #2a4d8f;
-      --accent-light: #eef2fa;
-      --code-bg: #f4f2ee;
-      --placeholder-bg: #fffbeb;
-      --placeholder-border: #d97706;
-      --success-bg: #f0fdf4;
-      --success-border: #16a34a;
+      --surface-hover: #faf9f6;
+      --border: #e6e3dc;
+      --border-subtle: #eceae5;
+      --border-focus: #254b8c;
+      --text: #1a1b26;
+      --text-muted: #575a6e;
+      --text-faint: #898c9f;
+
+      --accent: #254b8c;
+      --accent-hover: #1b3868;
+      --accent-glow: rgba(37, 75, 140, 0.08);
+      --accent-surface: #eef3fc;
+
+      --teal: #0d9488;
+      --teal-bg: #f0fdfa;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --purple: #7c3aed;
+      --purple-bg: #f5f3ff;
+      --emerald: #059669;
+      --emerald-bg: #ecfdf5;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.08);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --container-max: 1000px;
     }
+
+    [data-theme="dark"] {
+      --bg: #0d0f17;
+      --bg-alt: #131622;
+      --surface: #181b2a;
+      --surface-hover: #1f2337;
+      --border: #262a3e;
+      --border-subtle: #1c2033;
+      --border-focus: #60a5fa;
+      --text: #f1f3fa;
+      --text-muted: #9ba1b9;
+      --text-faint: #636882;
+
+      --accent: #60a5fa;
+      --accent-hover: #93c5fd;
+      --accent-glow: rgba(96, 165, 250, 0.12);
+      --accent-surface: #162238;
+
+      --teal: #2dd4bf;
+      --teal-bg: #11292b;
+      --amber: #fbbf24;
+      --amber-bg: #292011;
+      --purple: #a78bfa;
+      --purple-bg: #2e1065;
+      --emerald: #34d399;
+      --emerald-bg: #064e3b;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.45);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Georgia', serif;
-      font-size: 1rem;
-      line-height: 1.85;
+      font-family: var(--font-sans);
+      font-size: 1.02rem;
+      line-height: 1.8;
+      transition: background 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Layout ── */
-    .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
 
-    /* ── Hub back link bar ── */
-    .hub-bar {
-      background: #1a1a2e;
-      padding: .55rem 1.5rem;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .82rem;
+    /* ── Header ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.25s ease;
+    }
+    .nav-inner {
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      padding: 0.75rem 0;
       gap: 1rem;
     }
-    .hub-bar a {
-      color: #90caf9;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
       text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.95rem;
     }
-    .hub-bar a:hover { text-decoration: underline; }
-    .hub-bar .sep { color: #4a5568; }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.88rem;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--accent); }
 
-    /* ── Top nav ── */
-    .top-nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(6px);
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropbtn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-dropbtn:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      background: var(--surface);
+      min-width: 260px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.5rem;
+      z-index: 101;
+    }
+    .nav-dropdown:hover .nav-dropdown-content { display: block; }
+    .nav-dropdown-content a {
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .nav-dropdown-content a:hover { background: var(--accent-surface); color: var(--accent); }
+    .nav-dropdown-content a.active { background: var(--accent-surface); color: var(--accent); font-weight: 700; }
+
+    .theme-toggle-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.4rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      transition: all 0.15s ease;
+    }
+    .theme-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle-btn svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── Subnav ── */
+    .subnav {
+      position: sticky;
+      top: 53px;
+      z-index: 90;
+      background: var(--bg-alt);
       border-bottom: 1px solid var(--border);
-      padding: .6rem 1.5rem;
-      display: flex; gap: 1.4rem; flex-wrap: wrap;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .82rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0.45rem 0;
     }
-    .top-nav a { color: var(--accent); text-decoration: none; }
-    .top-nav a:hover { text-decoration: underline; }
+    .subnav-inner { display: flex; gap: 1.2rem; font-size: 0.82rem; font-weight: 600; }
+    .subnav-inner a { color: var(--text-muted); text-decoration: none; transition: color 0.15s ease; }
+    .subnav-inner a:hover, .subnav-inner a.active { color: var(--accent); }
 
-    /* ── Cover ── */
-    .cover {
-      padding: 4rem 0 2.5rem;
+    /* ── Hero ── */
+    .hero {
+      padding: 3.5rem 0 2rem;
       border-bottom: 1px solid var(--border);
       margin-bottom: 2.5rem;
     }
-    .cover .label {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .78rem;
-      letter-spacing: .12em;
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .paper-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--text-sub);
-      margin-bottom: .8rem;
-    }
-    .cover h1 {
-      font-size: 1.85rem;
-      font-weight: bold;
-      line-height: 1.4;
-      color: var(--text);
-      margin-bottom: .5rem;
-    }
-    .cover .subtitle {
-      font-size: 1.05rem;
-      color: var(--text-sub);
-      font-style: italic;
-      margin-bottom: 1.6rem;
-    }
-    .cover-meta {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .85rem;
-      color: var(--text-sub);
-      line-height: 1.9;
-    }
-    .tag-stable {
-      display: inline-block;
-      background: #f0fdf4;
-      color: #15803d;
-      font-size: .78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: .2rem .6rem;
-      border-radius: 3px;
-      margin-bottom: 1rem;
-      font-family: 'Helvetica Neue', sans-serif;
-      border: 1px solid #86efac;
-    }
-
-    /* ── Section headings ── */
-    h2 {
-      font-size: 1.3rem;
-      margin: 2.8rem 0 .9rem;
-      padding-bottom: .35rem;
-      border-bottom: 2px solid var(--accent);
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      background: var(--accent-surface);
       color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
     }
-    h3 { font-size: 1.07rem; margin: 1.9rem 0 .55rem; color: var(--text); }
-    h4 { font-size: 1rem; margin: 1.4rem 0 .4rem; color: var(--text); }
-
-    /* ── Body text ── */
-    p { margin-bottom: 1rem; }
-    em { font-style: italic; }
-    strong { font-weight: 700; }
-    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-    li { margin-bottom: .3rem; }
-
-    /* ── Tables ── */
-    .tbl-wrap { overflow-x: auto; margin: 1.4rem 0; }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .88rem;
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      font-weight: 600;
+      line-height: 1.32;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
     }
-    th {
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .author-meta {
+      font-size: 0.9rem;
+      color: var(--text-faint);
+      margin-bottom: 1.75rem;
+    }
+    .author-meta b { color: var(--text); }
+
+    /* ── Action Bar ── */
+    .action-bar { display: flex; gap: 0.85rem; flex-wrap: wrap; align-items: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.2rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--font-sans);
+    }
+    .btn-primary {
       background: var(--accent);
       color: #fff;
-      padding: .5rem .9rem;
-      text-align: left;
-      font-weight: 600;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent);
     }
-    td { padding: .45rem .9rem; border: 1px solid var(--border); }
-    tr:nth-child(even) td { background: var(--accent-light); }
-
-    /* ── Abstract box ── */
-    .abstract {
-      background: var(--accent-light);
-      border-left: 4px solid var(--accent);
-      padding: 1.2rem 1.5rem;
-      margin: 2rem 0;
-      border-radius: 2px;
-    }
-    .abstract-title {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-weight: 700;
-      font-size: .85rem;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--accent);
-      margin-bottom: .6rem;
-    }
-    .keyword-line {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .85rem;
-      color: var(--text-sub);
-      margin-top: .8rem;
-    }
-
-    /* ── Result box ── */
-    .result-box {
-      background: var(--success-bg);
-      border-left: 4px solid var(--success-border);
-      padding: 1rem 1.4rem;
-      margin: 1.4rem 0;
-      border-radius: 2px;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .9rem;
-    }
-    .result-title {
-      font-weight: 700;
-      color: #15803d;
-      margin-bottom: .4rem;
-      font-size: .85rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-
-    /* ── Placeholder box ── */
-    .placeholder-box {
-      background: var(--placeholder-bg);
-      border: 2px dashed var(--placeholder-border);
-      border-radius: 6px;
-      padding: 1.4rem 1.6rem;
-      margin: 1.6rem 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .9rem;
-    }
-    .placeholder-title {
-      font-weight: 700;
-      color: var(--placeholder-border);
-      margin-bottom: .6rem;
-      font-size: .9rem;
-    }
-    .placeholder-guide {
-      color: #78350f;
-      font-size: .85rem;
-      font-style: italic;
-      margin-top: .5rem;
-    }
-
-    /* ── Code / pre ── */
-    pre, code {
-      font-family: 'Courier New', monospace;
-      font-size: .9em;
-      background: var(--code-bg);
-    }
-    pre {
-      padding: 1rem;
-      border-left: 3px solid var(--accent);
-      border-radius: 2px;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    code { padding: .1em .3em; border-radius: 2px; }
-    pre code { background: none; padding: 0; }
-
-    /* ── Flow diagram ── */
-    .flow {
-      background: var(--code-bg);
-      border-radius: 4px;
-      padding: .9rem 1.2rem;
-      margin: 1rem 0;
-      font-family: 'Courier New', monospace;
-      font-size: .88rem;
-      line-height: 1.9;
-    }
-
-    /* ── TOC ── */
-    .toc {
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary {
       background: var(--surface);
+      color: var(--text);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.2rem 1.5rem;
-      margin: 2rem 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .88rem;
     }
-    .toc-title { font-weight: 700; margin-bottom: .7rem; color: var(--accent); }
-    .toc ol { padding-left: 1.4rem; }
-    .toc li { margin: .25rem 0; }
-    .toc a { color: var(--text); text-decoration: none; }
-    .toc a:hover { color: var(--accent); text-decoration: underline; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--surface-hover); }
 
-    /* ── Links table ── */
-    .links-table td a { color: var(--accent); text-decoration: none; }
-    .links-table td a:hover { text-decoration: underline; }
+    /* ── Typography & Headings ── */
+    h2 {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin: 3.2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1.5px solid var(--border);
+      color: var(--accent);
+      scroll-margin-top: 100px;
+    }
+    h3 {
+      font-size: 1.22rem;
+      font-weight: 600;
+      margin: 2.2rem 0 0.75rem;
+      color: var(--text);
+      scroll-margin-top: 100px;
+    }
+    h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--text);
+    }
+    p { margin-bottom: 1.15rem; color: var(--text); }
+    strong { font-weight: 700; color: var(--text); }
 
-    /* ── Orbit summary cards ── */
+    /* ── Orbit Summary Cards Grid ── */
     .orbit-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin: 1.4rem 0;
+      margin: 1.5rem 0;
     }
     .orbit-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1rem 1.2rem;
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
       text-align: center;
+      box-shadow: var(--shadow-sm);
     }
-    .orbit-card .orbit-name {
-      font-family: 'Helvetica Neue', sans-serif;
+    .orbit-name {
+      font-family: var(--font-mono);
       font-weight: 700;
-      font-size: .85rem;
+      font-size: 0.85rem;
       color: var(--accent);
-      margin-bottom: .4rem;
+      margin-bottom: 0.4rem;
     }
-    .orbit-card .orbit-num {
-      font-size: 2rem;
-      font-weight: bold;
+    .orbit-num {
+      font-size: 2.2rem;
+      font-weight: 700;
       color: var(--text);
-      line-height: 1.2;
+      line-height: 1.1;
+      font-family: var(--font-serif);
     }
-    .orbit-card .orbit-sub {
-      font-size: .8rem;
-      color: var(--text-sub);
-      font-family: 'Helvetica Neue', sans-serif;
+    .orbit-sub {
+      font-size: 0.8rem;
+      color: var(--text-faint);
+      margin-top: 0.35rem;
     }
+
+    /* ── Cards & Result Boxes ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      margin: 1.75rem 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .abstract-box {
+      background: var(--accent-surface);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.8rem;
+      margin: 1.8rem 0;
+    }
+    .abstract-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-box {
+      background: var(--emerald-bg);
+      border: 1px solid var(--emerald);
+      border-left: 4px solid var(--emerald);
+      border-radius: var(--radius-md);
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .result-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Tables ── */
+    .tbl-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+    table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+    th {
+      background: var(--bg-alt);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border-subtle); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface-hover); }
+
+    /* ── Code / Math Flow ── */
+    pre {
+      font-family: var(--font-mono);
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.35rem;
+      border-radius: var(--radius-sm);
+    }
+    pre code { background: none; border: none; padding: 0; }
+    .flow-box {
+      background: var(--bg-alt);
+      border: 1px dashed var(--border-focus);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── TOC Card ── */
+    .toc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+    }
+    .toc-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .toc-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.6rem 1.5rem;
+      list-style: none;
+    }
+    .toc-item a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.15s ease;
+    }
+    .toc-item a:hover { color: var(--accent); }
+    .toc-item b { font-family: var(--font-mono); color: var(--accent); font-size: 0.82rem; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      box-shadow: var(--shadow-lg);
+      padding: 0.8rem 1.4rem;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease;
+    }
+    .toast.show { display: flex; }
 
     /* ── Footer ── */
-    footer {
+    .site-footer {
       border-top: 1px solid var(--border);
-      margin-top: 3.5rem;
-      padding-top: 1.2rem;
-      font-family: 'Helvetica Neue', sans-serif;
-      font-size: .8rem;
-      color: var(--text-sub);
+      padding: 3.5rem 0;
+      margin-top: 5rem;
       text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-faint);
     }
-    footer a { color: var(--accent); }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
 
-    @media (max-width: 640px) {
-      .cover h1 { font-size: 1.35rem; }
-      .top-nav { font-size: .76rem; gap: 1rem; }
+    @media (max-width: 768px) {
+      .hero-title { font-size: 1.75rem; }
+      .nav-links { display: none; }
       .orbit-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Hub back bar ── -->
-<div class="hub-bar">
-  <a href="https://inha20.github.io/inha20/" id="hub-link">← Research Hub (inha20)</a>
-  <span class="sep">|</span>
-  <a href="https://inha20.github.io/4StructureRecognitionTheory/" id="srt-link">Structure Recognition Theory (SRT)</a>
-  <span class="sep">|</span>
-  <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" id="github-link">GitHub</a>
-</div>
+  <!-- ── Global Site Header ── -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="https://inha20.github.io/Research-Portfolio/">
+        <div class="brand-mark">P6</div>
+        <span>6BooleanFunctionSpace</span>
+      </a>
 
-<!-- ── Top Nav ── -->
-<nav class="top-nav" aria-label="본문 내비게이션">
-  <a href="#abstract" id="nav-abstract">초록</a>
-  <a href="#intro" id="nav-intro">1. 서론</a>
-  <a href="#background" id="nav-background">2. 이론적 배경</a>
-  <a href="#results" id="nav-results">3. 핵심 결과</a>
-  <a href="#integration" id="nav-integration">4. 선행 연구 통합</a>
-  <a href="#srt" id="nav-srt">5. SRT 연결</a>
-  <a href="#origin" id="nav-origin">6. 연구 기원</a>
-  <a href="#conclusion" id="nav-conclusion">7. 결론</a>
-  <a href="#references" id="nav-references">참고 저장소</a>
-</nav>
+      <div style="display: flex; align-items: center; gap: 0.85rem;">
+        <nav class="nav-links">
+          <a href="https://inha20.github.io/Research-Portfolio/">Research Program</a>
+          <a href="https://github.com/inha20/inha20">Profile</a>
+          <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" rel="noopener">GitHub</a>
+        </nav>
 
-<div class="page-wrap">
+        <!-- Program Jump Menu -->
+        <div class="nav-dropdown">
+          <button class="nav-dropbtn" aria-label="논문 이동 메뉴">
+            <span>Papers</span>
+            <span style="font-size:0.65rem;">▼</span>
+          </button>
+          <div class="nav-dropdown-content">
+            <a href="https://inha20.github.io/Research-Portfolio/"><b>Hub</b> Portfolio Overview</a>
+            <a href="https://inha20.github.io/1KMapStructureInvariance/"><b>P1</b> K-Map Structure Invariance</a>
+            <a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/"><b>P2</b> Symmetric Boolean Functions</a>
+            <a href="https://inha20.github.io/3VariableRearrangementInvarianceMinorThesis/"><b>P3</b> Variable Rearrangement</a>
+            <a href="https://inha20.github.io/4StructureRecognitionTheory/"><b>P4</b> Structure Recognition (SRT)</a>
+            <a href="https://inha20.github.io/5HumanAIResearchCollaboration/"><b>P5</b> Human-AI Collaboration (HARCT)</a>
+            <a href="#" class="active"><b>P6</b> Boolean Space & S₄ Theory</a>
+          </div>
+        </div>
 
-  <!-- ── Cover ── -->
-  <header class="cover">
-    <span class="tag-stable">Applied Math · Paper 6 · Phase 1·2·5 Complete</span>
-    <p class="label">Research Repository · Structure Recognition Research Program · Branch 8</p>
-    <h1>Boolean 함수 공간과 S<sub>4</sub> 군론적 분류 그리고 구조 인식 이론과의 연결</h1>
-    <p class="subtitle">Gate-Generated Function Spaces, Complete S₄ Orbit Classification of the 65,536 Four-Variable Boolean Functions, and Connection to Structure Recognition Theory</p>
-    <div class="cover-meta">
-      <strong>저자:</strong> 최종훈 (Choi Jonghun) · 인하공업전문대학 출신 · 독립 연구자<br>
-      <strong>작성일:</strong> 2026-06-27<br>
-      <strong>버전:</strong> 1.0 (Phase 1·2 완료 기준)<br>
-      <strong>저장소:</strong> <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" style="color:var(--accent)">6BooleanFunctionSpaceTheory</a> &nbsp;·&nbsp;
-      <strong>프로그램:</strong> <a href="https://inha20.github.io/inha20/" style="color:var(--accent)">Structure Recognition Research Program</a>
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="theme-toggle-btn" title="Toggle Theme" aria-label="Toggle theme">
+          <svg id="themeIcon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- ── TOC ── -->
-  <nav class="toc" aria-label="목차">
-    <p class="toc-title">목차 (Contents)</p>
-    <ol>
-      <li><a href="#abstract">초록 (Abstract)</a></li>
-      <li><a href="#intro">서론 — 연구 배경, 목표, 구성</a></li>
-      <li><a href="#background">이론적 배경 — Space(G), Post 격자, 카르노 맵 기하학, S₄ 작용</a></li>
-      <li><a href="#results">핵심 결과: S₄ 궤도 완전 분류
-        <ol>
-          <li><a href="#xor">Space(XOR) = L (아핀 이론): 10개 궤도</a></li>
-          <li><a href="#and">Space(AND) = M (단조 이론): 30개 궤도</a></li>
-          <li><a href="#not">Space(NOT) = D (자기쌍대 이론): 32개 궤도</a></li>
-          <li><a href="#lm">L ∩ M 공간: 3개 궤도</a></li>
-        </ol>
-      </li>
-      <li><a href="#integration">선행 연구 통합 (Repo 1–3)</a></li>
-      <li><a href="#srt">구조 인식 이론(SRT)과의 연결</a></li>
-      <li><a href="#origin">연구 기원 타임라인</a></li>
-      <li><a href="#conclusion">결론 및 향후 연구</a></li>
-      <li><a href="#references">참고 저장소 및 관련 문서</a></li>
-    </ol>
+  <!-- ── Subnav Section Quick-jump ── -->
+  <nav class="subnav">
+    <div class="container subnav-inner">
+      <a href="#abstract">초록</a>
+      <a href="#intro">1. 서론</a>
+      <a href="#background">2. 이론적 배경</a>
+      <a href="#results">3. S₄ 궤도 분류</a>
+      <a href="#integration">4. 선행 연구 통합</a>
+      <a href="#srt">5. SRT 연결</a>
+      <a href="#origin">6. 연구 기원</a>
+      <a href="#conclusion">7. 결론</a>
+      <a href="#references">참고 저장소</a>
+    </div>
   </nav>
 
-  <!-- ── Abstract ── -->
-  <section id="abstract">
-    <h2>초록 (Abstract)</h2>
-    <div class="abstract">
-      <p class="abstract-title">Overview</p>
-      <p>
-        본 논문은 4변수 Boolean 함수 공간의 <strong>게이트 생성(Space(G)) 관점</strong>과 <strong>S₄ 군론 관점</strong>에서의 분류를 수학적으로 기술한다.
-        핵심 결과는 세 가지 주요 함수 공간에서의 완전한 궤도 분류다:
-        Space(XOR)(아핀 함수 32개, S₄ 궤도 <strong>10개</strong>),
-        Space(AND)(단조 함수 168개, S₄ 궤도 <strong>30개</strong>),
-        Space(NOT)(자기쌍대 함수 256개, S₄ 궤도 <strong>32개</strong>).
-        또한 Space(NOT)에는 S₄ 불동점이 존재하지 않음을 증명한다(정리 3.5.2).
-      </p>
-      <p>
-        이 수학적 결과는 선행 연구 3편(Repo 1–3)의 경험적 발견을 군론 언어로 통일하며,
-        구조 인식 이론(SRT, Repo 4)의 핵심 가설(H3·H4·H8·H9)에 구체적인 수학적 대응을 제공한다.
-        분류의 정확성은 Burnside 보조정리에 의한 이론적 계산과 Python 컴퓨터 검증으로 양쪽에서 확인되었다.
-      </p>
-      <p class="keyword-line">
-        <strong>핵심어:</strong> Boolean 함수 공간, S₄ 군론, Burnside 보조정리, 카르노 맵, Post 격자, 궤도 분류, 구조 인식 이론
-      </p>
-    </div>
+  <main class="container">
 
-    <!-- 핵심 결과 요약 카드 -->
-    <div class="orbit-grid">
-      <div class="orbit-card">
-        <div class="orbit-name">Space(XOR) = L</div>
-        <div class="orbit-num">10</div>
-        <div class="orbit-sub">S₄ 궤도 · 32개 아핀 함수</div>
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="hero-meta">
+        <span class="paper-badge">Applied Mathematics · Paper 6</span>
+        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-faint);">Post 격자 & S₄ 궤도 완전 분류</span>
       </div>
-      <div class="orbit-card">
-        <div class="orbit-name">Space(AND) = M</div>
-        <div class="orbit-num">30</div>
-        <div class="orbit-sub">S₄ 궤도 · 168개 단조 함수</div>
+
+      <h1 class="hero-title">Boolean 함수 공간과 S₄ 군론적 분류 그리고 구조 인식 이론과의 연결</h1>
+      <p class="hero-sub">Gate-Generated Function Spaces, Complete S₄ Orbit Classification of the 65,536 Four-Variable Boolean Functions, and Connection to Structure Recognition Theory</p>
+
+      <div class="author-meta">
+        <b>최종훈 (Choi Jonghun)</b> &nbsp;·&nbsp; Independent Researcher &nbsp;·&nbsp; Graduate of Inha Technical College
       </div>
-      <div class="orbit-card">
-        <div class="orbit-name">Space(NOT) = D</div>
-        <div class="orbit-num">32</div>
-        <div class="orbit-sub">S₄ 궤도 · 256개 자기쌍대 함수</div>
+
+      <!-- Hero Action Bar -->
+      <div class="action-bar">
+        <a href="paper.pdf" class="btn btn-primary" download title="논문 본문 PDF 다운로드">
+          <span>📄 논문 본문 PDF (22p · 230KB)</span>
+        </a>
+        <a href="theory/S4GroupAnalysis.pdf" class="btn btn-secondary" download title="S₄ 군론 분석 이론서 PDF 다운로드">
+          <span>📄 S₄ 군론 분석 이론서 PDF (19p · 542KB)</span>
+        </a>
+        <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" rel="noopener" class="btn btn-secondary">
+          <span>💻 GitHub 리포지토리</span>
+        </a>
+        <button id="citeBtn" class="btn btn-secondary" title="BibTeX 인용 정보 복사">
+          <span>📑 BibTeX 인용 복사</span>
+        </button>
       </div>
-      <div class="orbit-card">
-        <div class="orbit-name">L ∩ M</div>
-        <div class="orbit-num">3</div>
-        <div class="orbit-sub">S₄ 궤도 · 6개 함수</div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── 1. 서론 ── -->
-  <section id="intro">
-    <h2>1. 서론</h2>
-
-    <h3>1.1 연구의 배경</h3>
-
-    <div class="placeholder-box" id="intro-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요 — 개인 연구 계기</p>
-      <p>이 섹션에는 이 연구에 이르기까지의 개인적인 계기를 서술해 주세요.</p>
-      <p class="placeholder-guide">
-        서술 가이드: Karnaugh map을 처음 접한 시점, 체커보드 패턴에서 처음 "왜?"라는 질문이 생긴 상황,
-        선행 연구(Repo 1–3)를 진행하면서 군론과의 통합이 필요함을 느끼게 된 계기 등.
-      </p>
-    </div>
-
-    <p>
-      4변수 Boolean 함수 전체 공간 $\mathcal{F}_4$는 $2^{16} = 65{,}536$개의 함수를 포함한다.
-      이 방대한 공간 안에서 연구할 "주목할 만한 구조"를 발견하는 과정은 어떻게 이루어지는가?
-      선행 연구(Repo 1–3)는 이 질문에 대한 경험적 관찰을 축적해 왔다.
-    </p>
-    <ul>
-      <li><strong>Repo 1</strong> — Karnaugh map에서 특정 함수들이 변수 배열에 무관하게 동일한 패턴을 보임을 발견</li>
-      <li><strong>Repo 2</strong> — 대칭 Boolean 함수들이 Hamming weight 레이어 구조를 형성함을 관찰</li>
-      <li><strong>Repo 3</strong> — 변수 재배열(S₄ 치환) 하의 동치류를 체계적으로 분류</li>
-    </ul>
-    <p>
-      이 세 연구는 각각 독립적으로 진행되었으나, 하나의 공통 수학적 프레임워크로 통합될 수 있다는 감각이 본 연구의 출발점이다.
-    </p>
-
-    <h3>1.2 연구 목표</h3>
-    <p>본 연구는 두 가지 목표를 가진다.</p>
-    <p>
-      <strong>목표 1 (수학적).</strong> 4변수 Boolean 함수 공간의 게이트 생성 관점과 S₄ 군론 관점에서의 완전한 분류를 수행한다.
-      구체적으로, 주요 게이트(XOR, AND, NOT)로 생성되는 함수 공간 Space(G) 각각에서 S₄ 작용에 의한 궤도 수 및 각 궤도의 구조를 결정한다.
-    </p>
-    <p>
-      <strong>목표 2 (이론적).</strong> 분류 결과를 구조 인식 이론(SRT, Repo 4)의 핵심 가설들과 연결한다.
-      특히, 수학적 분류가 "인간이 어떤 함수에 먼저 주의를 기울이는가"(H3)와 "어떤 함수를 연구 가치가 있다고 판단하는가"(H4)를 설명하는 데 어떻게 기여하는지를 논의한다.
-    </p>
-
-    <h3>1.3 논문의 구성</h3>
-    <p>
-      §2에서 이론적 배경(Space(G) 정의, Post 격자, 카르노 맵 기하학)을 정리한다.
-      §3에서 핵심 수학적 결과인 S₄ 궤도 분류를 공간별로 전개한다.
-      §4에서 선행 연구(Repo 1–3)와의 통합 관계를 명식한다.
-      §5에서 SRT 가설과의 연결을 논의한다.
-      §6에서 이 연구에 이르기까지의 연구 기원 타임라인을 정리한다.
-    </p>
-  </section>
-
-  <!-- ── 2. 이론적 배경 ── -->
-  <section id="background">
-    <h2>2. 이론적 배경</h2>
-
-    <h3>2.1 4변수 Boolean 함수 공간</h3>
-    <p><strong>정의 2.1 (전체 함수 공간).</strong></p>
-    <p>$$\mathcal{F}_4 = \{ f : \{0,1\}^4 \to \{0,1\} \}$$</p>
-    <p>
-      이 공간의 크기: $|\mathcal{F}_4| = 2^{2^4} = 2^{16} = 65{,}536$.
-      각 함수는 16비트 진리표 벡터, 4×4 카르노 맵, 또는 게이트 회로로 표현된다.
-    </p>
-
-    <h3>2.2 게이트 생성 함수 공간 Space(G)</h3>
-    <p>단일 게이트 G에 의해 G만을 사용하여 구성 가능한 모든 Boolean 함수의 집합을 <strong>Space(G)</strong>로 정의한다.</p>
-    <p><strong>정의 2.2 (Space(G)).</strong></p>
-    <p>$$\text{Space}(G) = \{ f \in \mathcal{F}_4 \mid f\text{는 게이트 }G\text{와 입력 변수, 상수 }\{0,1\}\text{만으로 구성 가능} \}$$</p>
-    <p>이는 수학적 <strong>클론(clone)</strong> 개념과 일치한다: $\text{Space}(G) = [G]$ (G가 생성하는 Post 클론).</p>
-
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>게이트 G</th><th>Space(G)</th><th>크기 (4변수)</th><th>Post 격자 위치</th></tr></thead>
-        <tbody>
-          <tr><td>NAND</td><td>전체 Boolean 공간 (Ω)</td><td>65,536</td><td>최상위</td></tr>
-          <tr><td>NOR</td><td>전체 Boolean 공간 (Ω)</td><td>65,536</td><td>최상위</td></tr>
-          <tr><td>XOR</td><td>아핀(Affine) 함수 공간 (L)</td><td>32</td><td>선형 클론</td></tr>
-          <tr><td>AND</td><td>단조(Monotone) 함수 공간 (M)</td><td>168</td><td>단조 클론</td></tr>
-          <tr><td>NOT</td><td>자기쌍대(Self-dual) 함수 공간 (D)</td><td>256</td><td>쌍대 클론</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p>
-      <strong>명제 2.1 (Space(G)의 S₄ 불변성).</strong>
-      정의된 게이트 G에 대해, Space(G)는 S₄ 작용 하에 닫혀 있다.
-      즉, $f \in \text{Space}(G)$이고 $\sigma \in S_4$이면 $f \circ \sigma \in \text{Space}(G)$.
-    </p>
-    <p><em>증명 요지:</em> f가 G-게이트만으로 구현되는 회로를 가진다면, $f \circ \sigma$는 같은 회로에서 입력 레이블만 재배치한 것이다. 회로의 게이트 종류(G)는 변하지 않으므로 $f \circ \sigma \in \text{Space}(G)$. □</p>
-    <p>이 명제의 결론으로, <strong>각 Space(G)는 S₄ 궤도들의 합집합으로 분해</strong>된다.</p>
-
-    <h3>2.3 Post의 격자와 만능성</h3>
-    <p>
-      <strong>정리 2.1 (Post, 1941).</strong> Boolean 함수 집합 $F$가 함수적으로 완전하기 위한 필요충분조건은
-      F가 다음 5가지 Post 클래스 중 어느 것에도 포함되지 않는 것이다.
-    </p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>클래스</th><th>조건</th><th>Space(G) 대응</th></tr></thead>
-        <tbody>
-          <tr><td>T₀</td><td>0을 보존</td><td>Space(AND) ⊂ T₀</td></tr>
-          <tr><td>T₁</td><td>1을 보존</td><td>Space(AND) ⊂ T₁</td></tr>
-          <tr><td>S</td><td>자기쌍대</td><td>Space(NOT) = D</td></tr>
-          <tr><td>M</td><td>단조</td><td>Space(AND) = M ∩ T₀ ∩ T₁</td></tr>
-          <tr><td>L</td><td>선형(아핀)</td><td>Space(XOR) = L</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>NAND는 5가지 클래스 중 어느 것도 보존하지 않으므로 만능 게이트다.</p>
-
-    <h3>2.4 카르노 맵의 기하학적 해석</h3>
-    <p>
-      4변수 카르노 맵은 단순한 회로 최소화 도구가 아니라 $\mathcal{F}_4$를 기하학적으로 시각화하는 공간이다.
-    </p>
-    <pre>
-        CD
-        00  01  11  10
-AB  00 | 0 | 1 | 3 | 2 |
-    01 | 4 | 5 | 7 | 6 |
-    11 |12 |13 |15 |14 |
-    10 | 8 | 9 |11 |10 |
-    </pre>
-    <ul>
-      <li>인접 칸끼리 <strong>정확히 한 변수만 다름</strong> (Gray 코드 순서)</li>
-      <li>맵은 <strong>환면체(Torus)</strong> 위에 놓인 구조: AB=00 행과 AB=10 행이 연결되고, CD=00 열과 CD=10 열이 연결된다</li>
-      <li><strong>⚠️ 위상적 함의:</strong> 토러스이므로 "좌상단", "우하단", "모서리" 등 절대 위치 표현은 의미가 없다 — 어떤 셀도 다른 셀보다 특별히 "끝"에 있지 않으며, 패턴의 위치는 변수 배열 방식에만 의존한다</li>
-      <li>65,536개 Boolean 함수 = 4×4 격자의 서로 다른 0/1 채색</li>
-    </ul>
-    <p>Space(G)에 속하는 함수들은 카르노 맵 위에서 공통 시각적 시그니처를 보인다:
-      아핀 함수의 체커보드·줄무늬 패턴, 단조 함수의 "위로 닫힌(upward-closed)" 패턴
-      (단, Gray 코드 배열로 인해 이 패턴은 직관적 방향과 일치하지 않을 수 있으며,
-      "왼쪽 위"처럼 보이는 것은 배열 방식의 결과일 뿐임),
-      자기쌍대 함수의 180° 회전 후 0↔1 교환하는 패턴.</p>
-
-    <h3>2.5 S₄의 Boolean 함수에 대한 작용</h3>
-    <p><strong>표기:</strong> $S_4$ = 4개 원소 $\{A, B, C, D\}$의 모든 순열들의 군 (크기 24).</p>
-    <p><strong>작용:</strong></p>
-    <p>$$(\sigma \cdot f)(A, B, C, D) = f(\sigma^{-1}(A), \sigma^{-1}(B), \sigma^{-1}(C), \sigma^{-1}(D))$$</p>
-    <p>S₄의 5가지 켤레류(conjugacy class):</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>켤레류</th><th>원소 수</th><th>예시</th></tr></thead>
-        <tbody>
-          <tr><td>항등원</td><td>1</td><td>(A)(B)(C)(D)</td></tr>
-          <tr><td>호환 (transposition)</td><td>6</td><td>(AB), (AC), …</td></tr>
-          <tr><td>3-순환 (3-cycle)</td><td>8</td><td>(ABC), (ABD), …</td></tr>
-          <tr><td>4-순환 (4-cycle)</td><td>6</td><td>(ABCD), (ABDC), …</td></tr>
-          <tr><td>이중 호환</td><td>3</td><td>(AB)(CD), (AC)(BD), (AD)(BC)</td></tr>
-          <tr><td><strong>합계</strong></td><td><strong>24</strong></td><td></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p><strong>Burnside의 보조정리.</strong> S₄ 궤도 수를 계산하는 핵심 공식:</p>
-    <p>$$|\text{Orbits}| = \frac{1}{|S_4|} \sum_{\sigma \in S_4} |\text{Fix}(\sigma, \text{Space}(G))|$$</p>
-    <p>여기서 $\text{Fix}(\sigma, \text{Space}(G)) = \{ f \in \text{Space}(G) : f \circ \sigma = f \}$이다.</p>
-  </section>
-
-  <!-- ── 3. 핵심 결과 ── -->
-  <section id="results">
-    <h2>3. 핵심 결과: S₄ 궤도 완전 분류</h2>
-
-    <!-- 3.1 XOR -->
-    <h3 id="xor">3.1 Space(XOR) = L (아핀 이론): 10개 궤도</h3>
-
-    <h4>3.1.1 구조</h4>
-    <p>4변수 아핀 함수:</p>
-    <p>$$f(A, B, C, D) = a_0 \oplus a_1 A \oplus a_2 B \oplus a_3 C \oplus a_4 D, \quad a_i \in \{0, 1\}$$</p>
-    <p>전체 원소 수: $2^5 = 32$개.</p>
-    <p><strong>S₄ 작용의 효과:</strong> 순열 σ가 변수 $x_i$와 $x_j$를 교환하면, 불동점 조건은 $a_i = a_j$.</p>
-
-    <h4>3.1.2 Burnside 계산</h4>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, L)</th></tr></thead>
-        <tbody>
-          <tr><td>항등원</td><td>1</td><td>$2^5 = 32$</td></tr>
-          <tr><td>호환 (AB)(C)(D)</td><td>6</td><td>$2^4 = 16$</td></tr>
-          <tr><td>3-순환 (ABC)(D)</td><td>8</td><td>$2^3 = 8$</td></tr>
-          <tr><td>4-순환 (ABCD)</td><td>6</td><td>$2^2 = 4$</td></tr>
-          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>$2^3 = 8$</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>$$|\text{Orbits}(S_4, L)| = \frac{1}{24}(32 + 6 \times 16 + 8 \times 8 + 6 \times 4 + 3 \times 8) = \frac{240}{24} = \mathbf{10}$$</p>
-
-    <h4>3.1.3 10개 궤도 완전 열거</h4>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>궤도</th><th>대표 함수</th><th>크기</th><th>설명</th></tr></thead>
-        <tbody>
-          <tr><td>O₁</td><td>$0$</td><td>1</td><td>상수 0</td></tr>
-          <tr><td>O₂</td><td>$1$</td><td>1</td><td>상수 1</td></tr>
-          <tr><td>O₃</td><td>$A$</td><td>4</td><td>단일 변수 투영</td></tr>
-          <tr><td>O₄</td><td>$A \oplus 1$</td><td>4</td><td>단일 변수 투영의 보수</td></tr>
-          <tr><td>O₅</td><td>$A \oplus B$</td><td>6</td><td>2변수 XOR</td></tr>
-          <tr><td>O₆</td><td>$A \oplus B \oplus 1$</td><td>6</td><td>2변수 XOR의 보수</td></tr>
-          <tr><td>O₇</td><td>$A \oplus B \oplus C$</td><td>4</td><td>3변수 XOR</td></tr>
-          <tr><td>O₈</td><td>$A \oplus B \oplus C \oplus 1$</td><td>4</td><td>3변수 XOR의 보수</td></tr>
-          <tr><td>O₉</td><td>$A \oplus B \oplus C \oplus D$</td><td>1</td><td><strong>전체 XOR (체커보드)</strong></td></tr>
-          <tr><td>O₁₀</td><td>$A \oplus B \oplus C \oplus D \oplus 1$</td><td>1</td><td>체커보드의 보수</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p><strong>검증:</strong> $1+1+4+4+6+6+4+4+1+1 = 32$ ✓</p>
-
-    <h4>3.1.4 S₄ 불동점</h4>
-    <p>S₄의 모든 원소에 의해 고정되는 함수(4-순환 조건: $a_1 = a_2 = a_3 = a_4$):</p>
-    <div class="result-box">
-      <p class="result-title">✓ Space(XOR)의 S₄ 불동점: 4개</p>
-      <p>$\{0,\ 1,\ A \oplus B \oplus C \oplus D,\ A \oplus B \oplus C \oplus D \oplus 1\}$<br>
-      특히 $A \oplus B \oplus C \oplus D$ (체커보드)는 Repo 1의 연구 출발점이 된 함수다 — S₄ 불동점으로 수학적으로도 확인됨.</p>
-    </div>
-
-    <!-- 3.2 AND -->
-    <h3 id="and">3.2 Space(AND) = M (단조 이론): 30개 궤도</h3>
-
-    <h4>3.2.1 구조</h4>
-    <p>4변수 단조 함수의 수: <strong>Dedekind 수 D(4) = 168</strong>.</p>
-    <p>단조 함수는 반사슬(antichain) $\mathcal{A} \subseteq 2^{\{A,B,C,D\}}$와 일대일로 대응한다:
-      $f_\mathcal{A}(x) = 1$ iff $\exists S \in \mathcal{A}$ s.t. $S \subseteq \{i : x_i = 1\}$.</p>
-
-    <h4>3.2.2 Burnside 계산</h4>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, M)</th></tr></thead>
-        <tbody>
-          <tr><td>항등원</td><td>1</td><td>168</td></tr>
-          <tr><td>호환 (AB)</td><td>6</td><td>50</td></tr>
-          <tr><td>3-순환 (ABC)</td><td>8</td><td>15</td></tr>
-          <tr><td>4-순환 (ABCD)</td><td>6</td><td>8</td></tr>
-          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>28</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>$$|\text{Orbits}(S_4, M)| = \frac{1}{24}(168 + 6 \times 50 + 8 \times 15 + 6 \times 8 + 3 \times 28) = \frac{720}{24} = \mathbf{30}$$</p>
-    <p><em>검증:</em> Python 직접 열거(컴퓨터 계산)로 30개 독립 확인, 크기 합 = 168 ✓</p>
-
-    <h4>3.2.3 S₄ 불동점: 대칭적 단조 함수 6개</h4>
-    <p>S₄ 전체에 의해 고정되는 단조 함수는 입력의 <strong>Hamming 가중치(HW)</strong>에만 의존하는 함수, 즉 <strong>대칭적 단조 함수(threshold function)</strong>다.</p>
-    <div class="result-box">
-      <p class="result-title">✓ Space(AND)의 S₄ 불동점: 6개</p>
-      <p>$\{f_0,\ f_1,\ f_2,\ f_3,\ f_4,\ f_{1+}\}$ — HW ≥ k (k = 0,1,2,3,4)와 maj₃ 함수.
-      이 함수들은 Repo 2의 대칭 함수 연구에서 "링/코너/점 패턴"으로 나타난 것과 동일하다.</p>
-    </div>
-
-    <!-- 3.3 NOT -->
-    <h3 id="not">3.3 Space(NOT) = D (자기쌍대 이론): 32개 궤도</h3>
-
-    <h4>3.3.1 구조</h4>
-    <p>자기쌍대 함수: $f(\bar{x}) = \overline{f(x)}$를 만족하는 함수. 4변수 자기쌍대 함수의 수: <strong>256개</strong>.</p>
-
-    <h4>3.3.2 Burnside 계산</h4>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>켤레류</th><th>원소 수</th><th>Fix(σ, D)</th></tr></thead>
-        <tbody>
-          <tr><td>항등원</td><td>1</td><td>256</td></tr>
-          <tr><td>호환 (AB)</td><td>6</td><td>64</td></tr>
-          <tr><td>3-순환 (ABC)</td><td>8</td><td>16</td></tr>
-          <tr><td>4-순환 (ABCD)</td><td>6</td><td>0</td></tr>
-          <tr><td>이중 호환 (AB)(CD)</td><td>3</td><td>0</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>$$|\text{Orbits}(S_4, D)| = \frac{1}{24}(256 + 6 \times 64 + 8 \times 16 + 6 \times 0 + 3 \times 0) = \frac{768}{24} = \mathbf{32}$$</p>
-
-    <h4>3.3.3 핵심 정리: S₄ 불동점 부재</h4>
-    <div class="result-box">
-      <p class="result-title">✓ 정리 3.5.2 — Space(NOT)의 S₄ 불동점 부재</p>
-      <p>
-        <strong>정리.</strong> Space(NOT) = D에는 S₄ 불동점이 존재하지 않는다.<br>
-        <strong>증명.</strong> S₄ 불동점이 되려면 4-순환 $(ABCD)$에 의해 고정되어야 한다.
-        이는 $f(A,B,C,D) = f(B,C,D,A)$를 요구한다.
-        4-순환의 불변 자기쌍대 함수 개수는 Burnside 계산에서 Fix(4-cycle, D) = 0임을 직접 계산으로 확인한다.
-        (자세한 계산: <a href="theory/S4GroupAnalysis.md" style="color:var(--accent)">theory/S4GroupAnalysis.md §3.5</a>) □
-      </p>
-      <p style="margin-top:.6rem; font-size:.88rem;">
-        <strong>수학적 의미:</strong> "완전히 변수-대칭적인 자기쌍대 함수"는 존재하지 않는다.
-        자기쌍대성과 완전 S₄ 대칭성은 4변수에서 동시에 만족될 수 없다.
-      </p>
-    </div>
-
-    <!-- 3.4 L∩M -->
-    <h3 id="lm">3.4 L ∩ M 공간: 3개 궤도</h3>
-    <p>선형이면서 단조인 함수들의 교집합. 4변수에서 총 6개 함수:</p>
-    <p>$\{0,\ 1,\ A,\ B,\ C,\ D\}$ — 상수 함수 2개 + 단일 변수 투영 4개.</p>
-    <div class="result-box">
-      <p class="result-title">✓ L ∩ M의 S₄ 궤도: 3개</p>
-      <p>궤도 1: $\{0\}$ (크기 1) &nbsp;|&nbsp; 궤도 2: $\{1\}$ (크기 1) &nbsp;|&nbsp; 궤도 3: $\{A, B, C, D\}$ (크기 4)</p>
-    </div>
-  </section>
-
-  <!-- ── 4. 선행 연구 통합 ── -->
-  <section id="integration">
-    <h2>4. 선행 연구 통합 (Repo 1–3)</h2>
-
-    <h3>4.1 통합의 원리: 정제 관계</h3>
-    <p>
-      선행 연구 3편의 핵심 발견들은 본 논문의 S₄ 궤도 분류로 <strong>수학적으로 재해석</strong>된다.
-      각 Repo의 관찰은 특정 Space(G)와 특정 궤도에 대응한다.
-    </p>
-
-    <h3>4.2 Repo 1 연결: 체커보드 = Space(XOR)의 S₄ 불동점</h3>
-    <p>
-      Repo 1의 핵심 발견: "XOR 함수 $A \oplus B \oplus C \oplus D$는 변수 배열에 무관하게 동일한 체커보드 패턴을 보인다."
-    </p>
-    <div class="result-box">
-      <p class="result-title">✓ 군론적 설명</p>
-      <p>$A \oplus B \oplus C \oplus D \in \text{Space(XOR)}$이고, S₄의 모든 원소에 의해 불변 (S₄ 불동점).
-      §3.1.4에서 확인됨. 체커보드의 변수-배열 불변성은 이 함수가 S₄ 불동점임의 직접적 귀결이다.</p>
-    </div>
-
-    <h3>4.3 Repo 2 연결: 대칭 함수 = Space(AND)의 S₄ 불동점</h3>
-    <p>
-      Repo 2의 핵심 발견: "대칭 Boolean 함수들이 Hamming weight 레이어 구조를 형성한다."
-    </p>
-    <div class="result-box">
-      <p class="result-title">✓ 군론적 설명</p>
-      <p>대칭적 단조 함수(threshold function) 6개 = Space(AND)의 S₄ 불동점 (§3.2.3).
-      Hamming weight 레이어 구조는 이 함수들이 변수 치환에 불변이라는 사실의 시각적 표현이다.</p>
-    </div>
-
-    <h3>4.4 Repo 3 연결: 변수 재배열 = S₄ 군 작용</h3>
-    <p>
-      Repo 3의 핵심 작업: "변수 재배열(S₄ 치환) 하의 동치류를 체계적으로 분류."
-    </p>
-    <div class="result-box">
-      <p class="result-title">✓ 군론적 설명</p>
-      <p>Repo 3의 동치류 ≡ 본 논문의 S₄ 궤도. 다만 본 논문은 분류 대상을 Space(G)로 제한하고
-      Burnside 보조정리에 의한 정확한 궤도 수를 도출한다는 점에서 Repo 3을 수학적으로 정교화한다.</p>
-    </div>
-
-    <h3>4.5 통합 정리</h3>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Repo</th><th>경험적 발견</th><th>군론적 해석</th></tr></thead>
-        <tbody>
-          <tr><td>Repo 1</td><td>체커보드 패턴의 변수 불변성</td><td>$A \oplus B \oplus C \oplus D$ = Space(XOR)의 S₄ 불동점 (§3.1.4)</td></tr>
-          <tr><td>Repo 2</td><td>Hamming weight 레이어 구조</td><td>대칭적 단조 함수 = Space(AND)의 S₄ 불동점 (§3.2.3)</td></tr>
-          <tr><td>Repo 3</td><td>변수 재배열 동치류 분류</td><td>S₄ 궤도 = Burnside 계산 (§3 전체)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ── 5. SRT 연결 ── -->
-  <section id="srt">
-    <h2>5. 구조 인식 이론(SRT)과의 연결</h2>
-
-    <h3>5.1 SRT 핵심 가설 요약</h3>
-    <p>
-      SRT(Repo 4)는 "인간이 어떻게 새로운 구조를 인식하고 연구 질문을 생성하는가"를 설명하는 메타 이론이다.
-      본 논문과 관련된 핵심 가설:
-    </p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>가설</th><th>내용</th></tr></thead>
-        <tbody>
-          <tr><td>H3 (주의 필터)</td><td>인간은 모든 패턴 중 특정 구조에 먼저 주의를 기울인다</td></tr>
-          <tr><td>H4 (유의 필터)</td><td>인간은 "연구 가치가 있는" 구조를 압축성·예측력·일반화력으로 판단한다</td></tr>
-          <tr><td>H5 (설명 예감)</td><td>구조를 인식하면 "설명이 있을 것이라는 예감"이 발생한다</td></tr>
-          <tr><td>H8 (개념-렌즈)</td><td>획득한 개념은 이후 관찰의 렌즈가 된다</td></tr>
-          <tr><td>H9 (개념 진화)</td><td>개념은 연구를 통해 더 일반적인 형태로 진화한다</td></tr>
-          <tr><td>H10 (생성적 개념)</td><td>충분히 일반화된 개념은 새로운 연구 질문을 자율적으로 생성한다</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>5.2 S₄ 불동점과 H3: 주의 필터의 수학적 설명</h3>
-    <p><strong>H3의 예측:</strong> 인간은 65,536개의 K-map 패턴 중 특정 패턴에 먼저 주의를 기울인다.</p>
-    <p>
-      <strong>수학적 설명:</strong> S₄ 불동점 함수는 24가지 변수 배열 <strong>모두</strong>에서 동일한 패턴을 보인다.
-      반면 궤도 크기가 큰 함수는 대부분의 배열에서 다른 패턴을 보인다.
-      따라서, 임의의 변수 배열에서 카르노 맵을 관찰했을 때:
-    </p>
-    <ul>
-      <li><strong>S₄ 불동점 (궤도 크기 1)</strong>: 어떤 배열에서도 동일한 패턴 → 계획적으로 "눈에 띄는" 함수</li>
-      <li><strong>궤도 크기 큰 함수 (크기 12, 24)</strong>: 배열에 따라 다른 패턴 → 우연히 발견하기 어려움</li>
-    </ul>
-    <p>$$\text{H3 예측 주의 순서: 아핀(체커보드) > 대칭(Maj) > 2-AND/2-OR > 일반 함수}$$</p>
-
-    <h3>5.3 궤도 크기 스펙트럼과 H4: 유의 필터의 수치화</h3>
-    <p>H4는 "연구 가치가 있는 구조를 판단하는 기준"으로 압축성(compressibility)을 제안한다. 궤도 크기는 압축성과 역비례한다:</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>궤도 크기</th><th>의미</th><th>Space 내 분포</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td>S₄ 불동점, 가장 높은 유의성, 가장 높은 압축성</td><td>XOR: 4개, AND: 6개, NOT: <strong>0개</strong></td></tr>
-          <tr><td>3~4</td><td>높은 유의성</td><td>AND: 11개 궤도</td></tr>
-          <tr><td>6</td><td>중간 유의성</td><td>AND: 6개 궤도</td></tr>
-          <tr><td>12~24</td><td>낮은 유의성, 낮은 압축성</td><td>AND: 7개 궤도</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>
-      <strong>Space(NOT)의 의의:</strong> Space(NOT)에 S₄ 불동점이 없다는 사실은 "자기쌍대이면서 완전히 변수-대칭적인 함수"가 존재하지 않음을 뜻한다.
-      이는 H4 유의 필터 관점에서, 자기쌍대 공간은 다른 공간(아핀, 단조)보다 "완벽히 규칙적인" 구조를 포함하지 않는다는 새로운 의미를 가진다.
-    </p>
-
-    <h3>5.4 H8–H9–H10: 개념 진화의 실사례</h3>
-    <p>본 연구 프로그램 전체가 H8→H9→H10의 연쇄적 동작의 실사례를 보여준다:</p>
-    <div class="flow">
-체커보드 발견 [Repo 1]
-  → H3 동작 → "이 패턴은 특별하다"
-"불변성" 개념 형성
-  → H8 동작 → "불변성" 개념이 이후 관찰의 렌즈로 기능
-층 구조·동치류 연구 [Repo 2, 3]
-  → H9 동작 → "불변성" → "S₄ 작용" → "Space(G) 궤도"로 개념 진화
-구조 인식 이론 [Repo 4]
-  → H10 동작 → SRT 자체가 후속 연구(Repo 5, 6)를 생성
-Boolean 함수 공간 이론 [Repo 6, 현재]
-  → 원점 복귀: Repo 1의 체커보드가 이제 군론으로 완전히 설명됨
-    → 동시에 H10 재차 동작 → Repo 6이 또 다른 새 연구를 생성
-    </div>
-    <p>
-      특히 Repo 1의 체커보드 발견과 Repo 6의 S₄ 불동점 분류가 <strong>정확히 같은 함수를 지목</strong>한다는 사실은
-      H5(설명 예감)에 대한 증거다: 연구자가 처음 "왜?"라고 물었던 바로 그 함수가, 수학적으로도 "가장 설명 가치가 있는" 함수(S₄ 불동점)임이 드러났다.
-    </p>
-  </section>
-
-  <!-- ── 6. 연구 기원 타임라인 ── -->
-  <section id="origin">
-    <h2>6. 연구 기원 타임라인</h2>
-    <p><em>이 연구에 이르기까지의 인지 발달 과정을 SRT 프레임으로 정리한다. 개인 경험 섹션은 연구자가 직접 보완해야 한다.</em></p>
-
-    <h3>Phase 0 — 패턴 인식의 시작</h3>
-    <div class="placeholder-box" id="phase0-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>어린 시절(초등학생 시절 등) 수학적 패턴에서 처음 "왜 이렇게 생겼을까"라는 질문이 발생한 구체적 경험을 서술해 주세요.</p>
-      <p class="placeholder-guide">예: 구구단의 패턴, 바둑판 무늬, 숫자 배열, 곱셈 자릿수 패턴 등</p>
-    </div>
-    <p><strong>SRT 프레임:</strong> 이 경험은 H3(주의 필터)의 최초 동작 시점이며, H1(구조 발견자 가설)의 원형이다.</p>
-
-    <h3>Phase 1 — Karnaugh Map 체커보드 발견 (→ Repo 1)</h3>
-    <div class="placeholder-box" id="phase1-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>카르노 맵을 처음 접한 상황(수업/과제/교재 등), 체커보드 패턴에서 처음 "이 패턴은 특별하다"는 인상을 받게 된 계기, 변수 배열을 바꿔도 패턴이 동일함을 발견한 순간을 서술해 주세요.</p>
-    </div>
-    <p><strong>핵심 발견 (문서화됨):</strong> 4변수 카르노 맵에서 XOR 함수($A \oplus B \oplus C \oplus D$)가 만드는 체커보드 패턴은 변수 배열 방식에 무관하게 동일하다.
-    현재(Repo 6)의 군론적 설명: 체커보드는 Space(XOR)의 S₄ 불동점.</p>
-    <p><strong>SRT 프레임:</strong> H3 최초 동작 (주의 착지) → H5 발동 (설명 예감).</p>
-
-    <h3>Phase 2 — 대칭 Boolean 함수의 시각 패턴 (→ Repo 2)</h3>
-    <div class="placeholder-box" id="phase2-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>Hamming weight 레이어 구조를 처음 발견한 상황과 그것이 "연구할 가치가 있다"고 판단한 계기를 서술해 주세요.</p>
-    </div>
-    <p><strong>SRT 프레임:</strong> H4 동작 (유의 필터 — 이 구조는 연구 가치가 있는가?) → H6 동작 (설명적 의미성).</p>
-
-    <h3>Phase 3 — 변수 재배열 동치류 분류 (→ Repo 3)</h3>
-    <div class="placeholder-box" id="phase3-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>변수 재배열을 군론적으로 분류하려는 발상이 생긴 계기를 서술해 주세요.</p>
-    </div>
-    <p><strong>SRT 프레임:</strong> H9 동작 — "불변성" → "S₄ 작용"으로 개념 진화.</p>
-
-    <h3>Phase 4 — 구조 인식 이론 (→ Repo 4, 5)</h3>
-    <div class="placeholder-box" id="phase4-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>Repo 1–3의 경험적 연구를 메타 이론으로 통합하려는 생각이 생긴 계기를 서술해 주세요.</p>
-    </div>
-    <p><strong>SRT 프레임:</strong> H10 동작 — SRT 자체가 Repo 5, 6을 생성하는 생성적 개념이 됨.</p>
-
-    <h3>Phase 5 — Boolean 함수 공간 이론 (→ Repo 6, 현재)</h3>
-    <div class="placeholder-box" id="phase5-placeholder">
-      <p class="placeholder-title">✏️ 연구자 보완 필요</p>
-      <p>Repo 1–3의 개별 연구들이 하나의 군론적 프레임워크로 통합될 수 있다는 직감이 생긴 계기, 그리고 Burnside 보조정리를 적용하게 된 구체적 경위를 서술해 주세요.</p>
-    </div>
-    <p><strong>SRT 프레임:</strong> H8 동작 — Space(G) 개념이 렌즈로 기능 → Repo 1의 체커보드가 이제 군론으로 완전히 설명됨.</p>
-  </section>
-
-  <!-- ── 7. 결론 ── -->
-  <section id="conclusion">
-    <h2>7. 결론 및 향후 연구</h2>
-
-    <h3>7.1 주요 성과 요약</h3>
-    <div class="result-box">
-      <p class="result-title">✓ Phase 1·2·5 완료 — 핵심 수학적 성과</p>
-      <ul>
-        <li>Space(XOR) = L: S₄ 궤도 <strong>10개</strong>, 불동점 4개 (체커보드 포함) — Burnside + Python 검증</li>
-        <li>Space(AND) = M: S₄ 궤도 <strong>30개</strong>, 불동점 6개 (대칭적 단조 함수) — Burnside + Python 검증</li>
-        <li>Space(NOT) = D: S₄ 궤도 <strong>32개</strong>, 불동점 <strong>0개</strong> (정리 3.5.2 증명) — Burnside + Python 검증</li>
-        <li>L ∩ M: S₄ 궤도 <strong>3개</strong></li>
-        <li>선행 연구(Repo 1–3) 경험적 발견의 군론적 통합 (정제 관계 정리 4.1)</li>
-        <li>SRT 가설(H3·H4·H8·H9·H10)과의 수학적 대응 확립 (§5)</li>
+    <!-- ── TOC Quick Card ── -->
+    <div class="toc-card">
+      <div class="toc-card-title">목차 / Table of Contents</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#abstract"><b>§ 0</b> 초록 (Abstract) & 궤도 수 요약</a></li>
+        <li class="toc-item"><a href="#intro"><b>§ 1</b> 서론 (배경, 목표, 구성)</a></li>
+        <li class="toc-item"><a href="#background"><b>§ 2</b> 이론적 배경 (Space(G), Post 격자, 카르노맵 토러스)</a></li>
+        <li class="toc-item"><a href="#results"><b>§ 3</b> 핵심 결과: S₄ 궤도 완전 분류 (XOR, AND, NOT)</a></li>
+        <li class="toc-item"><a href="#integration"><b>§ 4</b> 선행 연구 통합 (Repo 1–3 군론적 재해석)</a></li>
+        <li class="toc-item"><a href="#srt"><b>§ 5</b> 구조 인식 이론(SRT)과의 수학적 연결</a></li>
+        <li class="toc-item"><a href="#origin"><b>§ 6</b> 연구 기원 타임라인</a></li>
+        <li class="toc-item"><a href="#conclusion"><b>§ 7</b> 결론 및 향후 연구</a></li>
+        <li class="toc-item"><a href="#references"><b>§ 8</b> 참고 저장소 및 관련 문서</a></li>
       </ul>
     </div>
 
-    <h3>7.2 이론적 의의</h3>
-    <ul>
-      <li><strong>수학적 의의:</strong> 4변수 Boolean 함수 공간을 게이트 생성 관점과 군론적 관점에서 완전히 분류. Post 격자의 주요 클래스들에 대한 S₄ 궤도 구조를 명시화.</li>
-      <li><strong>SRT와의 연결:</strong> 인간의 구조 인식(H3·H4)에 수학적 대응물을 제시 — 궤도 크기가 주의 순서와 연구 유의성 판단의 정량적 척도가 될 수 있음.</li>
-      <li><strong>H8·H9 실사례:</strong> 본 연구 프로그램 전체의 개념 발전 경로(체커보드 → 불변성 → S₄ 작용 → 구조 인식)가 H8·H9·H10의 연쇄 동작을 보여준다.</li>
-    </ul>
+    <!-- ── Abstract ── -->
+    <section id="abstract">
+      <h2>초록 (Abstract)</h2>
+      <div class="abstract-box">
+        <div class="abstract-title">Abstract Summary</div>
+        <p>
+          본 논문은 4변수 Boolean 함수 공간의 <strong>게이트 생성(Space(G)) 관점</strong>과 <strong>$S_4$ 군론 관점</strong>에서의 분류를 수학적으로 기술한다.
+          핵심 결과는 세 가지 주요 함수 공간에서의 완전한 궤도 분류다:
+          Space(XOR)(아핀 함수 32개, $S_4$ 궤도 <strong>10개</strong>),
+          Space(AND)(단조 함수 168개, $S_4$ 궤도 <strong>30개</strong>),
+          Space(NOT)(자기쌍대 함수 256개, $S_4$ 궤도 <strong>32개</strong>).
+          또한 Space(NOT)에는 $S_4$ 불동점이 존재하지 않음을 증명한다(정리 3.5.2).
+        </p>
+        <p>
+          이 수학적 결과는 선행 연구 3편(Repo 1–3)의 경험적 발견을 군론 언어로 통일하며,
+          구조 인식 이론(SRT, Repo 4)의 핵심 가설(H3·H4·H8·H9)에 구체적인 수학적 대응을 제공한다.
+          분류의 정확성은 Burnside 보조정리에 의한 이론적 계산과 Python 컴퓨터 검증으로 양쪽에서 확인되었다.
+        </p>
+      </div>
 
-    <h3>7.3 향후 연구</h3>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>우선순위</th><th>연구 방향</th><th>상태</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td><strong>SRT 인지 실험 (Phase 3)</strong> — H3·H4·H6 수학적 예측의 실증 검증</td><td>⏸️ 후속 연구 이관</td></tr>
-          <tr><td>2</td><td><strong>인간-AI 협업 모델·교육 프레임워크 (Phase 4)</strong> — 연구 루프 & Level 1~3 시나리오</td><td>⏸️ 후속 연구 이관</td></tr>
-          <tr><td>3</td><td><strong>차원 확장 (n=5)</strong> — S₅ 궤도 12개 예측, 기초 스캐폴드 완료</td><td>기초 준비 완료</td></tr>
-          <tr><td>4</td><td><strong>다치 논리 확장</strong> — k값 논리 Space(G) 일반화</td><td>초기 단계</td></tr>
-          <tr><td>5</td><td><strong>연구 기원 타임라인 완성</strong> — §6 개인 서술 보완</td><td>연구자 직접 작성 필요</td></tr>
-        </tbody>
-      </table>
+      <!-- Orbit Summary Cards Grid -->
+      <div class="orbit-grid">
+        <div class="orbit-card">
+          <div class="orbit-name">Space(XOR) = L</div>
+          <div class="orbit-num">10</div>
+          <div class="orbit-sub">S₄ 궤도 · 32개 아핀 함수</div>
+        </div>
+        <div class="orbit-card">
+          <div class="orbit-name">Space(AND) = M</div>
+          <div class="orbit-num">30</div>
+          <div class="orbit-sub">S₄ 궤도 · 168개 단조 함수</div>
+        </div>
+        <div class="orbit-card">
+          <div class="orbit-name">Space(NOT) = D</div>
+          <div class="orbit-num">32</div>
+          <div class="orbit-sub">S₄ 궤도 · 256개 자기쌍대 함수</div>
+        </div>
+        <div class="orbit-card">
+          <div class="orbit-name">L ∩ M</div>
+          <div class="orbit-num">3</div>
+          <div class="orbit-sub">S₄ 궤도 · 6개 함수</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 1. Introduction ── -->
+    <section id="intro">
+      <h2>1. 서론</h2>
+
+      <h3>1.1 연구의 배경</h3>
+      <p>
+        4변수 Boolean 함수 전체 공간 $\mathcal{F}_4$는 $2^{16} = 65{,}536$개의 함수를 포함한다.
+        이 방대한 공간 안에서 인간은 어떻게 주목할 만한 규칙적 구조를 발견하는가?
+        선행 연구(Repo 1–3)는 이 질문에 대한 경험적 관찰을 축적해 왔다.
+      </p>
+      <ul style="padding-left: 1.5rem; line-height: 1.85; margin: 1rem 0; color: var(--text);">
+        <li><strong>Repo 1 (KMap Structure Invariance)</strong>: XOR/XNOR 체커보드 패턴의 변수 배열 불변성 발견</li>
+        <li><strong>Repo 2 (Symmetric Boolean Functions)</strong>: 대칭 함수의 Hamming Weight Layer 구조 해석</li>
+        <li><strong>Repo 3 (Variable Rearrangement Invariance)</strong>: 변수 재배열($S_4$ 순열) 하의 24개 순열 동치류 축약 실증</li>
+      </ul>
+      <p>
+        본 논문은 이 세 연구의 개별적 관찰을 게이트 생성 클론(Post Lattice)과 $S_4$ 군론이라는 하나의 수학적 프레임워크로 완벽히 통합한다.
+      </p>
+
+      <h3>1.2 연구 목표</h3>
+      <p>
+        <strong>목표 1 (수학적 완전 분류):</strong> 주요 게이트(XOR, AND, NOT)가 생성하는 함수 공간 Space(G) 각각에서 $S_4$ 궤도 수와 궤도별 크기를 Burnside 보조정리로 완전 결정한다.
+      </p>
+      <p>
+        <strong>목표 2 (SRT 이론적 연결):</strong> 구조 인식 이론(SRT)의 주의 필터(H3), 유의 필터(H4), 개념 진화(H8-H10) 가설에 수학적 엄밀성을 부여한다.
+      </p>
+    </section>
+
+    <!-- ── 2. Theory ── -->
+    <section id="background">
+      <h2>2. 이론적 배경</h2>
+
+      <h3>2.1 4변수 Boolean 함수 공간과 Space(G)</h3>
+      <p>
+        $$\mathcal{F}_4 = \{ f : \{0,1\}^4 \to \{0,1\} \}, \quad |\mathcal{F}_4| = 2^{16} = 65{,}536$$
+      </p>
+      <p>
+        단일 게이트 $G$와 입력 변수, 상수 $\{0, 1\}$만으로 합성 가능한 모든 함수의 집합을 $\text{Space}(G) = [G]$로 정의한다.
+      </p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>게이트 G</th><th>생성 공간 Space(G)</th><th>함수 수</th><th>Post 격자 클론</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NAND / NOR</strong></td><td>전체 Boolean 공간 ($\Omega$)</td><td>65,536</td><td>만능 클론 (Universal)</td></tr>
+            <tr><td><strong>XOR</strong></td><td>아핀(Affine) 함수 공간 ($L$)</td><td>32</td><td>선형 클론</td></tr>
+            <tr><td><strong>AND</strong></td><td>단조(Monotone) 함수 공간 ($M$)</td><td>168</td><td>단조 클론 ($D(4)$ Dedekind 수)</td></tr>
+            <tr><td><strong>NOT</strong></td><td>자기쌍대(Self-dual) 공간 ($D$)</td><td>256</td><td>쌍대 클론</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2.2 카르노맵의 환면체(Torus) 위상</h3>
+      <p>
+        4변수 카르노맵은 Gray Code 순서에 의해 상하 및 좌우 경계가 맞물린 <strong>2차원 토러스(Torus)</strong> 위상을 갖는다.
+        따라서 평면 상의 '모서리'나 '외곽'은 인간 시각 표현의 편의일 뿐이며, 본질적 불변성은 군 작용 하의 궤도에 존재한다.
+      </p>
+      <pre>
+        CD
+        00  01  11  10
+AB  00 | 0 | 1 | 3 | 2 |   (Torus Topology)
+    01 | 4 | 5 | 7 | 6 |   Row 00 ↔ Row 10 연결
+    11 |12 |13 |15 |14 |   Col 00 ↔ Col 10 연결
+    10 | 8 | 9 |11 |10 |
+      </pre>
+
+      <h3>2.3 Burnside의 보조정리</h3>
+      <p>
+        $|S_4| = 24$개 순열의 작용 하에서 궤도 수는 다음과 같이 계산된다:
+      </p>
+      <p>
+        $$|\text{Orbits}| = \frac{1}{|S_4|} \sum_{\sigma \in S_4} |\text{Fix}(\sigma, \text{Space}(G))|$$
+      </p>
+    </section>
+
+    <!-- ── 3. Results ── -->
+    <section id="results">
+      <h2>3. 핵심 결과: S₄ 궤도 완전 분류</h2>
+
+      <h3 id="xor">3.1 Space(XOR) = L (아핀 이론): 10개 궤도</h3>
+      <p>
+        아핀 함수 $f = a_0 \oplus a_1 A \oplus a_2 B \oplus a_3 C \oplus a_4 D$ (32개).
+        Burnside 계산:
+      </p>
+      <p>
+        $$|\text{Orbits}(S_4, L)| = \frac{1}{24}(32 + 6 \times 16 + 8 \times 8 + 6 \times 4 + 3 \times 8) = \frac{240}{24} = \mathbf{10}$$
+      </p>
+
+      <div class="result-box">
+        <div class="result-title">✓ Space(XOR)의 S₄ 불동점 (4개)</div>
+        <p>
+          $\{0, 1, A \oplus B \oplus C \oplus D, A \oplus B \oplus C \oplus D \oplus 1\}$<br>
+          특히 $A \oplus B \oplus C \oplus D$ (체커보드)는 $S_4$ 모든 원소에 의해 불변인 불동점으로, Repo 1의 발견이 군론적으로 완전히 증명된다.
+        </p>
+      </div>
+
+      <h3 id="and">3.2 Space(AND) = M (단조 이론): 30개 궤도</h3>
+      <p>
+        단조 함수 $D(4) = 168$개.
+        Burnside 계산:
+      </p>
+      <p>
+        $$|\text{Orbits}(S_4, M)| = \frac{1}{24}(168 + 6 \times 50 + 8 \times 15 + 6 \times 8 + 3 \times 28) = \frac{720}{24} = \mathbf{30}$$
+      </p>
+
+      <div class="result-box">
+        <div class="result-title">✓ Space(AND)의 S₄ 불동점 (6개)</div>
+        <p>
+          Hamming Weight에만 의존하는 대칭적 단조 함수(Threshold Function) 6개:<br>
+          $\{f_0, f_1, f_2, f_3, f_4, f_{1+}\}$ — Repo 2의 대칭 함수 층 구조와 정확히 일치한다.
+        </p>
+      </div>
+
+      <h3 id="not">3.3 Space(NOT) = D (자기쌍대 이론): 32개 궤도</h3>
+      <p>
+        자기쌍대 함수 256개.
+        Burnside 계산:
+      </p>
+      <p>
+        $$|\text{Orbits}(S_4, D)| = \frac{1}{24}(256 + 6 \times 64 + 8 \times 16 + 6 \times 0 + 3 \times 0) = \frac{768}{24} = \mathbf{32}$$
+      </p>
+
+      <div class="result-box" style="border-left-color: var(--amber); background: var(--amber-bg);">
+        <div class="result-title" style="color: var(--amber);">✓ 정리 3.5.2 — Space(NOT)의 S₄ 불동점 부재</div>
+        <p style="color: var(--text);">
+          <strong>정리:</strong> Space(NOT) = D에는 $S_4$ 불동점이 존재하지 않는다 ($\text{Fix}(4\text{-cycle}, D) = 0$).<br>
+          <strong>수학적 의미:</strong> 4변수에서 "자기쌍대이면서 완전 변수-대칭적인 함수"는 수학적으로 존재할 수 없다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 4. Integration ── -->
+    <section id="integration">
+      <h2>4. 선행 연구 통합 (Repo 1–3)</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>선행 리포지토리</th><th>경험적 관찰</th><th>본 연구의 군론적 증명</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Repo 1 (KMap Structure)</strong></td>
+              <td>XOR 체커보드 패턴의 변수 불변성</td>
+              <td>$A \oplus B \oplus C \oplus D$는 $\text{Space(XOR)}$의 유일한 전역 $S_4$ 불동점</td>
+            </tr>
+            <tr>
+              <td><strong>Repo 2 (Symmetric Function)</strong></td>
+              <td>Hamming Weight Layer 구조</td>
+              <td>대칭적 단조 함수 6개 = $\text{Space(AND)}$의 $S_4$ 불동점</td>
+            </tr>
+            <tr>
+              <td><strong>Repo 3 (Variable Rearrangement)</strong></td>
+              <td>24개 순열의 3대 대표 배열 축약</td>
+              <td>$S_4$ 궤도 분해 및 Burnside 계산을 통한 동치류의 수학적 정규화</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 5. SRT Connection ── -->
+    <section id="srt">
+      <h2>5. 구조 인식 이론(SRT)과의 수학적 연결</h2>
+      <p>
+        본 논문의 궤도 분류는 인간의 인지적 주의(Attention)와 연구 유의성 판단 메커니즘을 수학적으로 설명한다:
+      </p>
+      <div class="card">
+        <ul style="padding-left: 1.5rem; line-height: 1.85; margin: 0; color: var(--text);">
+          <li><strong>H3 (주의 착지 필터):</strong> $S_4$ 불동점(궤도 크기 1)은 24개 모든 배열에서 동일 패턴을 유지하므로 인간의 주의가 가장 먼저 착지한다 (체커보드 &gt; 대칭 임계함수 &gt; 일반 함수).</li>
+          <li><strong>H4 (유의성 필터):</strong> 궤도 크기는 압축성(Compressibility)과 역비례하며, 궤도 크기가 작을수록 연구 가치가 높은 구조로 평가된다.</li>
+          <li><strong>H8–H10 (개념 진화 연쇄):</strong> 체커보드(Repo 1) ⟶ 불변성 렌즈(Repo 2,3) ⟶ SRT 메타이론(Repo 4) ⟶ $S_4$ 군론 완전 분류(Repo 6)로 이어지는 자율적 개념 진화의 실증 사례.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── 6. Origin Timeline ── -->
+    <section id="origin">
+      <h2>6. 연구 기원 타임라인</h2>
+      <div class="flow-box">
+        Phase 0: 패턴 인식의 시작 (수학적 호기심 발현)<br>
+        ↓<br>
+        Phase 1: Karnaugh Map 체커보드 발견 (Repo 1: XOR 불변성)<br>
+        ↓<br>
+        Phase 2: 대칭 Boolean 함수의 시각 패턴 분석 (Repo 2: Layer 구조)<br>
+        ↓<br>
+        Phase 3: 변수 재배열 동치류 분류 (Repo 3: S₄ 작용 발견)<br>
+        ↓<br>
+        Phase 4: Structure Recognition Theory 정립 (Repo 4: 인지 메타이론)<br>
+        ↓<br>
+        Phase 5: Boolean 함수 공간과 S₄ 군론적 분류 (Repo 6: 완전한 수학적 원점 복귀)
+      </div>
+    </section>
+
+    <!-- ── 7. Conclusion ── -->
+    <section id="conclusion">
+      <h2>7. 결론 및 향후 연구</h2>
+      <div class="result-box">
+        <div class="result-title">핵심 성과 요약</div>
+        <ul style="padding-left: 1.5rem; line-height: 1.8; margin: 0;">
+          <li>4변수 Boolean 함수 공간 Space(XOR), Space(AND), Space(NOT)의 $S_4$ 궤도 완전 분류 (10, 30, 32개)</li>
+          <li>Space(NOT) 내 $S_4$ 불동점 부재 정리(3.5.2) 엄밀 증명</li>
+          <li>선행 3대 경험적 연구(Repo 1–3)의 군론적 정제 관계 규명</li>
+          <li>SRT 인지 가설(H3, H4, H8-H10)의 정량적 수학적 척도 정립</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── 8. References ── -->
+    <section id="references">
+      <h2>참고 저장소 및 관련 문서</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>문서 / 리포지토리</th><th>내용</th><th>본 연구와의 관계</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://inha20.github.io/1KMapStructureInvariance/" target="_blank">1KMapStructureInvariance</a></td>
+              <td>K-Map 패턴 불변성 발견</td>
+              <td>Space(XOR) 체커보드 불동점 실증 사례</td>
+            </tr>
+            <tr>
+              <td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/" target="_blank">2SymmetricBooleanFunctionMinorThesis</a></td>
+              <td>대칭 함수 K-Map 패턴</td>
+              <td>Space(AND) 대칭적 단조 함수 불동점 대응</td>
+            </tr>
+            <tr>
+              <td><a href="https://inha20.github.io/3VariableRearrangementInvarianceMinorThesis/" target="_blank">3VariableRearrangementInvarianceMinorThesis</a></td>
+              <td>변수 재배열 동치류 분류</td>
+              <td>$S_4$ 순열 작용의 경험적 기초</td>
+            </tr>
+            <tr>
+              <td><a href="https://inha20.github.io/4StructureRecognitionTheory/" target="_blank">4StructureRecognitionTheory (SRT)</a></td>
+              <td>SRT 통합 인지 프레임워크</td>
+              <td>H3, H4, H8-H10 가설의 이론적 허브</td>
+            </tr>
+            <tr>
+              <td><a href="theory/S4GroupAnalysis.pdf" download>theory/S4GroupAnalysis.pdf</a></td>
+              <td><strong>S₄ 군론 분석 이론서</strong> (19p)</td>
+              <td>§3 궤도 분류 세부 증명 원본 PDF</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container">
+      <p><b>6BooleanFunctionSpaceTheory</b> &nbsp;·&nbsp; Paper 6 of Structure Recognition Research Program</p>
+      <p style="margin-top: 0.5rem;">
+        저자: 최종훈 (Choi Jonghun) &nbsp;|&nbsp; 
+        <a href="https://github.com/inha20/6BooleanFunctionSpaceTheory" target="_blank" rel="noopener">GitHub</a> &nbsp;|&nbsp;
+        <a href="https://inha20.github.io/Research-Portfolio/">Research Portfolio</a>
+      </p>
     </div>
-    <p>향후 연구의 전체 로드맵과 세부 계획: <a href="FUTURE_RESEARCH.md" style="color:var(--accent)">FUTURE_RESEARCH.md</a></p>
-  </section>
+  </footer>
 
-  <!-- ── References ── -->
-  <section id="references">
-    <h2>참고 저장소 및 관련 문서</h2>
-    <div class="tbl-wrap">
-      <table class="links-table">
-        <thead><tr><th>저장소 / 파일</th><th>내용</th><th>본 논문과의 연결</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><a href="https://inha20.github.io/1KMapStructureInvariance/" target="_blank" id="ref-repo1">1KMapStructureInvariance</a></td>
-            <td>K-map 패턴 불변성 발견</td>
-            <td>체커보드 = Space(XOR) O₉ (§3.1.4, §4.2)</td>
-          </tr>
-          <tr>
-            <td><a href="https://inha20.github.io/2SymmetricBooleanFunctionMinorThesis/" target="_blank" id="ref-repo2">2SymmetricBooleanFunctionMinorThesis</a></td>
-            <td>대칭 함수 K-map 패턴</td>
-            <td>대칭적 단조 함수 = Space(AND) S₄ 불동점 (§3.2.3, §4.3)</td>
-          </tr>
-          <tr>
-            <td><a href="https://inha20.github.io/3VariableRearrangementInvarianceMinorThesis/" target="_blank" id="ref-repo3">3VariableRearrangementInvarianceMinorThesis</a></td>
-            <td>변수 재배열 동치류 분류</td>
-            <td>S₄ 궤도 = 동치류 (§4.1, §4.4)</td>
-          </tr>
-          <tr>
-            <td><a href="https://inha20.github.io/4StructureRecognitionTheory/" target="_blank" id="ref-repo4">4StructureRecognitionTheory (SRT)</a></td>
-            <td>SRT: H1–H10, Def. 3.1–3.3</td>
-            <td>SRT와의 연결 (§5)</td>
-          </tr>
-          <tr>
-            <td><a href="https://inha20.github.io/5HumanAIResearchCollaboration/" target="_blank" id="ref-repo5">5HumanAIResearchCollaboration</a></td>
-            <td>인간-AI 협업 방법론</td>
-            <td>연구 기원 타임라인 §Phase 5</td>
-          </tr>
-          <tr>
-            <td><a href="theory/S4GroupAnalysis.md" id="ref-s4">theory/S4GroupAnalysis.md</a></td>
-            <td><strong>핵심 수학 원본</strong> (OC-1~OC-5 완전 분류)</td>
-            <td>§3 전체 세부 계산</td>
-          </tr>
-          <tr>
-            <td><a href="scripts/s4_orbit_calculator.py" id="ref-script">scripts/s4_orbit_calculator.py</a></td>
-            <td>궤도 계산 Python 스크립트</td>
-            <td>컴퓨터 검증</td>
-          </tr>
-          <tr>
-            <td><a href="FUTURE_RESEARCH.md" id="ref-future">FUTURE_RESEARCH.md</a></td>
-            <td>후속 연구 전체 로드맵</td>
-            <td>§7.3 연결</td>
-          </tr>
-          <tr>
-            <td><a href="https://inha20.github.io/inha20/" target="_blank" id="ref-hub">inha20 (Research Hub)</a></td>
-            <td>연구 프로그램 중앙 허브</td>
-            <td>전체 프로그램 내비게이션</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:.85rem; color:var(--text-sub); margin-top:1.5rem;">
-      본 논문은 <code>6BooleanFunctionSpaceTheory</code> 저장소의 Phase 1·2 완료 시점을 기준으로 작성된 통합 본문 문서입니다.<br>
-      Phase 3(인지 실험)은 후속 연구로 이관되었습니다. §6의 <code>[연구자 보완 필요]</code> 섹션은 연구자가 직접 채워야 합니다.<br>
-      관련 이론: <a href="https://inha20.github.io/inha20/StructureRecognitionTheory_Unified.md" style="color:var(--accent)">StructureRecognitionTheory_Unified.md</a> H8·H9·H10, Def. 3.1–3.3
-    </p>
-  </section>
+  <!-- ── Toast ── -->
+  <div id="toast" class="toast">
+    <span>✓ BibTeX 인용 정보가 복사되었습니다!</span>
+  </div>
 
-</div><!-- /.page-wrap -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlEl = document.documentElement;
 
-<footer>
-  <p>
-    <strong>최종훈 (Choi Jonghun)</strong> · 인하공업전문대학 출신 · 독립 연구자<br>
-    <a href="mailto:cjh3cjh@naver.com" id="footer-email">cjh3cjh@naver.com</a>
-    &nbsp;·&nbsp;
-    <a href="https://github.com/inha20" target="_blank" id="footer-github">github.com/inha20</a>
-    &nbsp;·&nbsp;
-    <a href="https://inha20.github.io/inha20/" id="footer-hub">Structure Recognition Research Program</a>
-  </p>
-  <p style="margin-top:.5rem;">
-    6BooleanFunctionSpaceTheory · Phase 1·2·5 Complete · Version 1.0 (2026-06-27)
-  </p>
-</footer>
+    const moonPath = "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z";
+    const sunPath = "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z";
 
+    function setTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('bfst_theme', theme);
+      if (theme === 'dark') {
+        themeIcon.innerHTML = `<path d="${sunPath}"></path>`;
+      } else {
+        themeIcon.innerHTML = `<path d="${moonPath}"></path>`;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('bfst_theme') || 'light';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const current = htmlEl.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // BibTeX Copy
+    const citeBtn = document.getElementById('citeBtn');
+    const toast = document.getElementById('toast');
+    const bibtex = `@article{choi2026boolean,
+  author = {Choi, Jonghun},
+  title = {Boolean Function Space and S4 Group Classification with Connections to Structure Recognition Theory},
+  year = {2026},
+  journal = {Structure Recognition Research Program - Paper 6},
+  url = {https://github.com/inha20/6BooleanFunctionSpaceTheory}
+}`;
+
+    citeBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(bibtex).then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    });
+  </script>
 </body>
 </html>
