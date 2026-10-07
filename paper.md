@@ -88,10 +88,10 @@ $$\text{Space}(G) = \{ f \in \mathcal{F}_4 \mid f\text{는 게이트 }G\text{와
 
 | 클래스 | 조건 | Space(G) 대응 |
 |-------|-----|-------------|
-| T₀ | 0을 보존 | Space(AND) ⊆ T₀ |
-| T₁ | 1을 보존 | Space(AND) ⊆ T₁ |
+| T₀ | 0을 보존 | (정정 2026-10-08) 상수 1을 포함하는 Space(AND)는 T₀의 부분집합이 아님 |
+| T₁ | 1을 보존 | (정정 2026-10-08) 상수 0을 포함하는 Space(AND)는 T₁의 부분집합이 아님 |
 | S  | 자기쌍대 | Space(NOT) = D |
-| M  | 단조 | Space(AND) = M ∩ T₀ ∩ T₁ |
+| M  | 단조 | Space(AND) = M (상수 0, 1 포함, 168개) |
 | L  | 선형(아핀) | Space(XOR) = L |
 
 NAND는 5가지 클래스 중 어느 것도 보존하지 않으므로 만능 게이트이다.
@@ -267,7 +267,7 @@ $$\text{Fix}(S_4, \text{Space(AND)}) = \{0,\ A \vee B \vee C \vee D,\ \text{Maj}
 | **O07** | 3 | $(A \wedge B) \vee (C \wedge D)$ | ✗ | 쌍 AND-OR (3가지 변수 쌍) |
 | **O08** | 3 | $(A \vee B) \wedge (C \vee D)$ | ✗ | 쌍 OR-AND (3가지 변수 쌍) |
 | **O09** | 4 | $B \wedge C \wedge D$ | ✗ | 3-AND (4가지 변수 선택) |
-| **O10** | 4 | $A \vee B \wedge C \vee A \wedge C$ | ✗ | |
+| **O10** | 4 | $B \wedge C \wedge D \vee A \wedge C \wedge D \vee A \wedge B \wedge D$ | ✗ | 3개 3-AND의 합 (2026-10-08 정정: 이전 표기 $A \vee B \wedge C \vee A \wedge C$는 크기 12 궤도의 함수) |
 | **O11** | 4 | $C \wedge D \vee B \wedge D \vee A \wedge D$ | ✗ | 한 변수 고정 OR |
 | **O12** | 4 | $D$ | ✗ | 단일 변수 투영 |
 | **O13** | 4 | $C \wedge D \vee B \wedge D \vee B \wedge C$ | ✗ | |
