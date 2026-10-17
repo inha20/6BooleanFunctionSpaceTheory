@@ -67,27 +67,22 @@ For any primitive gate G, define:
 
 ---
 
-## Suggested Repository Structure
+## Repository Structure
 
 ```
 6BooleanFunctionSpaceTheory/
 ├── README.md                    ← This file
-├── TODO.md                      ← Master roadmap (Phase 1–5)
+├── paper.md (+ paper.tex, paper.pdf)  ← Paper: Function Space Theory (integrates the former FunctionSpaceTheory, PostLattice, KarnaughGeometry, IntegrationMap, exploration, questions)
+├── TODO.md                      ← Master roadmap (Phase 1–5), future research (FutureWorks), archived details of removed files
 ├── SubTODO.md                   ← Current sprint micro-tasks
-├── FutureWorks.md               ← Long-term research ideas
-├── IntegrationMap.md            ← Integration points with Repos 1–5
 ├── index.html                   ← GitHub Pages portal
 ├── theory/
-│   ├── FunctionSpaceTheory.md
-│   ├── PostLattice.md
-│   ├── KarnaughGeometry.md
 │   └── S4GroupAnalysis.md       ← ★ S₄ orbit classification (OC-1~OC-5)
-├── exploration/                 ← Q1–Q4 analysis documents
-├── questions/                   ← Open Questions (OQ1–OQ5)
-├── fq/                          ← Follow-up Questions (FQ-1~FQ-20)
 └── scripts/
     └── s4_orbit_calculator.py   ← ★ S₄ orbit enumeration & Burnside verification
 ```
+
+> Earlier planned documents (`FutureWorks.md`, `IntegrationMap.md`, `theory/FunctionSpaceTheory.md`, `theory/PostLattice.md`, `theory/KarnaughGeometry.md`, `exploration/`, `questions/`, `fq/`) were merged into `paper.md` and `TODO.md` and removed as separate files.
 
 ---
 
@@ -138,8 +133,8 @@ python scripts/s4_orbit_calculator.py --n5
 | Space | Description | Functions | S₄ Orbits | Fixed Points |
 |-------|-------------|----------:|----------:|-------------:|
 | Space(XOR) | Affine (linear) functions | 32 | 10 | 4 |
-| Space(AND) | Monotone functions (Dedekind D(4)) | 168 | 30 | 6 |
-| Space(NOT) | Self-dual functions | 256 | 32 | **0** |
+| Space(AND, OR, 0, 1) | Monotone functions (Dedekind D(4)) | 168 | 30 | 6 |
+| Space(MAJ, NOT) (no constants) | Self-dual functions | 256 | 32 | **0** |
 | L ∩ M | Affine ∧ Monotone | 6 | 3 | 2 |
 
 Theoretical basis: `theory/S4GroupAnalysis.md` v1.2 (OC-1–OC-5).
@@ -182,7 +177,7 @@ This repository is part of the **Structure Recognition Research Program** and is
 | [6BooleanFunctionSpaceTheory](https://github.com/inha20/6BooleanFunctionSpaceTheory) | Applied Mathematics ← You are here |
 | [ANTIGRAVITY](https://github.com/inha20/ANTIGRAVITY) | AI Workspace |
 
-**Master Handover Document:** [MasterHandoverDocument.md](https://github.com/inha20/Research-Portfolio/blob/main/ProjectManagement/MasterHandoverDocument.md)
+**AI 단일 진입점:** [SESSION_START.md](https://github.com/inha20/inha20/blob/main/SESSION_START.md)
 
 ---
 

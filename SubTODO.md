@@ -16,34 +16,33 @@
 | 항목 | 완료일 |
 |------|--------|
 | Phase 5: `index.html` 논문 통합 배포 (paper.md → index.html 전면 재작성) | 2026-06-27 |
-| Phase 5: `inha20-main` 중앙 허브 Repo 6 카드 갱신 | 2026-06-27 |
+| Phase 5: `inha20` 중앙 허브 Repo 6 카드 갱신 | 2026-06-27 |
 | 본문 흡수 완료 파일 18개 → `_absorbed/` 폴더 정리 | 2026-06-27 |
 | 저장소 단순화 (파일 수 최소화) | 2026-06-27 |
 | SESSION_START.md Session 48 기록 및 Health 표 갱신 | 2026-06-27 |
-| inha20-main/index.html Repo 6 카드 상태 갱신 | 2026-06-27 |
+| inha20/index.html Repo 6 카드 상태 갱신 | 2026-06-27 |
 
 ### 🔴 잔여 작업 (연구자 직접)
 
-- [ ] **`index.html` §6 개인 경험 서술 5개 섹션 작성** (Phase 0~5 placeholder 채우기)
-  - `#phase0-placeholder` — 어린 시절 수학 패턴 경험
-  - `#phase1-placeholder` — Karnaugh map 체커보드 발견 계기
-  - `#phase2-placeholder` — 대칭 함수 / Hamming weight 발견
-  - `#phase3-placeholder` — 변수 재배열 군론적 분류 발상
-  - `#phase4-placeholder` — SRT 메타 이론 통합 계기
-  - `#phase5-placeholder` — Burnside 보조정리 적용 경위
-- [x] **`SESSION_START.md` Phase 5 체크 갱신** (`inha20-main/SESSION_START.md`) ← Session 48에서 완료, 현황판에 Phase 1·2·5 Complete 반영됨
+- [ ] **`paper.md` §6 개인 경험 서술 작성** (`[연구자 보완 필요]` 표시 자리 채우기. 2026-10 개편으로 `index.html`의 placeholder 앵커는 사라졌고 서술 자리는 `paper.md`에 남아 있다)
+  - Phase 0 — 어린 시절 수학 패턴 경험
+  - Phase 1 — Karnaugh map 체커보드 발견 계기
+  - Phase 2 — 대칭 함수 / Hamming weight 발견
+  - Phase 3 — 변수 재배열 군론적 분류 발상
+  - Phase 4 — SRT 메타 이론 통합 계기
+  - Phase 5 — Burnside 보조정리 적용 경위 (`paper.md`에는 아직 표시 자리가 없음)
+- [x] **`SESSION_START.md` Phase 5 체크 갱신** (`inha20/SESSION_START.md`) ← Session 48에서 완료, 현황판에 Phase 1·2·5 Complete 반영됨
 
 ---
 
 ## 📁 현재 저장소 파일 구조
 
 ```
-6BooleanFunctionSpaceTheory-main/
+6BooleanFunctionSpaceTheory/
 ├── index.html                   ← 메인 논문 (웹 배포)
 ├── paper.md                     ← 메인 논문 소스
 ├── README.md                    ← GitHub Pages 진입점
 ├── SubTODO.md                   ← 이 파일 (통합 작업 관리)
-├── _absorbed/                   ← 본문 흡수 완료 파일 보관 (삭제 가능)
 ├── scripts/
 │   └── s4_orbit_calculator.py  ← S₄ 궤도 계산 Python 스크립트 (검증 코드)
 └── theory/
@@ -71,6 +70,6 @@
 ### Phase 5 · 논문 통합 및 배포 ✅ 완료
 - `paper.md` 작성 완료 (§1~§7, §6 개인 서술 placeholder 제외)
 - `index.html` 전면 재작성 — KaTeX 수식, 섹션 구조 완성
-- `inha20-main` 허브 Repo 6 카드 갱신
+- `inha20` 허브 Repo 6 카드 갱신
 
 ---

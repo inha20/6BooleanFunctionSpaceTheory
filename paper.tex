@@ -269,10 +269,10 @@ Space(G)는 S₄ 작용 하에 닫혀 있다. 즉, \(f \in \text{Space}(G)\)이�
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-T₀ & 0을 보존 & Space(AND) ⊆ T₀ \\
-T₁ & 1을 보존 & Space(AND) ⊆ T₁ \\
+T₀ & 0을 보존 & Space(AND) ⊄ T₀ (상수 1 포함) \\
+T₁ & 1을 보존 & Space(AND) ⊄ T₁ (상수 0 포함) \\
 S & 자기쌍대 & Space(NOT) = D \\
-M & 단조 & Space(AND) = M ∩ T₀ ∩ T₁ \\
+M & 단조 & Space(AND) = M (상수 0, 1 포함, 168개) \\
 L & 선형(아핀) & Space(XOR) = L \\
 \end{longtable}
 }
@@ -598,7 +598,7 @@ S₄-불동점
 (3가지 변수 쌍) \\
 \textbf{O09} & 4 & \(B \wedge C \wedge D\) & ✗ & 3-AND (4가지 변수
 선택) \\
-\textbf{O10} & 4 & \(A \vee B \wedge C \vee A \wedge C\) & ✗ & \\
+\textbf{O10} & 4 & \(B \wedge C \wedge D \vee A \wedge C \wedge D \vee A \wedge B \wedge D\) & ✗ & 3개 3-AND의 합 \\
 \textbf{O11} & 4 & \(C \wedge D \vee B \wedge D \vee A \wedge D\) & ✗ &
 한 변수 고정 OR \\
 \textbf{O12} & 4 & \(D\) & ✗ & 단일 변수 투영 \\

@@ -1,6 +1,6 @@
 # 6BooleanFunctionSpaceTheory — Master Roadmap (TODO)
 
-본 문서는 파편화된 문서들을 연결하는 **마스터 내비게이션 허브**이자, 추상적인 미래 계획(`FutureWorks.md`)을 실행 가능한 단위 행동(Actionable Tasks)으로 분할한 **상세 할 일 목록**입니다.
+본 문서는 파편화된 문서들을 연결하는 **마스터 내비게이션 허브**이자, 추상적인 미래 계획(본 문서의 「미래 연구 (FutureWorks)」 절)을 실행 가능한 단위 행동(Actionable Tasks)으로 분할한 **상세 할 일 목록**입니다.
 
 > [!TIP]
 > **AI 에이전트 및 공동 연구자를 위한 안내:** 
@@ -12,13 +12,13 @@
 
 ---
 
-Repo 3(변수 재배열 불변)과 Repo 6(게이트 공간)을 수학적으로 완전히 통일하는 단계. (`FutureWorks.md §1`)
+Repo 3(변수 재배열 불변)과 Repo 6(게이트 공간)을 수학적으로 완전히 통일하는 단계. (본 문서 「미래 연구 (FutureWorks)」 §1)
 
 ---
 
 ## Phase 3: SRT 인지 실험 설계 (⏸️ Deferred to FutureWorks)
 
-핵심 문서: [`theory/CognitiveExperimentDesign.md`](theory/CognitiveExperimentDesign.md)
+핵심 문서: 본 문서의 [「보존된 세부 연구 자료」 중 `CognitiveExperimentDesign.md`](#-보존된-세부-연구-자료-archived-details-from-deleted-files) (원본 파일은 통합 후 삭제됨)
 
 - [ ] **[Deferred]** 소규모 파일럿 테스트 (N=3) 진행 및 프로토콜 피드백 수집 *(후속 연구 이관)*
 - [ ] **[Deferred]** 자극 정련(K-map 시각화 표준화) 및 현재 소속기관 또는 공용 IRB 심의 필요 여부 검토 *(후속 연구 이관)*
@@ -28,9 +28,9 @@ Repo 3(변수 재배열 불변)과 Repo 6(게이트 공간)을 수학적으로 �
 
 ## Phase 4: Human-AI 협업 모델 (HARCT) 구체화 (🟢 Active)
 
-장기 연구에서의 기억 분담 및 연구 협업 교육 프레임워크 수립. (`FutureWorks.md §3, §4`)
+장기 연구에서의 기억 분담 및 연구 협업 교육 프레임워크 수립. (본 문서 「미래 연구 (FutureWorks)」 §3, §4)
 
-핵심 문서: [`theory/MemoryAndEducationModel.md`](theory/MemoryAndEducationModel.md)
+핵심 문서: 본 문서의 [「보존된 세부 연구 자료」 중 `MemoryAndEducationModel.md`](#-보존된-세부-연구-자료-archived-details-from-deleted-files) (원본 파일은 통합 후 삭제됨)
 
 ### 4.2 AI 협업 교육 (Education Framework)
 - [ ] **[Deferred]** 작성된 Level 1~3 교육 시나리오를 바탕으로 실제 학생 대상 파일럿 실습 또는 워크숍 진행 계획 수립 *(후속 연구 이관)*
@@ -39,10 +39,10 @@ Repo 3(변수 재배열 불변)과 Repo 6(게이트 공간)을 수학적으로 �
 
 ## Phase 5: 연구 기원 타임라인 및 이론 통합 (🟢 Active)
 
-핵심 문서: [`theory/ResearchOriginTimeline.md`](theory/ResearchOriginTimeline.md)
+핵심 문서: [`paper.md` §6 (Phase 0~5)](paper.md) (구 `theory/ResearchOriginTimeline.md`는 paper.md에 흡수되어 삭제됨)
 
 - [ ] **[Publish]** 도출된 수학적 성과와 이론 개요를 Repo 6 자체 메인 본문(`index.html` 또는 `README.md` 등)으로 공식 통합 및 배포
-- [ ] **[Hub]** 6번 저장소의 완료 상태 및 핵심 성과를 `inha20-main` 중앙 허브에 반영
+- [ ] **[Hub]** 6번 저장소의 완료 상태 및 핵심 성과를 `inha20` 중앙 허브에 반영
 
 
 ## 🔭 미래 연구 (FutureWorks)
@@ -207,7 +207,7 @@ n=2, k=3: 19,683개 — 본격 연구가 가능한 규모.
 
 **목표:** `index.html` §6 및 `paper.md` §6의 개인 서술 placeholder를 완성한다.
 
-**참고 초안:** `_absorbed/ResearchOriginTimeline.md` (Phase 0~5 보완 가이드 포함)
+**참고:** `paper.md` §6 (Phase 0~5 연구 기원 서술과 보완 가이드)
 
 | 섹션 | 중요도 | 가이드 |
 |-----|-------|--------|
@@ -271,7 +271,7 @@ python scripts/s4_orbit_calculator.py --n5-compute
 **위치:** `6BooleanFunctionSpaceTheory/theory/CognitiveExperimentDesign.md`  
 **관련 TODO:** Phase 3 (Exp-1, Exp-2, Exp-3)  
 **관련 이론 문서:**
-- `StructureRecognitionTheory_Unified.md` (H1–H10, Def. 3.1–3.3, OP-01–09) — `inha20-main/` 루트
+- `StructureRecognitionTheory_Unified.md` (H1–H10, Def. 3.1–3.3, OP-01–09) — `inha20/` 루트
 - `theory/S4GroupAnalysis.md` (S₄ 궤도 분류 결과 — 자극 후보군 기반)
 - `FutureWorks.md §2` (Phase 3 원래 계획 출처)
 
@@ -948,7 +948,7 @@ F03,F03_xor_checker_V2.png,A⊕B⊕C⊕D,1,XOR,8,V2,Exp-2
 **위치:** `6BooleanFunctionSpaceTheory/theory/MemoryAndEducationModel.md`  
 **관련 TODO:** Phase 4 (4.1 기억 분담 모델, 4.2 AI 협업 교육)  
 **관련 이론 문서:**
-- `SESSION_START.md` — inha20-main/ 루트 (이 모델의 실제 구현체)
+- `SESSION_START.md` — inha20/ 루트 (이 모델의 실제 구현체)
 - `StructureRecognitionTheory_Unified.md` — H8·H9·H10 (개념 진화와 생성적 개념)
 - `FutureWorks.md §3, §4` — Phase 4 원래 계획 출처
 
@@ -1160,7 +1160,7 @@ Level 1→3로 갈수록 협업에서 M_doc(t)의 역할이 변한다:
 **작성일:** 2026-06-22  
 **위치:** `6BooleanFunctionSpaceTheory/fq/FQ_E_human_ai.md`  
 **원출처:** `TODO.md §4-E`  
-**관련 문서:** `inha20-main/HumanAICollaborationProposal_Outline.md`, Paper 5(HARCT)
+**관련 문서:** `inha20/HumanAICollaborationProposal_Outline.md`, Paper 5(HARCT)
 
 ---
 

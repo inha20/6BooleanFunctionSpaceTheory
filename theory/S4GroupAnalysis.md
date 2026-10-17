@@ -4,8 +4,8 @@
 **작성일:** 2026-06-23  
 **최종 갱신:** 2026-06-23 (OC-1~OC-5 완료 — Space(NOT) 32궤도, L∩M 3궤도 신규 확인)  
 **위치:** `6BooleanFunctionSpaceTheory/theory/S4GroupAnalysis.md`  
-**관련 TODO 항목:** `FutureWorks.md §1 (우선순위 1)`, `IntegrationMap.md §2.1`  
-**관련 문서:** `theory/FunctionSpaceTheory.md`, `questions/OQ2_axisswap_symmetry.md`, `fq/FQ_B_kmap_geometry.md §FQ-9`  
+**관련 TODO 항목:** `TODO.md`의 「미래 연구 (FutureWorks)」 §1 (우선순위 1), `paper.md` (옛 `IntegrationMap.md §2.1`의 흡수처)  
+**관련 문서:** `paper.md` (옛 `theory/FunctionSpaceTheory.md`, `questions/OQ2_axisswap_symmetry.md`, `fq/FQ_B_kmap_geometry.md §FQ-9`가 흡수·삭제됨)  
 **목적:** Repo 3 (변수 재배열 불변성) ↔ Repo 6 (게이트 공간 이론)의 군론적 통합
 
 ---
@@ -79,7 +79,7 @@ $$|\text{Orbits}| = \frac{1}{|S_4|} \sum_{\sigma \in S_4} |\text{Fix}(\sigma, \t
 | "우하단에 집중된 패턴" | "HW≥3인 셀들만 1" |
 | "우하단 한 칸만 채워짐" | "HW=4인 유일한 셀(m15) 하나만 1" |
 
-이 위상적 사실은 S₄ 궤도 분류와 직접 연결된다: **같은 궤도의 함수들은 카르노 맵에서 서로 "토러스 회전·반사 대칭"인 패턴을 가진다.** 따라서 패턴의 시각적 위치가 다르더라도 위상적으로 동치인 경우, 같은 궤도의 원소로 처리해야 한다.
+이 위상적 사실을 S₄ 궤도 분류와 혼동하면 안 된다: **같은 S₄-궤도의 함수들은 변수 순열로 서로 옮겨지지만, 그 순열이 격자 대칭군 W(토러스 이동 포함)에 속하지 않으면 카르노 맵 그림이 토러스 회전·반사로 겹쳐지지 않을 수 있다(예: A∧B와 A∧C).** 반대로 W로 겹쳐지는 그림(예: A와 ¬A)이 같은 S₄-궤도라는 보장도 없다.
 
 ---
 
@@ -171,7 +171,7 @@ S₄의 **모든** 원소에 의해 고정되는 함수 = S₄ 불동점.
 
 ---
 
-## 3. Space(AND) = M (단조 클론, 상수 0·1 포함 168개)의 분석
+## 3. M (단조 클론, 상수 0·1 포함 168개; 레거시 이름 Space(AND) — AND·상수만으로는 17개 함수만 생성되며 M 전체에는 ∧, ∨, 0, 1이 필요하다)의 분석
 
 > *정정 2026-10-08: 이전 제목의 "M ∩ T₀ ∩ T₁"은 상수 0, 1을 제외한 166개를 뜻하므로 본문의 168개(상수 포함)와 맞지 않아 M으로 고쳤다.*
 
@@ -253,7 +253,7 @@ $$|\text{Orbits}(S_4, M)| = \frac{1}{24}(1 \times 168 + 6 \times 50 + 8 \times 1
 
 ---
 
-## 3.5 Space(NOT) = D (자기쌍대 클론)의 완전 분석 — OC-4
+## 3.5 D (자기쌍대 클론; 레거시 이름 Space(NOT) — NOT·상수만으로는 0, 1, 변수와 그 부정의 10개 함수만 생성된다)의 완전 분석 — OC-4
 
 ### 3.5.1 자기쌍대 함수의 구조
 
@@ -638,7 +638,7 @@ Repo 1의 체커보드 발견 → "S₄ 대칭", "Space(XOR)" 개념 형성 → 
 | **Repo 2** (SymmetricBooleanFunction) | Maj₂, Maj₃ = Space(AND)의 S₄-불동점 |
 | **Repo 3** (VariableRearrangement) | S₄-궤도 분류 = Repo 6 분류의 세밀한 버전 (FQ-9); 완전 대응표는 §5 OC-3 |
 | **Repo 4** (SRT) | H3 주의 필터 = S₄-불동점 함수에 먼저 주의 집중; H8-H9의 실사례; Space(NOT) 불동점 부재가 H8에 새 함의 |
-| **Repo 6** (이 저장소) | Space(G)의 S₄-궤도 구조 = 새 수학적 기여; Space(AND) 30궤도, Space(NOT) 32궤도 완전 분류 |
+| **Repo 6** (이 저장소) | Space(G)의 S₄-궤도 구조 = Burnside 표로 재계산·완전 열거한 결과 (Space(AND) 30궤도는 알려진 값(OEIS A003182), Space(NOT) 32궤도는 이 문서에서 문헌 대조를 수행하지 않음) |
 
 ---
 
