@@ -185,7 +185,7 @@ This repository is part of the **Structure Recognition Research Program** and is
 
 ## Key Insight from Research Notes
 
-The 65,536 four-variable Boolean functions are not all independent. Under axis-swap symmetry (F(A,B,C,D) = F(C,D,A,B)), functions form equivalence classes (orbits under the symmetry group). **Research question:** When the 65,536 functions are classified by axis-swap symmetry, how many distinct classes result? This is a combinatorics + group theory problem with potential as a paper topic.
+The 65,536 four-variable Boolean functions are not all independent. Under axis-swap symmetry (F(A,B,C,D) = F(C,D,A,B)), functions form equivalence classes (orbits under the symmetry group). **Result:** When the 65,536 functions are classified by the axis swap alone, 33,280 classes result (1,024 functions satisfy F(A,B,C,D) = F(C,D,A,B) themselves); this is a one-step Burnside count, (65,536 + 1,024)/2, and classification by the full S₄ gives 3,984 classes.
 
 ---
 

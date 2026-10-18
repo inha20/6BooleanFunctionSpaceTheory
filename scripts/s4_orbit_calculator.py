@@ -179,7 +179,7 @@ def generate_affine_functions() -> Set[int]:
 
 def generate_monotone_functions() -> Set[int]:
     """
-    Space(AND) = 단조(Monotone) 함수 집합 생성.
+    단조(Monotone) 함수 집합 M 생성 (관례상 이름 Space(AND); AND·상수만으로는 17개 함수만 생성되므로 M 전체와 같지 않음).
     f가 단조 ⟺ x ≤ y (점별) → f(x) ≤ f(y)
     전수 열거: 65536개 함수 중 단조인 것 필터링
     기대 개수: D(4) = 168 (Dedekind 수)
