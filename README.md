@@ -4,7 +4,7 @@
 
 **연구 제목:** Boolean Function Space Theory  
 **부제:** Gate-Generated Function Spaces, Karnaugh Map Geometry, and Structural Classification  
-**GitHub Pages:** (Pages 활성화 후 링크 추가 예정)
+**GitHub Pages:** [논문 온라인 보기](https://inha20.github.io/6BooleanFunctionSpaceTheory/)
 
 ---
 
@@ -74,7 +74,7 @@ For any primitive gate G, define:
 ```
 6BooleanFunctionSpaceTheory/
 ├── README.md                    ← This file
-├── paper.md (+ paper.tex, 01_paper.pdf)  ← Paper: Function Space Theory (integrates the former FunctionSpaceTheory, PostLattice, KarnaughGeometry, IntegrationMap, exploration, questions)
+├── paper.md (+ 01_paper.pdf)  ← Paper: Function Space Theory (integrates the former FunctionSpaceTheory, PostLattice, KarnaughGeometry, IntegrationMap, exploration, questions)
 ├── TODO.md                      ← Master roadmap (Phase 1–5), future research (FutureWorks), archived details of removed files
 ├── SubTODO.md                   ← Current sprint micro-tasks
 ├── index.html                   ← GitHub Pages portal
