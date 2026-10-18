@@ -72,7 +72,7 @@ For any primitive gate G, define:
 ```
 6BooleanFunctionSpaceTheory/
 ├── README.md                    ← This file
-├── paper.md (+ paper.tex, paper.pdf)  ← Paper: Function Space Theory (integrates the former FunctionSpaceTheory, PostLattice, KarnaughGeometry, IntegrationMap, exploration, questions)
+├── paper.md (+ paper.tex, 01_paper.pdf)  ← Paper: Function Space Theory (integrates the former FunctionSpaceTheory, PostLattice, KarnaughGeometry, IntegrationMap, exploration, questions)
 ├── TODO.md                      ← Master roadmap (Phase 1–5), future research (FutureWorks), archived details of removed files
 ├── SubTODO.md                   ← Current sprint micro-tasks
 ├── index.html                   ← GitHub Pages portal
