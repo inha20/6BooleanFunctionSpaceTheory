@@ -3,7 +3,7 @@
 > **관련 문서:** 향후 연구 전체 로드맵은 [`TODO.md`](TODO.md)의 "미래 연구(FutureWorks)" 절 참조.  
 > **수학 원본:** 상세 계산 과정 전체는 [`theory/S4GroupAnalysis.md`](theory/S4GroupAnalysis.md) 참조.
 
-**저자:** 최종훈 (인하공업전문대학 출신 · 독립 연구자)  
+**저자:** 최종훈 (인하공업전문대학 2학년 재학 · 독립 연구자)  
 **작성일:** 2026-06-27  
 **저장소:** [6BooleanFunctionSpaceTheory](https://github.com/inha20/6BooleanFunctionSpaceTheory)  
 **연구 프로그램:** Structure Recognition Research Program (Branch 8)  

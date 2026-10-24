@@ -192,5 +192,5 @@ The 65,536 four-variable Boolean functions are not all independent. Under axis-s
 ## Author
 
 Choi Jonghun (최종훈)  
-Independent researcher · Graduate of Inha Technical College  
+Independent researcher · 2nd-year student at Inha Technical College  
 Structure Recognition Research Program
