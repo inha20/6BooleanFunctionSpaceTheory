@@ -883,10 +883,6 @@ F03,F03_xor_checker_V2.png,A⊕B⊕C⊕D,1,XOR,8,V2,Exp-2
 
 ## 9. 제작 방법 지침
 
-> **이미지 생성 규칙 (HARD RULE, SESSION_START.md §3에서 이관):**
-> **허용:** PowerPoint, Keynote, Draw.io, 연구자가 직접 작성한 SVG.  
-> **절대 금지:** AI 이미지 생성 도구(DALL-E, SD 등) 사용 금지. AI가 작성한 Python/matplotlib/LaTeX/TikZ 코드로 그림 생성 금지.
-
 ### 9.1 PowerPoint 제작 가이드라인
 
 1. 슬라이드 크기: 10cm × 10cm (정사각형)
